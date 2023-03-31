@@ -1,3 +1,19 @@
+<script setup>
+    let sidebar = document.querySelector(".sidebar");
+    let content = document.querySelector(".py-4");
+    /*Mostrar ocultar menú principal*/
+    /* var btn = document.querySelector("#sideMenu");
+
+
+    btn.onclick = function () {
+        sidebar.classList.toggle("active");
+        content.classList.toggle("active");
+    } */
+
+    const clicar = () =>{
+        console.log("hello");
+    }
+</script>
 <template>
     <div class="sidebar">
         <div class="logo_content">
@@ -8,9 +24,9 @@
         </div>
         <!-- .................................................................................................. -->
         <!-- Lista de opciones para navegación del sistema -->
-        <ul class="nav_list">
-            <li>
-                <a href="#">
+        <ul  class="nav_list">
+            <li @click="clicar">
+                <a @click="clicar" href="#">
                     <i class="fa fa-user-tie" aria-hidden="true"></i>
                     <span class="routes_name"> Administración </span>
                 </a>
@@ -42,15 +58,4 @@
     </div>
 </template>
 
-<script setup>
-    /*Mostrar ocultar menú principal*/
-    var btn = document.querySelector("#sideMenu");
-    var sidebar = document.querySelector(".sidebar");
-    var content = document.querySelector(".py-4");
 
-
-    btn.onclick = function () {
-        sidebar.classList.toggle("active");
-        content.classList.toggle("active");
-    }
-</script>
