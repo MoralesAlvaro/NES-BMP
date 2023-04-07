@@ -16,7 +16,7 @@ const showingNavigationDropdown = ref(false);
     <SideBar>
     </SideBar>
     <div class="min-h-screen bg-gray-100" id="auth_layout">
-        <nav class="bg-orange-800 border-b border-gray-100">
+        <nav class="bg-brown-500 border-b border-gray-100">
             <!-- Primary Navigation Menu -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
