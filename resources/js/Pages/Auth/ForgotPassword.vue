@@ -25,9 +25,11 @@ const submit = () => {
     <GuestLayout>
         <Head title="Forgot Password" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-            link that will allow you to choose a new one.
+        <div class="mb-4 text-sm text-gray-600 text-justify">
+            <span class=" text-gray-500"><strong>¿Olvidaste tu contraseña?</strong></span>
+            <br>
+            No hay problema. Simplemente háganos saber su dirección de correo electrónico y le enviaremos un correo electrónico para restablecer la contraseña.
+            El enlace le permitirá elegir una nueva contraseña.
         </div>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -53,7 +55,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
+                    Envíame el Enlace
                 </PrimaryButton>
             </div>
         </form>
