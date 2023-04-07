@@ -19,8 +19,8 @@ class PermissionsSeeder extends Seeder
         // ----------------------------------------
         // ROLES
         $root = Role::create(['name' => 'root']);
-        $administrador = Role::create(['name' => 'administrador']);
         $encargado = Role::create(['name' => 'encargado']);
+        $empleado = Role::create(['name' => 'empleado']);
 
 
         // **** PERMISOS ****
@@ -38,16 +38,16 @@ class PermissionsSeeder extends Seeder
         $root->syncPermissions($permission_root);
 
         // ----------------- PERMISOS ADMINISTRADORES -----------------
-        $permission_administrador = [
+        $permission_encargado = [
             $user_index
         ];
-        $administrador->syncPermissions($permission_administrador);
-
-        // ----------------- PERMISOS ENCARGADOS -----------------
-        $permission_encargado = [
-            
-        ];
         $encargado->syncPermissions($permission_encargado);
+
+        // ----------------- PERMISOS EMPLEADO -----------------
+        $permission_empleado = [
+
+        ];
+        $empleado->syncPermissions($permission_empleado);
 
     }
 }

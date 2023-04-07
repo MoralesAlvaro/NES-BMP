@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
                 'name' => 'default',
                 'surname' => 'default',
                 'email' => 'd@gmail.com',
-                'password' => bcrypt('elias=1989'),
+                'password' => bcrypt('2211221122'),
                 'telephone' => '',
                 'email_verified_at' => now(),
                 'profile_photo_path' => 'https://via.placeholder.com/1024x1024.png/000088?text=ROOT',
