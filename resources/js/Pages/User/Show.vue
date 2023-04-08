@@ -3,6 +3,9 @@
   import Table from '@/Components/Table.vue';
   import JetButton from '@/Components/PrimaryButton.vue'
   import { Head } from '@inertiajs/vue3';
+  import JetModal from '@/Components/Modal.vue';
+  import DeleteUser from '@/Components/User/DeleteUser.vue';
+  import FormUser from '@/Components/User/FormUser.vue';
   import { reactive, ref } from 'vue';
 
   defineProps({
@@ -65,6 +68,13 @@
 <template>
   <Head title="User" />
   <AppLayout >
+
+    <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
+      <FormUser :isEdit="isEdit" :user="selectedUser" @close="toggleFormModal" />
+    </JetModal>
+    <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
+      <DeleteUser :user="selectedUID" @close="toggleDeleteModal" />
+    </JetModal>
 
     <div class="py-12 min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">

@@ -27,13 +27,15 @@ class PermissionsSeeder extends Seeder
 
         /* USUARIOS */
         $user_index = Permission::create(['name' => 'user_index', 'descriptions' => 'Vista lista de usuarios']);
+        $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Vista enviar invitación']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS root -----------------
         $permission_root = [
-            $user_index
+            $user_index,
+            $send_invitation
         ];
         $root->syncPermissions($permission_root);
 
