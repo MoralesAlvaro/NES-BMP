@@ -6,6 +6,7 @@ import Label from '@/Components/InputLabel.vue'
 import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, getCurrentInstance } from 'vue';
 import InputError from '@/Components/InputError.vue';
+import { createToaster } from "@meforma/vue-toaster";
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -21,7 +22,7 @@ const props = defineProps({
 // Setup State
 const roles = computed(() => usePage().props.roles);
 const isLoading = ref(false);
-const toast = getCurrentInstance().appContext.config.globalProperties.$toast
+const toaster = createToaster({ /* options */ });
 
 const form = useForm({
     name: props.isEdit && props.user.name || "",
@@ -29,44 +30,38 @@ const form = useForm({
     role_id: props.isEdit && getInfoRol(props.user.user_role).id || null,
 });
 
-const avisar = () => {
-    console.log('Eviado');
-}
-
 const submit = () => {
-  isLoading.value = true;
-  if (props.isEdit) {
-    form.transform(data => ({
-      ...data,
-      user_id: props.user.id
-    })).post(route('change.role'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        emit('close')
-      },
-      onError: () => {
-        const errors = usePage().props.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    });
-  } else {
-    form.post(route('invite.user'), {
-      onSuccess: () => {
-        emit('close');
-        avisar();
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    });
-  }
+    isLoading.value = true;
+    if (props.isEdit) {
+        form.transform(data => ({
+            ...data,
+            user_id: props.user.id
+        })).post(route('change.role'), {
+            onSuccess: () => {
+                toaster.info(`El registro se ha actualizado correctamente`);
+                emit('close')
+            },
+            onError: () => {
+                toaster.warning(`Algo salio mal, por favor ponte en contacto con el encargado`);
+            },
+            onFinish: () => {
+                isLoading.value = false
+            }
+        });
+    } else {
+        form.post(route('invite.user'), {
+            onSuccess: () => {
+                emit('close');
+                toaster.success(`Notificación enviada con éxito.`);
+            },
+            onError: () => {
+                toaster.warning(`Algo salio mal, por favor ponte en contacto con el encargado`);
+            },
+            onFinish: () => {
+                isLoading.value = false
+            }
+        });
+    }
 };
 
 </script>

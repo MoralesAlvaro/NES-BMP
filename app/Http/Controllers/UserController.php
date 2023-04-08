@@ -65,7 +65,7 @@ class UserController extends Controller
         $url = env('APP_URL').'/login';
         $data = ['url' => $url, 'email' => $user->email, 'password' => $password];
         Mail::to($user->email)->send(new SendInvitation($data));
-        
+
         return redirect()->back()->with('success', 'La invitación ha sido enviada exitosamente.');
     }
 }
