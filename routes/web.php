@@ -7,6 +7,7 @@ use Inertia\Inertia;
 // CONTROLLERS
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,7 @@ use App\Http\Controllers\RolePermissionController;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('login');
 });
 
 Route::get('/dashboard', function () {
@@ -38,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/role/list', [RolePermissionController::class, 'index'])->name('roleList');
+// ONLY VIEWS RESPONSE
+Route::middleware('auth')->group(function () {
+    Route::get('/role/list', [RolePermissionController::class, 'index'])->name('roleList');
+    Route::get('/user/list', [UserController::class, 'index'])->name('user.list');
+});
+
 
 require __DIR__.'/auth.php';

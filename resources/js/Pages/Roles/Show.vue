@@ -1,54 +1,48 @@
 <script setup>
-    import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-    import Table from '@/Components/Table.vue'
-    import Modal from '@/Components/Modal.vue'
-    import Button from '@/Components/PrimaryButton.vue'
-    import DeleteRoles from '@/Components/Roles/DeleteRoles.vue'
-    import {
-        Head
-    } from '@inertiajs/vue3';
-    import {
-        reactive,
-        ref
-    } from 'vue';
+import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Table from '@/Components/Table.vue'
+import Modal from '@/Components/Modal.vue'
+import Button from '@/Components/PrimaryButton.vue'
+import DeleteRoles from '@/Components/Roles/DeleteRoles.vue'
+import { Head } from '@inertiajs/vue3';
+import { reactive, ref } from 'vue';
 
-    defineProps({
-        roles: Object,
-    })
+defineProps({
+    roles: Object,
+})
 
-    const header = reactive([{
-            name: 'Nombre',
-            showInMobile: true
-        },
-        {
-            name: 'Acciones',
-            showInMobile: true
-        }
-    ]);
+const header = reactive([{
+    name: 'Nombre',
+    showInMobile: true
+},
+{
+    name: 'Acciones',
+    showInMobile: true
+}
+]);
 
-    const statusModalDelete = ref(false);
-    const isEdit = ref(false);
-    const statusModalForm = ref(false);
-    const selectedRole = reactive({
-        role_id: null,
-        name: null
-    })
+const statusModalDelete = ref(false);
+const isEdit = ref(false);
+const statusModalForm = ref(false);
+const selectedRole = reactive({
+    role_id: null,
+    name: null
+})
 
-    const toggleFormModal = () => {
-        statusModalForm.value = !statusModalForm.value;
-    };
-    const toggleDeleteModal = () => {
-        statusModalDelete.value = !statusModalDelete.value;
-    };
-    const selectItem = (item) => {
-        selectedRole.name = item.name
-        isEdit.value = true
-        toggleFormModal()
-    }
+const toggleFormModal = () => {
+    statusModalForm.value = !statusModalForm.value;
+};
+const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
+};
+const selectItem = (item) => {
+    selectedRole.name = item.name
+    isEdit.value = true
+    toggleFormModal()
+}
 </script>
 
 <template>
-
     <Head title="Roles" />
     <AppLayout>
         <Modal :show="statusModalForm" maxWidth="2xl" @close="toggleFormModal">
@@ -77,7 +71,7 @@
                     <Table :header="header" :items="roles.length">
                         <tbody class="px-5">
                             <tr v-for="item in roles" class="mt-2">
-                                <td class="text-center p-2 lg:text-base text-xs">{{ item . name }}</td>
+                                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
                                 <td class="text-center p-2 lg:text-base text-xs">
                                     <div class="flex justify-center">
                                         <div class="flex flex-row space-x-4">
