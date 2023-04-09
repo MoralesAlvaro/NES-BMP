@@ -16,13 +16,6 @@
     font-family: "Montserrat", sans-serif;
 }
 
-#auth_layout{
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    padding-left: 5em;
-}
-
 /* Retirar estilo a los hipervínculos */
 a {
     text-decoration: none !important;
@@ -44,10 +37,6 @@ a {
 
 /* Dispositivos de mayor tamaño */
 @media (min-width: 501px) {
-    body {
-        overflow: hidden;
-    }
-
     #banner_ndes {
         background-image: url(img/banners/NDES_001.jpg);
     }
@@ -62,166 +51,6 @@ a {
 
 /* --------------------------------------------------------- */
 /* Estilos barra de navegación */
-.sidebar {
-    position: fixed;
-    left: 0;
-    height: 100%;
-    width: 100px;
-    background-color: var(--SideBar-color);
-    transition: all 0.5s ease;
-    z-index: 999;
-}
-
-/* °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° */
-/* Evento - Cambio de tamaño */
-.sidebar.active {
-    width: 240px;
-}
-
-/* Evento - Mostrar el logo y contenido */
-.sidebar.active .logo_content .logo {
-    opacity: 1;
-    pointer-events: none;
-    margin-left: 20px;
-    margin-top: 5px;
-}
-
-.sidebar.active #sideMenu {
-    left: 90%;
-}
-
-.sidebar.active ul li a {
-    width: 100%;
-}
-
-.sidebar.active .tooltip {
-    display: none;
-}
-
-.sidebar.active .routes_name {
-    display: block;
-}
-
-.py-4.active {
-    padding-left: 240px;
-    transition: all 0.5s ease;
-    filter: blur(4px);
-    /* Efecto de Desenfoque al momento de realizar la animación */
-}
-
-/* °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° */
-
-/* Estilos contenido - animación */
-.py-4 {
-    transition: all 0.5s ease;
-}
-
-/* Estilos barra de navegación - Textos */
-.sidebar .logo_content .logo {
-    color: var(--white-color);
-    display: flex;
-    height: 50px;
-    width: 100%;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.sidebar .routes_name {
-    display: none;
-    opacity: 1;
-    pointer-events: none;
-}
-
-/* Estilos barra de navegación - Ícono */
-.logo_content .logo i {
-    font-size: 20px;
-    margin-right: 5px;
-}
-
-/* Estilos barra de navegación - Texto del ícono*/
-.logo_content .logo .logo_name {
-    font-size: 20px;
-    font-weight: 400;
-    margin-left: 30px;
-}
-
-/* Estilos barra de navegación - Contenido de la barra */
-.sidebar #sideMenu {
-    position: absolute;
-    color: var(--white-color);
-    left: 50%;
-    top: 6px;
-    font-size: 20px;
-    height: 50px;
-    width: 50px;
-    text-align: center;
-    line-height: 50px;
-    transform: translateX(-50%);
-    cursor: pointer;
-}
-
-/* Estilos barra de navegación - Lista sin orden */
-.sidebar ul {
-    margin-top: 20px;
-}
-
-/* Estilos barra de navegación - Ítems de la lista */
-.sidebar ul li {
-    position: relative;
-    height: 50px;
-    margin-left: 1.6em;
-    right: 5px;
-    width: 100%;
-    margin-bottom: 20px;
-    list-style: none;
-    line-height: 50px;
-}
-
-.sidebar ul li .tooltip {
-    position: absolute;
-    left: 60px;
-    top: 0;
-    transform: translateY(-50%);
-    border-radius: 6px;
-    height: 35px;
-    width: 150px;
-    background-color: var(--white-color);
-    text-align: center;
-    box-shadow: 0 5px 10px var(--SideBar-color);
-    transition: 0s;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.sidebar ul li:hover .tooltip {
-    transition: all 0.5s ease;
-    opacity: 1;
-    top: 50%;
-}
-
-.sidebar ul li a {
-    color: var(--white-color);
-    width: 50px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.4s ease;
-    border-radius: 12px;
-}
-
-.sidebar ul li a:hover {
-    color: var(--bg-color);
-    background-color: var(--white-color);
-}
-
-.sidebar ul li a i {
-    height: 50px;
-    min-width: 50px;
-    border-radius: 12px;
-    line-height: 50px;
-    text-align: center;
-}
 
 /* Estilo del logo de la empresa */
 img.logo {

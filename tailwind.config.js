@@ -15,6 +15,15 @@ module.exports = {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
+        colors: {
+            transparent: 'transparent',
+            current: 'currentColor',
+            'cocoa': '#592202',
+            'capucchino': '#D7C9BF',
+            'light-coffee': '#A6836F',
+            'coffee': '#7F5E4C',
+            'dark-coffee': '#552f17'
+        }
     },
 
     plugins: [require('@tailwindcss/forms')],
