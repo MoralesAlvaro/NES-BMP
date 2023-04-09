@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/send/invitation', [UserController::class, 'send_invitation'])->name('invite.user');
     Route::post('/changeRole', [UserController::class, 'change_role'])->name('change.role');
+    Route::get('/deleteUser/{user}', [UserController::class, 'destroy'])->name('delete.user');
 });
 
 require __DIR__.'/auth.php';

@@ -23,7 +23,7 @@ class UserController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $users = new UserCollection(User::all());
+        $users = new UserCollection(User::where('active', 1)->orderBy('id', 'desc')->get());
         $roles = Role::all();
         //return response()->json($users, 200);
         return Inertia::render('User/Show',[
@@ -105,5 +105,20 @@ class UserController extends Controller
         }else{
             return redirect()->back()->withErrors(['error' => 'Debes indicar el rol a asignar!.']);
         }
+    }
+
+    public function destroy(User $user)
+    {
+        if ( ! Auth::user()->can('user_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['error' => 'Usuario no ha sido encontrado.']);
+        }
+
+        $user->active = false;
+        $user->update();
+        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
     }
 }

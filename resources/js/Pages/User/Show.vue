@@ -47,7 +47,6 @@
   })
   const statusModalForm = ref(false);
 
-
   const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
   };
@@ -63,6 +62,11 @@
     toggleFormModal()
   }
 
+  const eliminar = (item) => {
+    selectedUser.user_id = item.id
+    toggleDeleteModal()
+  }
+
 </script>
 
 <template>
@@ -73,7 +77,7 @@
       <FormUser :isEdit="isEdit" :user="selectedUser" @close="toggleFormModal" />
     </JetModal>
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
-      <DeleteUser :user="selectedUID" @close="toggleDeleteModal" />
+      <DeleteUser :user="selectedUser" @close="toggleDeleteModal" />
     </JetModal>
 
     <div class="py-12 min-h-screen">
@@ -104,7 +108,7 @@
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                      <a @click="toggleDeleteModal(); selectedUID = item.id;" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <a @click="eliminar(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>
                 </td>

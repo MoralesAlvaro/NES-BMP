@@ -1,5 +1,4 @@
 <script setup>
-import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Button from '@/Components/PrimaryButton.vue'
 import Input from '@/Components/TextInput.vue'
 import Label from '@/Components/InputLabel.vue'
@@ -79,12 +78,12 @@ const submit = () => {
         <div class="mb-5">
             <Label for="name" value="Nombre" />
             <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus
-                :onlyRead="isEdit" />
+                :disabled="isEdit" />
             <InputError class="mt-2" :message="form.errors.name" />
         </div>
         <div class="mb-5">
             <Label for="email" value="Correo Electrónico" />
-            <Input type="email" id="email" v-model="form.email" class="mt-1 block w-full" :onlyRead="isEdit" />
+            <Input type="email" id="email" v-model="form.email" class="mt-1 block w-full" :disabled="isEdit" />
             <InputError class="mt-2" :message="form.errors.email" />
         </div>
         <div class="mb-8">
