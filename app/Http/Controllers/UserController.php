@@ -68,4 +68,42 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'La invitación ha sido enviada exitosamente.');
     }
+
+    public function change_role(Request $request)
+    {
+        // Validando permiso
+        if ( ! Auth::user()->can('change_role')){
+            return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con manager!.']);
+        }
+        // Validando el id del rol
+        if ($request->get('role_id') != '' or $request->get('role_id') != null) {
+            // Validando el recurso solicitado
+            $rol = Role::find($request->get('role_id'));
+            if (!isset($rol)) {
+                return redirect()->back()->withErrors(['error' => 'Rol no válido!.']);
+            }
+
+            // Validando el usuario
+            if ($request->get('user_id') != '' or $request->get('user_id') != null) {
+                // Validando recurso solicitado
+                $user = User::find($request->get('user_id'));
+                if (!isset($user)) {
+                    return redirect()->back()->withErrors(['error' => 'Usuario no válido!.']);
+                }
+
+                // Verificando si el usuario tenia rol asignado
+                if (!empty($user->roles[0]->name)) {
+                    // Revocando rol
+                    $user->removeRole($user->roles[0]->name);
+                }
+                $user->assignRole($rol->name);
+                return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
+
+            }else{
+                return redirect()->back()->withErros(['error' => 'Debes indicar el usuario al que deseas cambiar el rol!.']);
+            }
+        }else{
+            return redirect()->back()->withErrors(['error' => 'Debes indicar el rol a asignar!.']);
+        }
+    }
 }

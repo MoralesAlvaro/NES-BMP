@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
 // ONLY RESPONSE
 Route::middleware('auth')->group(function () {
     Route::post('/send/invitation', [UserController::class, 'send_invitation'])->name('invite.user');
+    Route::post('/changeRole', [UserController::class, 'change_role'])->name('change.role');
 });
 
 require __DIR__.'/auth.php';

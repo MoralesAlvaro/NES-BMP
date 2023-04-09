@@ -28,8 +28,15 @@ class UserSeeder extends Seeder
             ],
         ]);
         User::factory()->count(3)->create();
+        $users = User::all();
 
-        $user1 = User::find('1');
-        $user1->assignRole('root');
+        foreach ($users as $item ) {
+            if ($item->id == 1) {
+                $item->assignRole('root');
+            }else {
+                $item->assignRole('empleado');
+            }
+        }
+
     }
 }
