@@ -17,6 +17,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "flowbite": "^1.6.4",
         "vue3-loading-overlay": "^0.0.0"
     }
 }

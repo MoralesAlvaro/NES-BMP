@@ -5,7 +5,6 @@
 :root {
     --logBG-height-PC: 100vh;
     --logBG-width-PC: 70vh;
-    --SideBar-color: #542F22;
     --white-color: #ffffff;
 }
 
@@ -38,8 +37,12 @@ a {
 /* Dispositivos de mayor tamaño */
 @media (min-width: 501px) {
     #banner_ndes {
-        background-image: url(img/banners/NDES_001.jpg);
+        background-image: url(img/banners/NDES_002.jpg);
     }
+    #auth_layout {
+        margin-left: 12em;
+    }
+    
 }
 
 /* Dispositivos de menor tamaño */
@@ -47,11 +50,13 @@ a {
     #banner_ndes {
         display: none;
     }
+
+    #navbar_logo {
+        display: none;
+    }
 }
 
 /* --------------------------------------------------------- */
-/* Estilos barra de navegación */
-
 /* Estilo del logo de la empresa */
 img.logo {
     width: 100px;
