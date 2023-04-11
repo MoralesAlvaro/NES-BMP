@@ -17,22 +17,30 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Comida',
                 'description' => 'Todos los platillos ...',
-                'active' => true
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Antojito',
                 'description' => 'Antojitos: Empanadas, Pastelitos, Enchiladas ...',
-                'active' => true
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Bebida',
                 'description' => 'Bebidas: Sodas, Frescos, Jugos, licuados ...',
-                'active' => true
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Licores',
                 'description' => 'Mojitos, Margaritas, Chots ...',
-                'active' => true
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

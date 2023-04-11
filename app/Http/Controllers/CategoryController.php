@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Http\Resources\Category as CategoryResources;
+use App\Http\Resources\CategoryCollection;
 
 class CategoryController extends Controller
 {
@@ -13,23 +15,28 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $categories = new CategoryCollection( Category::all());
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // return response()->json($categories, 200);
+        return Inertia::render('Category/Show', [
+            'categories' => $categories
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validando = \Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
+            'description' => ['string'],
+            'active' => ['boolean'],
+        ]);
+
+        $category = new Category($request->all());
+        $category->save();
+        return redirect()->back()->with('success', 'Regristro creado correctamente.');
     }
 
     /**
