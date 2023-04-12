@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\CategorySeeder;
+use Database\Seeders\ProductSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,12 +27,14 @@ class DatabaseSeeder extends Seeder
             'model_has_roles',
             'role_has_permissions',
             'users',
-            'categories'
+            'categories',
+            'proucts'
         ]);
         // $this->call(UserSeeder::class);
         $this->call(PermissionsSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
+        $this->call(ProductSeeder::class);
 
     }
 
