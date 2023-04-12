@@ -15,9 +15,35 @@ Route::get('/', function () {
     return redirect('login');
 });
 
+// Ruteo para el dashboard.
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Ruteo para las ventas.
+Route::get('/sales', function () {
+    return Inertia::render('Sales');
+})->middleware(['auth', 'verified'])->name('sales');
+
+// Ruteo para el inventario.
+Route::get('/inventory', function () {
+    return Inertia::render('Inventory');
+})->middleware(['auth', 'verified'])->name('inventory');
+
+// Ruteo para los reportes.
+Route::get('/report', function () {
+    return Inertia::render('Report');
+})->middleware(['auth', 'verified'])->name('report');
+
+// Ruteo para los roles y usuarios.
+Route::get('/users', function () {
+    return Inertia::render('Users');
+})->middleware(['auth', 'verified'])->name('users');
+
+// Ruteo para la sección de ayuda.
+Route::get('/help', function () {
+    return Inertia::render('Help');
+})->middleware(['auth', 'verified'])->name('help');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
