@@ -1,6 +1,7 @@
 <script setup>
 import Button from '@/Components/PrimaryButton.vue'
 import Input from '@/Components/TextInput.vue'
+import Textarea from '@/Components/TexTareaInput.vue'
 import Label from '@/Components/InputLabel.vue'
 import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, getCurrentInstance } from 'vue';
@@ -12,7 +13,7 @@ const props = defineProps({
     isEdit: {
         type: Boolean
     },
-    category: {
+    product: {
         type: Object
     },
     success: String,
@@ -21,9 +22,9 @@ const props = defineProps({
 const toaster = createToaster({ /* options */ });
 const isLoading = ref(false);
 const form = useForm({
-    name: props.isEdit && props.category.name || '',
-    description: props.isEdit && props.category.description || '',
-    active: props.isEdit && props.category.active || null,
+    name: props.isEdit && props.product.name || '',
+    description: props.isEdit && props.product.description || '',
+    active: props.isEdit && props.product.active || null,
 })
 const options = ([
     {
@@ -41,26 +42,26 @@ const options = ([
 const submit = () => {
     isLoading.value = true;
     if (props.isEdit) {
-        form.post(route('category.update'), {
+        form.post(route('product.update'), {
             onSuccess: () => {
                 emit('close');
                 toaster.success(`Registro actualizado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre de la categoría debe ser único`);
+                toaster.warning(`El nombre del producto debe ser único`);
             },
             onFinish: () => {
                 isLoading.value = false
             }
         })
     } else {
-        form.post(route('category.store'), {
+        form.post(route('product.store'), {
             onSuccess: () => {
                 emit('close');
                 toaster.success(`Registro creado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre de la categoría debe ser único`);
+                toaster.warning(`El nombre del producto debe ser único`);
             },
             onFinish: () => {
                 isLoading.value = false
@@ -75,18 +76,20 @@ const submit = () => {
 <template>
     <form class="py-8 px-5" @submit.prevent="submit">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-            {{ isEdit ? 'Editar categoría' : 'Registrar categoría' }}
+            {{ isEdit ? 'Editar Producto' : 'Registrar Producto' }}
         </h2>
         <div class="mb-5">
             <Label for="name" value="Nombre" />
             <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus />
             <InputError class="mt-2" :message="form.errors.name" />
         </div>
+
         <div class="mb-5">
             <Label for="description" value="Descripción" />
-            <Input id="description" v-model="form.description" type="text" class="mt-1 block w-full" required />
+            <Textarea id="description" v-model="form.description" type="text" class="mt-1 block w-full" required autofocus />
             <InputError class="mt-2" :message="form.errors.description" />
         </div>
+
         <div class="mb-8">
             <Label for="rol" value="Estado" />
             <v-select v-model="form.active" :options="options.length ? options : []" :reduce="(option) => option.id"
@@ -103,6 +106,7 @@ const submit = () => {
             </v-select>
             <InputError class="mt-2" :message="form.errors.active" />
         </div>
+
 
         <div class="flex justify-end mb-5">
             <div class="w-auto flex flex-row space-x-4 justify-between">

@@ -9,41 +9,30 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 
 Route::get('/', function () {
     return redirect('login');
 });
 
-// Ruteo para el dashboard.
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Ruteo para las ventas.
-Route::get('/sales', function () {
-    return Inertia::render('Sales');
-})->middleware(['auth', 'verified'])->name('sales');
+// ONLY DEFAULT
+Route::middleware('auth', 'verified')->group(function () {
+    // Ruteo para el dashboard.
+    Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+    // Ruteo para las ventas.
+    Route::get('/sales', function () { return Inertia::render('Sales'); })->name('sales');
+    // Ruteo para el inventario.
+    Route::get('/inventory', function () { return Inertia::render('Inventory'); })->name('inventory');
+    // Ruteo para los reportes.
+    Route::get('/report', function () { return Inertia::render('Report'); })->name('report');
+    // Ruteo para los roles y usuarios.
+    Route::get('/users', function () { return Inertia::render('Users'); })->name('users');
+    // Ruteo para la sección de ayuda.
+    Route::get('/help', function () { return Inertia::render('Help'); })->name('help');
+});
 
-// Ruteo para el inventario.
-Route::get('/inventory', function () {
-    return Inertia::render('Inventory');
-})->middleware(['auth', 'verified'])->name('inventory');
-
-// Ruteo para los reportes.
-Route::get('/report', function () {
-    return Inertia::render('Report');
-})->middleware(['auth', 'verified'])->name('report');
-
-// Ruteo para los roles y usuarios.
-Route::get('/users', function () {
-    return Inertia::render('Users');
-})->middleware(['auth', 'verified'])->name('users');
-
-// Ruteo para la sección de ayuda.
-Route::get('/help', function () {
-    return Inertia::render('Help');
-})->middleware(['auth', 'verified'])->name('help');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/role/list', [RolePermissionController::class, 'index'])->name('roleList');
     Route::get('/user/list', [UserController::class, 'index'])->name('user.list');
     Route::get('/category/list', [CategoryController::class, 'index'])->name('category.list');
+    Route::get('/product/list', [ProductController::class, 'index'])->name('product.list');
 });
 
 
@@ -65,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/changeRole', [UserController::class, 'change_role'])->name('change.role');
     Route::get('/deleteUser/{user}', [UserController::class, 'destroy'])->name('delete.user');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 });
 
 require __DIR__.'/auth.php';
