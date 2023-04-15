@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique()->comment('Nombre de la categoría');
             $table->longText('description')->nullable()->comment('Dirección de la categoría');
             $table->boolean('active')->default(true)->comment('Estado de la categoría');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

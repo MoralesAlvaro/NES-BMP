@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'role_has_permissions',
             'users',
             'categories',
-            'proucts'
+            'products'
         ]);
         // $this->call(UserSeeder::class);
         $this->call(PermissionsSeeder::class);

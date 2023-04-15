@@ -6,6 +6,8 @@ import Button from '@/Components/PrimaryButton.vue'
 import Modal from '@/Components/Modal.vue'
 import { reactive, ref } from 'vue';
 import FormCategory from '@/Components/Category/FormCategory.vue'
+import { createToaster } from "@meforma/vue-toaster";
+import { useForm, usePage } from '@inertiajs/vue3';
 
 
 defineProps({
@@ -37,6 +39,8 @@ const selectedCategory = reactive({
     description: null,
     active: null,
 });
+
+const toaster = createToaster({ /* options */ });
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
@@ -48,18 +52,40 @@ const toggleDeleteModal = () => {
 };
 const selectItem = (item) => {
     selectedCategory.category_id = item.id,
-    selectedCategory.name = item.name,
-    selectedCategory.description = item.description,
-    selectedCategory.active = item.active,
-    isEdit.value = true,
-    toggleFormModal()
+        selectedCategory.name = item.name,
+        selectedCategory.description = item.description,
+        selectedCategory.active = item.active,
+        isEdit.value = true,
+        toggleFormModal()
 }
 
-const eliminar = (item) => {
-    selectedCategory.category_id = item.id,
-    selectedCategory.name = item.name,
-    isEdit.value = false,
-    toggleDeleteModal()
+const formDelete = useForm({
+    id: null
+});
+
+const selectDeleteItem = item => {
+    formDelete.id = item.id;
+    toggleDeleteModal();
+};
+
+const submitDelete = () => {
+    formDelete.get(route('category.destroy', formDelete.id), {
+        onSuccess: () => {
+            toaster.info(`Registro eliminado`);
+            toggleDeleteModal();
+        },
+        onError: () => {
+            const errors = usePage().props.errors;
+            for (const key in errors) {
+                if (Object.hasOwnProperty.call(errors, key)) {
+                    toaster.warning(`${errors[key]}`);
+                }
+            }
+        },
+        onFinish: () => {
+            toggleDeleteModal();
+        }
+    });
 }
 
 </script>
@@ -73,7 +99,29 @@ const eliminar = (item) => {
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
-            <p>Eliminar</p>
+            <form @submit.prevent="submitDelete" class="py-8 px-5">
+                <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
+                    esta categoría?</h2>
+                <div class="px-5">
+                    <p class="mt-5 text-justify text-gray-400">
+                        Al eliminar esta categoría se borrará permanentemente del sistema, y ya no tendrá quedaraá rastro.
+                        Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
+                    </p>
+                    <div class="flex justify-end mt-5">
+                        <div class="w-auto flex flex-row space-x-4 justify-between">
+                            <Button
+                                background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
+                                class=" bg-brown-300 hover:bg-brown-700" type="button" @click="toggleDeleteModal">
+                                Cancelar
+                            </Button>
+                            <Button type="submit" class=" bg-red-500 hover:bg-red-600">
+                                {{ 'Eliminar' }}
+                            </Button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
         </Modal>
         <div class="py-12 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
@@ -98,7 +146,7 @@ const eliminar = (item) => {
                                         <div class="flex flex-row space-x-4">
                                             <a @click="selectItem(item)"
                                                 class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                            <a @click="eliminar(item)"
+                                            <a @click="selectDeleteItem(item)"
                                                 class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                                         </div>
                                     </div>
