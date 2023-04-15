@@ -21,6 +21,7 @@ const props = defineProps({
 const toaster = createToaster({ /* options */ });
 const isLoading = ref(false);
 const form = useForm({
+    category_id: props.isEdit && props.category.category_id || '',
     name: props.isEdit && props.category.name || '',
     description: props.isEdit && props.category.description || '',
     active: props.isEdit && props.category.active || null,
@@ -32,7 +33,7 @@ const options = ([
         value: true
     },
     {
-        id: 2,
+        id: 0,
         name: "Inactivo",
         value: false
     }
@@ -47,7 +48,12 @@ const submit = () => {
                 toaster.success(`Registro actualizado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre de la categoría debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false

@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/changeRole', [UserController::class, 'change_role'])->name('change.role');
     Route::get('/deleteUser/{user}', [UserController::class, 'destroy'])->name('delete.user');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 });
 

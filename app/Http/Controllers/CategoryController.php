@@ -40,27 +40,31 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(Request $request)
     {
-        //
+
+        if (!$request->category_id) {
+            return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
+        }
+        $category = Category::find($request->category_id);
+        if ($request->active and $request->active == "Activo") {
+            $request->merge(['active' => 1]);
+        }
+        if ($request->active and $request->active == "Inactivo") {
+            $request->merge(['active' => 0]);
+        }
+        $validando = \Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
+            'description' => ['string'],
+            'active' => ['boolean'],
+        ]);
+        // return response()->json($request->all(), 200);
+
+        $category->update($request->all());
+
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**

@@ -18,7 +18,7 @@ class Category extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'active' => $this->active = 1 ? 'Activo' : 'Inactivo',
+            'active' => $this->active ? "Activo" : "Inactivo",
             'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'created_at' => $this->created_at->format('d-m-y'),
