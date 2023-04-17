@@ -19,16 +19,19 @@ class UserController extends Controller
 {
     public function index()
     {
-        if ( ! Auth::user()->can('user_index')){
+        if ( ! Auth::user()->can('user_list')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $users = new UserCollection(User::where('active', 1)->orderBy('id', 'desc')->get());
         $roles = Role::all();
-        //return response()->json($users, 200);
+        $permissions = Auth::user()->getAllPermissions();
+
+        //return response()->json($permissions, 200);
         return Inertia::render('User/Show',[
             'users' => $users,
             'roles' => $roles,
+            'permissions' => $permissions,
         ]);
     }
 

@@ -26,23 +26,42 @@ class PermissionsSeeder extends Seeder
         // **** PERMISOS ****
 
         /* USUARIOS */
-        $user_index = Permission::create(['name' => 'user_index', 'descriptions' => 'Vista lista de usuarios']);
+        $user_list = Permission::create(['name' => 'user_list', 'descriptions' => 'Vista lista de usuarios']);
         $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Vista enviar invitación']);
         $change_role = Permission::create(['name' => 'change_role', 'descriptions' => 'Cambiar el rol de un usuario']);
         $user_destroy = Permission::create(['name' => 'user_destroy', 'descriptions' => 'Eliminar usuario']);
+
+        /* CATEGORÍAS */
+        $category_list = Permission::create(['name' => 'category_list', 'descriptions' => 'Vista lista de categorías']);
+        $category_store = Permission::create(['name' => 'category_store', 'descriptions' => 'Vista y acción crear categoría']);
+        $category_update = Permission::create(['name' => 'category_update', 'descriptions' => 'Vista y acción editar categoría']);
+        $category_destroy = Permission::create(['name' => 'category_destroy', 'descriptions' => 'Vista y acción eliminar categoría']);
+
+
+        /* PRODUCTOS */
+        $product_list = Permission::create(['name' => 'product_list', 'descriptions' => 'Vista lista de productos']);
+        $product_store = Permission::create(['name' => 'product_store', 'descriptions' => 'Vista y acción crear producto']);
+        $product_update = Permission::create(['name' => 'product_update', 'descriptions' => 'Vista y acción editar producto']);
+        $product_destroy = Permission::create(['name' => 'product_destroy', 'descriptions' => 'Vista y acción eliminar producto']);
+
+
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS root -----------------
         $permission_root = [
-            $user_index, $send_invitation, $change_role, $user_destroy
+            $user_list, $send_invitation, $change_role, $user_destroy,
+            $category_list, $category_store, $category_update, $category_destroy,
+            $product_list, $product_store, $product_update, $product_destroy,
         ];
         $root->syncPermissions($permission_root);
 
         // ----------------- PERMISOS ADMINISTRADORES -----------------
         $permission_encargado = [
-            $user_index
+            $user_list, $send_invitation, $change_role, $user_destroy,
+            $category_list, $category_store, $category_update, $category_destroy,
+            $product_list, $product_store, $product_update, $product_destroy,
         ];
         $encargado->syncPermissions($permission_encargado);
 

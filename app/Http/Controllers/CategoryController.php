@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\Category as CategoryResources;
 use App\Http\Resources\CategoryCollection;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -15,6 +16,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        if ( ! Auth::user()->can('category_list')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
         $categories = new CategoryCollection( Category::all());
 
         // return response()->json($categories, 200);
@@ -28,6 +33,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if ( ! Auth::user()->can('category_store')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
         $validando = \Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
             'description' => ['string'],
@@ -44,6 +53,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request)
     {
+        if ( ! Auth::user()->can('category_update')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
 
         if (!$request->category_id) {
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
@@ -72,6 +84,10 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
+        if ( ! Auth::user()->can('category_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
         $category = Category::find($request->id);
         $category->delete();
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');

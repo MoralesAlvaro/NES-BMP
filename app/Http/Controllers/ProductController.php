@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\Product as ProductResources;
 use App\Http\Resources\ProductCollection;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -15,6 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if ( ! Auth::user()->can('product_list')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
 
         $products = new ProductCollection( Product::all());
 
@@ -28,6 +32,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if ( ! Auth::user()->can('product_store')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
         $validando = \Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255', 'unique:products,name'],
             'description' => ['string'],
@@ -44,7 +52,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        
+        if ( ! Auth::user()->can('product_update')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
     }
 
     /**
@@ -52,6 +63,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if ( ! Auth::user()->can('product_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
     }
 }

@@ -8,9 +8,10 @@
   import FormUser from '@/Components/User/FormUser.vue';
   import { reactive, ref } from 'vue';
 
-  defineProps({
+  const props = defineProps({
     users: Object,
-    roles: Array
+    roles: Array,
+    permissions: Array
   })
 
 
@@ -37,8 +38,12 @@
     }
   ]);
   const statusModalDelete = ref(false);
-  const selectedUID = ref(0)
   const isEdit = ref(false);
+  let change_role = false;
+  let send_invitation = false;
+  let user_destroy = false;
+  const actions = ['change_role', 'send_invitation', 'user_destroy'];
+
   const selectedUser = reactive({
     user_id: null,
     name: null,
@@ -67,6 +72,13 @@
     toggleDeleteModal()
   }
 
+  const hasPermission = () => {
+    props.permissions.find(item => item.name === 'send_invitation') ? send_invitation = true : send_invitation = false;
+    props.permissions.find(item => item.name === 'change_role') ? change_role = true : change_role = false;
+    props.permissions.find(item => item.name === 'user_destroy') ? user_destroy = true : user_destroy = false;
+  }
+  hasPermission()
+
 </script>
 
 <template>
@@ -86,7 +98,7 @@
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
             Usuarios
           </h2>
-          <JetButton
+          <JetButton v-if="send_invitation"
             @click="toggleFormModal(); isEdit = false"
           >
             Invitar
@@ -107,8 +119,8 @@
                 <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                      <a @click="eliminar(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <a v-if="change_role" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a v-if="user_destroy" @click="eliminar(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>
                 </td>
