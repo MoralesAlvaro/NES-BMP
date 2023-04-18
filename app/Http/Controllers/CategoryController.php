@@ -21,10 +21,12 @@ class CategoryController extends Controller
         }
 
         $categories = new CategoryCollection( Category::all());
+        $permissions = Auth::user()->getAllPermissions();
 
-        // return response()->json($categories, 200);
+        // return response()->json($permissions, 200);
         return Inertia::render('Category/Show', [
-            'categories' => $categories
+            'categories' => $categories,
+            'permissions' => $permissions
         ]);
     }
 

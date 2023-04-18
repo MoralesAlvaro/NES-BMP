@@ -8,10 +8,11 @@ import { reactive, ref } from 'vue';
 import FormCategory from '@/Components/Category/FormCategory.vue'
 import { createToaster } from "@meforma/vue-toaster";
 import { useForm, usePage } from '@inertiajs/vue3';
+import Empty from '@/Components/Empty.vue'
 
-
-defineProps({
-    categories: Object
+const props = defineProps({
+    categories: Object,
+    permissions: Array
 });
 
 const header = reactive([
@@ -44,6 +45,7 @@ const toaster = createToaster({ /* options */ });
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
+
 const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
 };
@@ -88,6 +90,15 @@ const submitDelete = () => {
     });
 }
 
+let category_list = false; let category_store = false; let category_update = false; let category_destroy = false;
+const hasPermission = () => {
+    props.permissions.find(item => item.name === 'category_list') ? category_list = true : category_list = false;
+    props.permissions.find(item => item.name === 'category_store') ? category_store = true : category_store = false;
+    props.permissions.find(item => item.name === 'category_update') ? category_update = true : category_update = false;
+    props.permissions.find(item => item.name === 'category_destroy') ? category_destroy = true : category_destroy = false;
+}
+hasPermission()
+
 </script>
 
 <template>
@@ -127,13 +138,13 @@ const submitDelete = () => {
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
                 <div class="flex justify-between items-center mb-5">
                     <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Usuarios
+                        Categorías
                     </h2>
-                    <Button @click="toggleFormModal(); isEdit = false">
+                    <Button v-if="category_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
                     </Button>
                 </div>
-                <div
+                <div v-if="category_list"
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
                     <Table :header="header" :items="categories.data.length">
                         <tbody class="px-5">
@@ -144,9 +155,9 @@ const submitDelete = () => {
                                 <td class="text-center p-2 lg:text-base text-xs">
                                     <div class="flex justify-center">
                                         <div class="flex flex-row space-x-4">
-                                            <a @click="selectItem(item)"
+                                            <a v-if="category_update" @click="selectItem(item)"
                                                 class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                            <a @click="selectDeleteItem(item)"
+                                            <a v-if="category_destroy" @click="selectDeleteItem(item)"
                                                 class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                                         </div>
                                     </div>
@@ -154,6 +165,9 @@ const submitDelete = () => {
                             </tr>
                         </tbody>
                     </Table>
+                </div>
+                <div v-else class="py-12 min-h-screen">
+                    <Empty/>
                 </div>
             </div>
         </div>

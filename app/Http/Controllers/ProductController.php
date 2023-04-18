@@ -21,9 +21,11 @@ class ProductController extends Controller
         }
 
         $products = new ProductCollection( Product::all());
+        $permissions = Auth::user()->getAllPermissions();
 
         return Inertia::render('Product/Show', [
-            'products' => $products
+            'products' => $products,
+            'permissions' => $permissions
         ]);
     }
 

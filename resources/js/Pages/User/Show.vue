@@ -42,7 +42,6 @@
   let change_role = false;
   let send_invitation = false;
   let user_destroy = false;
-  const actions = ['change_role', 'send_invitation', 'user_destroy'];
 
   const selectedUser = reactive({
     user_id: null,

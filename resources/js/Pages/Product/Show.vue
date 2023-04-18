@@ -6,10 +6,12 @@ import Button from '@/Components/PrimaryButton.vue'
 import Modal from '@/Components/Modal.vue'
 import { reactive, ref } from 'vue';
 import FormProduct from '@/Components/Product/FormProduct.vue'
+import Empty from '@/Components/Empty.vue'
 
 
-defineProps({
-    products: Object
+const props = defineProps({
+    products: Object,
+    permissions: Array
 });
 
 const header = reactive([
@@ -40,6 +42,7 @@ const selectedProduct = reactive({
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
+
 const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
 };
@@ -48,19 +51,28 @@ const toggleDeleteModal = () => {
 };
 const selectItem = (item) => {
     selectedProduct.product_id = item.id,
-    selectedProduct.name = item.name,
-    selectedProduct.description = item.description,
-    selectedProduct.active = item.active,
-    isEdit.value = true,
-    toggleFormModal()
+        selectedProduct.name = item.name,
+        selectedProduct.description = item.description,
+        selectedProduct.active = item.active,
+        isEdit.value = true,
+        toggleFormModal()
 }
 
 const eliminar = (item) => {
     selectedProduct.product_id = item.id,
-    selectedProduct.name = item.name,
-    isEdit.value = false,
-    toggleDeleteModal()
+        selectedProduct.name = item.name,
+        isEdit.value = false,
+        toggleDeleteModal()
 }
+
+let product_list = false; let product_store = false; let product_update = false; let product_destroy = false;
+const hasPermission = () => {
+    props.permissions.find(item => item.name === 'product_list') ? product_list = true : product_list = false;
+    props.permissions.find(item => item.name === 'product_store') ? product_store = true : product_store = false;
+    props.permissions.find(item => item.name === 'product_update') ? product_update = true : product_update = false;
+    props.permissions.find(item => item.name === 'product_destroy') ? product_destroy = true : product_destroy = false;
+}
+hasPermission()
 
 </script>
 
@@ -79,33 +91,39 @@ const eliminar = (item) => {
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
                 <div class="flex justify-between items-center mb-5">
                     <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Usuarios
+                        Productos
                     </h2>
-                    <Button @click="toggleFormModal(); isEdit = false">
+                    <Button v-if="product_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
                     </Button>
                 </div>
                 <div
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <Table :header="header" :items="products.data.length">
-                        <tbody class="px-5">
-                            <tr v-for="item in products.data" class="mt-2">
-                                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
-                                <td class="p-2 lg:text-base text-xs">{{ item.description }}</td>
-                                <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
-                                <td class="text-center p-2 lg:text-base text-xs">
-                                    <div class="flex justify-center">
-                                        <div class="flex flex-row space-x-4">
-                                            <a @click="selectItem(item)"
-                                                class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                            <a @click="eliminar(item)"
-                                                class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                    <div v-if="product_list" class="">
+                        <Table :header="header" :items="products.data.length">
+                            <tbody class="px-5">
+                                <tr v-for="item in products.data" class="mt-2">
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                                    <td class="p-2 lg:text-base text-xs">{{ item.description }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">
+                                        <div class="flex justify-center">
+                                            <div class="flex flex-row space-x-4">
+                                                <a v-if="product_update" @click="selectItem(item)"
+                                                    class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                                                <a v-if="product_destroy" @click="eliminar(item)"
+                                                    class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </Table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+
+                    </div>
+                    <div v-else class="py-12 min-h-screen">
+                        <Empty ></Empty>
+                    </div>
                 </div>
             </div>
         </div>
