@@ -12,7 +12,6 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: "Montserrat", sans-serif;
 }
 
 /* Retirar estilo a los hipervínculos */
@@ -42,7 +41,7 @@ a {
     #auth_layout {
         margin-left: 12em;
     }
-    
+
 }
 
 /* Dispositivos de menor tamaño */

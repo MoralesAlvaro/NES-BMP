@@ -8,6 +8,7 @@ import { ref } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
+const emit = defineEmits(['close']);
 
 const form = useForm({
     current_password: '',
@@ -38,7 +39,7 @@ const updatePassword = () => {
         <header>
             <h2 class="text-lg font-medium text-gray-900">Cambiar contraseña</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="text-sm text-gray-600">
                 Asegúrese de que su cuenta tenga una contraseña larga por su seguridad.
             </p>
         </header>
