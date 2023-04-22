@@ -6,6 +6,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, getCurrentInstance } from 'vue';
 import InputError from '@/Components/InputError.vue';
 import { createToaster } from "@meforma/vue-toaster";
+import Textarea from '@/Components/TexTareaInput.vue'
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -90,7 +91,7 @@ const submit = () => {
         </div>
         <div class="mb-5">
             <Label for="description" value="Descripción" />
-            <Input id="description" v-model="form.description" type="text" class="mt-1 block w-full" required />
+            <Textarea id="description" v-model="form.description" type="text" class="mt-1 block w-full" required autofocus />
             <InputError class="mt-2" :message="form.errors.description" />
         </div>
         <div class="mb-8">
