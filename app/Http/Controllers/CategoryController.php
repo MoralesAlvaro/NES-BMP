@@ -39,7 +39,7 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $validando = \Validator::make($request->all(), [
+        $validando = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
             'description' => ['string'],
             'active' => ['boolean'],

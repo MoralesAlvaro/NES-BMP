@@ -22,6 +22,7 @@ const props = defineProps({
 const toaster = createToaster({ /* options */ });
 const isLoading = ref(false);
 const form = useForm({
+    product_id: props.isEdit && props.product.product_id || '',
     name: props.isEdit && props.product.name || '',
     description: props.isEdit && props.product.description || '',
     active: props.isEdit && props.product.active || null,

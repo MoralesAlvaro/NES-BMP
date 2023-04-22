@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/deleteUser/{user}', [UserController::class, 'destroy'])->name('delete.user');
     // Products
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
+    Route::get('/product/destroy', [ProductController::class, 'destroy'])->name('product.destroy');
     // Category
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');

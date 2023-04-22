@@ -18,7 +18,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'description' => fake()->text(),
+            'description' => fake()->text(20),
             'active' => true
         ];
     }

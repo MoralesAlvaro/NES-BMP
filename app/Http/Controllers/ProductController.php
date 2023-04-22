@@ -38,8 +38,8 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $validando = \Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:products,name'],
+        $validando = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:products'],
             'description' => ['string'],
             'active' => ['boolean'],
         ]);
@@ -52,22 +52,47 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
         if ( ! Auth::user()->can('product_update')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
+
+        if (!$request->product_id) {
+            return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
+        }
+        $category = Product::find($request->product_id);
+        if ($request->active and $request->active == "Activo") {
+            $request->merge(['active' => 1]);
+        }
+        if ($request->active and $request->active == "Inactivo") {
+            $request->merge(['active' => 0]);
+        }
+        $validando = \Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', 'unique:products,name'],
+            'description' => ['string'],
+            'active' => ['boolean'],
+        ]);
+        // return response()->json($request->all(), 200);
+
+        $category->update($request->all());
+
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('product_destroy')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
+
+        $product = Product::find($request->id);
+        $product->delete();
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
 
     }
 }
