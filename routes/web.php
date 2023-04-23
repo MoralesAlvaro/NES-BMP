@@ -10,6 +10,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RawMaterialController;
 
 
 Route::get('/', function () {
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/list', [UserController::class, 'index'])->name('user.list');
     Route::get('/category/list', [CategoryController::class, 'index'])->name('category.list');
     Route::get('/product/list', [ProductController::class, 'index'])->name('product.list');
+    Route::get('/rawMaterials/list', [RawMaterialController::class, 'index'])->name('rawMaterials.list');
 });
 
 

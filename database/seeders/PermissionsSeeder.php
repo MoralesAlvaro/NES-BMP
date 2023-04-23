@@ -37,12 +37,17 @@ class PermissionsSeeder extends Seeder
         $category_update = Permission::create(['name' => 'category_update', 'descriptions' => 'Vista y acción editar categoría']);
         $category_destroy = Permission::create(['name' => 'category_destroy', 'descriptions' => 'Vista y acción eliminar categoría']);
 
-
         /* PRODUCTOS */
         $product_list = Permission::create(['name' => 'product_list', 'descriptions' => 'Vista lista de productos']);
         $product_store = Permission::create(['name' => 'product_store', 'descriptions' => 'Vista y acción crear producto']);
         $product_update = Permission::create(['name' => 'product_update', 'descriptions' => 'Vista y acción editar producto']);
         $product_destroy = Permission::create(['name' => 'product_destroy', 'descriptions' => 'Vista y acción eliminar producto']);
+
+        /* PRODUCTOS */
+        $rawMaterial_list = Permission::create(['name' => 'rawMaterial_list', 'descriptions' => 'Vista lista de Materia Prima']);
+        $rawMaterial_store = Permission::create(['name' => 'rawMaterial_store', 'descriptions' => 'Vista y acción crear Materia Prima']);
+        $rawMaterial_update = Permission::create(['name' => 'rawMaterial_update', 'descriptions' => 'Vista y acción editar Materia Prima']);
+        $rawMaterial_destroy = Permission::create(['name' => 'rawMaterial_destroy', 'descriptions' => 'Vista y acción eliminar Materia Prima']);
 
 
 
@@ -54,6 +59,7 @@ class PermissionsSeeder extends Seeder
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
+            $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
         ];
         $root->syncPermissions($permission_root);
 
@@ -62,6 +68,7 @@ class PermissionsSeeder extends Seeder
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
+            $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
         ];
         $encargado->syncPermissions($permission_encargado);
 

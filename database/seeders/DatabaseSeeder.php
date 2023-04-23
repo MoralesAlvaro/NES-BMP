@@ -9,6 +9,7 @@ use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\RawMaterialSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,13 +29,15 @@ class DatabaseSeeder extends Seeder
             'role_has_permissions',
             'users',
             'categories',
-            'products'
+            'products',
+            'raw_materials',
         ]);
         // $this->call(UserSeeder::class);
         $this->call(PermissionsSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(RawMaterialSeeder::class);
 
     }
 
