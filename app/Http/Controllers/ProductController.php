@@ -20,7 +20,7 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $products = new ProductCollection( Product::all());
+        $products = new ProductCollection( Product::orderBy('id', 'desc')->paginate(10));
         $permissions = Auth::user()->getAllPermissions();
 
         return Inertia::render('Product/Show', [

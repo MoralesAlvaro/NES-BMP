@@ -8,6 +8,7 @@ import { reactive, ref } from 'vue';
 import FormProduct from '@/Components/Product/FormProduct.vue'
 import Empty from '@/Components/Empty.vue'
 import { createToaster } from "@meforma/vue-toaster";
+import Pagination from '@/Components/Pagination.vue'
 
 
 const props = defineProps({
@@ -16,6 +17,10 @@ const props = defineProps({
 });
 
 const header = reactive([
+    {
+        name: "#",
+        showInMobile: true
+    },
     {
         name: "Categoría",
         showInMobile: true
@@ -154,6 +159,7 @@ const submitDelete = () => {
                             <Table :header=" header " :items=" products.data.length ">
                                 <tbody class="px-5">
                                     <tr v-for=" item  in  products.data " class="mt-2">
+                                        <td class="text-center p-2 lg:text-base text-xs">{{ item.id }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
                                         <td class="p-2 lg:text-base text-xs">{{ item.description }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
@@ -173,6 +179,12 @@ const submitDelete = () => {
                         </div>
                         <div v-else class="py-12 min-h-screen">
                             <Empty></Empty>
+                        </div>
+                        <div class="p-6">
+                            <Pagination
+                                :links="props.products.links"
+                                :meta="props.products.meta"
+                            />
                         </div>
                     </div>
                     <div v-else class="py-12 min-h-screen">
