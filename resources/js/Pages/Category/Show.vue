@@ -8,7 +8,8 @@ import { reactive, ref } from 'vue';
 import FormCategory from '@/Components/Category/FormCategory.vue'
 import { createToaster } from "@meforma/vue-toaster";
 import { useForm, usePage } from '@inertiajs/vue3';
-import Empty from '@/Components/Empty.vue'
+import Empty from '@/Components/Empty.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 const props = defineProps({
     categories: Object,
@@ -144,30 +145,38 @@ hasPermission()
                         Nuevo
                     </Button>
                 </div>
-                <div v-if="category_list"
+                <div v-if=" category_list "
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <Table :header="header" :items="categories.data.length">
-                        <tbody class="px-5">
-                            <tr v-for="item in categories.data" class="mt-2">
-                                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
-                                <td class="p-2 lg:text-base text-xs">{{ item.description }}</td>
-                                <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
-                                <td class="text-center p-2 lg:text-base text-xs">
-                                    <div class="flex justify-center">
-                                        <div class="flex flex-row space-x-4">
-                                            <a v-if="category_update" @click="selectItem(item)"
-                                                class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                            <a v-if="category_destroy" @click="selectDeleteItem(item)"
-                                                class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                    <div v-if=" categories.data.length ">
+                        <Table :header=" header " :items=" categories.data.length ">
+                            <tbody class="px-5">
+                                <tr v-for="  item   in   categories.data  " class="mt-2">
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                                    <td class="p-2 lg:text-base text-xs">{{ item.description }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">
+                                        <div class="flex justify-center">
+                                            <div class="flex flex-row space-x-4">
+                                                <a v-if=" category_update " @click=" selectItem(item) "
+                                                    class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                                                <a v-if=" category_destroy " @click=" selectDeleteItem(item) "
+                                                    class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </Table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </div>
+                    <div v-else class="py-12 min-h-screen">
+                        <Empty></Empty>
+                    </div>
+                    <div class="p-6">
+                        <Pagination :links=" props.categories.links " :meta=" props.categories.meta " />
+                    </div>
                 </div>
                 <div v-else class="py-12 min-h-screen">
-                    <Empty/>
+                    <Empty />
                 </div>
             </div>
         </div>

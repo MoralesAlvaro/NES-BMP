@@ -20,7 +20,7 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $categories = new CategoryCollection( Category::all());
+        $categories = new CategoryCollection( Category::orderBy('id', 'desc')->paginate(1));
         $permissions = Auth::user()->getAllPermissions();
 
         // return response()->json($permissions, 200);
@@ -62,7 +62,7 @@ class CategoryController extends Controller
         if (!$request->category_id) {
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
         }
-        
+
         $category = Category::find($request->category_id);
         if ($request->active and $request->active == "Activo") {
             $request->merge(['active' => 1]);

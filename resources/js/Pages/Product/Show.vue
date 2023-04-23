@@ -8,7 +8,7 @@ import { reactive, ref } from 'vue';
 import FormProduct from '@/Components/Product/FormProduct.vue'
 import Empty from '@/Components/Empty.vue'
 import { createToaster } from "@meforma/vue-toaster";
-import Pagination from '@/Components/Pagination.vue'
+import Pagination from '@/Components/Pagination.vue';
 
 
 const props = defineProps({
