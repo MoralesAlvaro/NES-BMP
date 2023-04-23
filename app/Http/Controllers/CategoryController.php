@@ -20,7 +20,7 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $categories = new CategoryCollection( Category::orderBy('id', 'desc')->paginate(1));
+        $categories = new CategoryCollection( Category::orderBy('id', 'desc')->paginate(10));
         $permissions = Auth::user()->getAllPermissions();
 
         // return response()->json($permissions, 200);
