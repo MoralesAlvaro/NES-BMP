@@ -42,7 +42,6 @@ a {
     #auth_layout {
         margin-left: 12em;
     }
-    
 }
 
 /* Dispositivos de menor tamaño */
@@ -51,8 +50,8 @@ a {
         display: none;
     }
 
-    #navbar_logo {
-        display: none;
+    .navbar_logo {
+        display: none !important;
     }
 }
 
