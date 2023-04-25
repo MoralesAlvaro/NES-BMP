@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import Button from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
@@ -8,9 +8,12 @@ import Pagination from '@/Components/Pagination.vue';
 import { createToaster } from "@meforma/vue-toaster";
 import { reactive, ref } from 'vue';
 import Empty from '@/Components/Empty.vue';
+import FormRawMaterial from "@/Components/RawMaterial/FormRawMaterial.vue";
+
 
 const props = defineProps({
     reawMaterials: Object,
+    products: Object,
     permissions: Array
 });
 
@@ -30,6 +33,10 @@ hasPermission()
 
 const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
+};
+
+const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
 };
 
 const header = reactive([
@@ -67,6 +74,37 @@ const header = reactive([
     }
 ]);
 
+const selectedRaw = reactive({
+    id: null,
+    product_id: null,
+    total: null,
+    quantity: null,
+    parts: null,
+    cost: null,
+    active: null,
+});
+
+const selectedRawDelete = reactive({
+    id: null
+});
+
+const selectDeleteItem = (item) => {
+    selectedRawDelete.id = item.id,
+    toggleDeleteModal()
+}
+
+const selectItem = (item) => {
+    selectedRaw.id = item.id,
+    selectedRaw.product_id = item.product_id.id,
+    selectedRaw.total = item.total,
+    selectedRaw.quantity = item.quantity,
+    selectedRaw.parts = item.parts,
+    selectedRaw.cost = item.cost,
+    selectedRaw.active = item.active,
+    isEdit.value = true,
+    toggleFormModal()
+}
+
 </script>
 
 <template>
@@ -74,16 +112,17 @@ const header = reactive([
     <AppLayout>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            Crear Materia Prima
+            <FormRawMaterial :isEdit="isEdit" :products="props.products" :rawMaterial="selectedRaw" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
             <form @submit.prevent="submitDelete" class="py-8 px-5">
                 <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
-                    esta categoría?</h2>
+                    esta Materia prima?</h2>
                 <div class="px-5">
                     <p class="mt-5 text-justify text-gray-400">
-                        Al eliminar esta categoría se borrará permanentemente del sistema, y ya no tendrá quedaraá rastro.
+                        Al eliminar esta Materia prima se borrará permanentemente del sistema, y ya no tendrá quedaraá
+                        rastro.
                         Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
                     </p>
                     <div class="flex justify-end mt-5">
@@ -107,7 +146,7 @@ const header = reactive([
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
                 <div class="flex justify-between items-center mb-5">
                     <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Categorías
+                        Materia Prima
                     </h2>
                     <Button v-if="rawMaterial_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
@@ -118,7 +157,7 @@ const header = reactive([
                     <div v-if=" reawMaterials.data.length ">
                         <Table :header=" header " :items=" reawMaterials.data.length ">
                             <tbody class="px-5">
-                                <tr v-for="  item  in  reawMaterials.data " class="mt-2">
+                                <tr v-for="   item   in   reawMaterials.data  " class="mt-2">
                                     <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ item.id }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.product_id.name }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.total }}</td>

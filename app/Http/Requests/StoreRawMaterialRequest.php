@@ -22,7 +22,12 @@ class StoreRawMaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_id' => ['required', 'integer'],
+            'total' => ['required', 'float'],
+            'quantity' => ['required', 'string', 'max:255'],
+            'parts' => ['required', 'integer', 'min:1'],
+            'cost' => ['required', 'float'],
+            'active' => ['required', 'boolean']
         ];
     }
 }

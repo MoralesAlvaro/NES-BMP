@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/list', [UserController::class, 'index'])->name('user.list');
     Route::get('/category/list', [CategoryController::class, 'index'])->name('category.list');
     Route::get('/product/list', [ProductController::class, 'index'])->name('product.list');
-    Route::get('/rawMaterials/list', [RawMaterialController::class, 'index'])->name('rawMaterials.list');
+    Route::get('/rawMaterial/list', [RawMaterialController::class, 'index'])->name('rawMaterial.list');
 });
 
 
@@ -56,14 +56,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/send/invitation', [UserController::class, 'send_invitation'])->name('invite.user');
     Route::post('/changeRole', [UserController::class, 'change_role'])->name('change.role');
     Route::get('/deleteUser/{user}', [UserController::class, 'destroy'])->name('delete.user');
+
     // Products
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
     Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
     Route::get('/product/destroy', [ProductController::class, 'destroy'])->name('product.destroy');
+
     // Category
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    // Category
+    Route::post('/rawMaterial/store', [RawMaterialController::class, 'store'])->name('rawMaterial.store');
+    Route::post('/rawMaterial/update', [RawMaterialController::class, 'update'])->name('rawMaterial.update');
+    Route::get('/rawMaterial/destroy', [RawMaterialController::class, 'destroy'])->name('rawMaterial.destroy');
 });
 
 require __DIR__.'/auth.php';
