@@ -8,12 +8,12 @@ export const sidebarItems = [
             {
                 name: 'Dashboard1',
                 item_url: 'dashboard',
-                icon: 'fas fa-chart-bar'
+                icon: 'fa fa-circle fa-xs'
             },
             {
                 name: 'Dashboard2',
                 item_url: 'dashboard',
-                icon: 'fas fa-chart-bar'
+                icon: 'fa fa-circle fa-xs'
             }
         ]
     },
@@ -25,7 +25,7 @@ export const sidebarItems = [
             {
                 name: 'Ventas1',
                 item_url: 'sales',
-                icon: 'fas fa-money-bill'
+                icon: 'fa fa-circle fa-xs'
             }
         ]
     },
@@ -37,7 +37,7 @@ export const sidebarItems = [
             {
                 name: 'Inventario1',
                 item_url: 'inventory',
-                icon: 'fas fa-boxes'
+                icon: 'fa fa-circle fa-xs'
             }
         ]
     },
@@ -49,7 +49,7 @@ export const sidebarItems = [
             {
                 name: 'Reportes1',
                 item_url: 'report',
-                icon: 'fas fa-paste'
+                icon: 'fa fa-circle fa-xs'
             }
         ]
     },
@@ -61,7 +61,7 @@ export const sidebarItems = [
             {
                 name: 'Roles y usuarios1',
                 item_url: 'users',
-                icon: 'fas fa-users'
+                icon: 'fa fa-circle fa-xs'
             }
         ]
     }
