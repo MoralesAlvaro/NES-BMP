@@ -50,8 +50,8 @@ a {
         display: none;
     }
 
-    #navbar_logo {
-        display: none;
+    .navbar_logo {
+        display: none !important;
     }
 }
 
