@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,6 +181,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        Laraveles\Spanish\SpanishServiceProvider::class,
 
         /*
          * Package Service Providers...

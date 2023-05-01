@@ -52,7 +52,7 @@
         class="fixed top-0 left-0 z-40 md:w-50 h-screen pt-20 transition-transform -translate-x-full bg-brown-600 border-r border-gray-200 sm:translate-x-0 shadow-lg"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-brown-600">
-            
+
             <!-- Listado de opciones del menú lateral -->
             <ul class="space-y-2 font-medium">
                 <!-- Opciones del perfil de usuario -->
@@ -116,7 +116,7 @@
                                 <i class="fas fa-sort-down"></i>
                             </span>
                         </button>
-                        <ul class="hidden py-2 space-y-2" :id="item.aria">
+                        <ul class="hidden py-2 space-y-2 pl-4" :id="item.aria">
                             <li v-for="child in item.children">
                                 <a :href="route(child.item_url)"
                                     class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700 transition duration-500">
