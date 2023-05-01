@@ -92,7 +92,7 @@ class ProductController extends Controller
 
         $product = Product::find($request->id);
         $product->delete();
-        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
+        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
 
     }
 }

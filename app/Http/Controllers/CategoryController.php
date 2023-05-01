@@ -93,6 +93,6 @@ class CategoryController extends Controller
 
         $category = Category::find($request->id);
         $category->delete();
-        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
+        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
     }
 }
