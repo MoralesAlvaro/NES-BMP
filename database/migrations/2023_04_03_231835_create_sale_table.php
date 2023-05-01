@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sale', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_time');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedInteger('user_id');
             $table->unsignedBigInteger('type_doc_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');

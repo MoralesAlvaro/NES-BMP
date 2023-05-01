@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('name');
             $table->integer('measure');
+            $table->softDeletes('deleted_at', 0);
             $table->timestamps();
         });
     }

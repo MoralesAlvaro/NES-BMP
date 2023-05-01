@@ -49,6 +49,11 @@ export const sidebarItems = [
                 item_url: 'category.list',
                 icon: 'fa fa-circle fa-xs'
             },
+            {
+                name: 'Stock',
+                item_url: 'stock.list',
+                icon: 'fa fa-circle fa-xs'
+            }
         ]
     },
     {
