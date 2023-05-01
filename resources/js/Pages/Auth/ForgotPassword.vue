@@ -23,11 +23,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Forgot Password" />
+        <Head title="Recuperación de contraseña" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-            link that will allow you to choose a new one.
+        <div class="mb-4 text-sm text-justify text-brown-700">
+            ¿Ha olvidado su contraseña? Si posee una cuenta con su correo electrónico se enviará un enlace que
+            le permitará escoger una nueva contraseña.
         </div>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -46,14 +46,15 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="Ingrese su correo electrónico"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex justify-center items-center mt-4">
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
+                    Enviar correo 
                 </PrimaryButton>
             </div>
         </form>

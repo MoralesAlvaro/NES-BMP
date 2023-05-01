@@ -1,64 +1,76 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// CONTROLLERS
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RawMaterialController;
+
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('login');
 });
 
-// Ruteo para el dashboard.
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Ruteo para las ventas.
-Route::get('/sales', function () {
-    return Inertia::render('Sales');
-})->middleware(['auth', 'verified'])->name('sales');
+// ONLY DEFAULT
+Route::middleware('auth', 'verified')->group(function () {
+    // Ruteo para el dashboard.
+    Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+    // Ruteo para las ventas.
+    Route::get('/sales', function () { return Inertia::render('Sales'); })->name('sales');
+    // Ruteo para el inventario.
+    Route::get('/inventory', function () { return Inertia::render('Inventory'); })->name('inventory');
+    // Ruteo para los reportes.
+    Route::get('/report', function () { return Inertia::render('Report'); })->name('report');
+    // Ruteo para los roles y usuarios.
+    Route::get('/users', function () { return Inertia::render('Users'); })->name('users');
+    // Ruteo para la sección de ayuda.
+    Route::get('/help', function () { return Inertia::render('Help'); })->name('help');
+});
 
-// Ruteo para el inventario.
-Route::get('/inventory', function () {
-    return Inertia::render('Inventory');
-})->middleware(['auth', 'verified'])->name('inventory');
-
-// Ruteo para los reportes.
-Route::get('/report', function () {
-    return Inertia::render('Report');
-})->middleware(['auth', 'verified'])->name('report');
-
-// Ruteo para los roles y usuarios.
-Route::get('/users', function () {
-    return Inertia::render('Users');
-})->middleware(['auth', 'verified'])->name('users');
-
-// Ruteo para la sección de ayuda.
-Route::get('/help', function () {
-    return Inertia::render('Help');
-})->middleware(['auth', 'verified'])->name('help');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// ONLY VIEWS RESPONSE
+Route::middleware('auth')->group(function () {
+    Route::get('/role/list', [RolePermissionController::class, 'index'])->name('roleList');
+    Route::get('/user/list', [UserController::class, 'index'])->name('user.list');
+    Route::get('/category/list', [CategoryController::class, 'index'])->name('category.list');
+    Route::get('/product/list', [ProductController::class, 'index'])->name('product.list');
+    Route::get('/rawMaterial/list', [RawMaterialController::class, 'index'])->name('rawMaterial.list');
+});
+
+
+// ONLY RESPONSE
+Route::middleware('auth')->group(function () {
+    Route::post('/send/invitation', [UserController::class, 'send_invitation'])->name('invite.user');
+    Route::post('/changeRole', [UserController::class, 'change_role'])->name('change.role');
+    Route::get('/deleteUser/{user}', [UserController::class, 'destroy'])->name('delete.user');
+
+    // Products
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
+    Route::get('/product/destroy', [ProductController::class, 'destroy'])->name('product.destroy');
+
+    // Category
+    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    // Category
+    Route::post('/rawMaterial/store', [RawMaterialController::class, 'store'])->name('rawMaterial.store');
+    Route::post('/rawMaterial/update', [RawMaterialController::class, 'update'])->name('rawMaterial.update');
+    Route::get('/rawMaterial/destroy', [RawMaterialController::class, 'destroy'])->name('rawMaterial.destroy');
 });
 
 require __DIR__.'/auth.php';

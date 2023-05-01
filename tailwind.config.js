@@ -7,6 +7,8 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        'node_modules/flowbite-vue/**/*.{js,jsx,ts,tsx}',
+        'node_modules/flowbite/**/*.{js,jsx,ts,tsx}'
     ],
 
     theme: {
@@ -25,8 +27,8 @@ module.exports = {
                     400: '#9D816F',
                     500: '#735A4B',
 					600: '#6C3B2A',
-					700: '#542F22',
 					800: '#DB763B',
+					700: '#542F22',
                     900: '#5B2300',
 				},
 
