@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RawMaterialController;
+use App\Http\Controllers\StockController;
 
 
 Route::get('/', function () {
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/category/list', [CategoryController::class, 'index'])->name('category.list');
     Route::get('/product/list', [ProductController::class, 'index'])->name('product.list');
     Route::get('/rawMaterial/list', [RawMaterialController::class, 'index'])->name('rawMaterial.list');
+    Route::get('/stock/list', [StockController::class, 'index'])->name('stock.list');
 });
 
 

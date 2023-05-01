@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('active')->comment('Estado de la materia prima')->default(true);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

@@ -35,6 +35,11 @@ export const sidebarItems = [
         icon: 'fas fa-boxes',
         children: [
             {
+                name: 'Stock',
+                item_url: 'stock.list',
+                icon: 'fa fa-circle fa-xs'
+            },
+            {
                 name: 'Materia Prima',
                 item_url: 'rawMaterial.list',
                 icon: 'fa fa-circle fa-xs'
