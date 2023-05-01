@@ -89,7 +89,7 @@ const selectedRawDelete = reactive({
 });
 
 const selectDeleteItem = (item) => {
-    selectedRawDelete.id = item.id,
+    formDelete.id = item.id,
     toggleDeleteModal()
 }
 
@@ -105,6 +105,30 @@ const selectItem = (item) => {
     toggleFormModal()
 }
 
+const formDelete = useForm({
+    id: null
+});
+
+const submitDelete = () => {
+    formDelete.get(route('rawMaterial.destroy', formDelete.id), {
+        onSuccess: () => {
+            toaster.success(`Registro eliminado`);
+            toggleDeleteModal();
+        },
+        onError: () => {
+            const errors = usePage().props.errors;
+            for (const key in errors) {
+                if (Object.hasOwnProperty.call(errors, key)) {
+                    toaster.warning(`${errors[key]}`);
+                }
+            }
+        },
+        onFinish: () => {
+            toggleDeleteModal();
+        }
+    });
+}
+
 </script>
 
 <template>
@@ -112,7 +136,7 @@ const selectItem = (item) => {
     <AppLayout>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            <FormRawMaterial :isEdit="isEdit" :products="props.products" :rawMaterial="selectedRaw" />
+            <FormRawMaterial :isEdit="isEdit" :products="props.products" :rawMaterial="selectedRaw" @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
