@@ -54,8 +54,8 @@ class RawMaterialController extends Controller
         ]);
 
         try {
-            $reawMaterial = new RawMaterial($request->all());
-            $reawMaterial->save();
+            $rawMaterial = new RawMaterial($request->all());
+            $rawMaterial->save();
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
@@ -68,7 +68,36 @@ class RawMaterialController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        if ( ! Auth::user()->can('rawMaterial_update')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        if (!$request->rawMaterial_id) {
+            return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
+        }
+
+        $rawMaterial = RawMaterial::find($request->rawMaterial_id);
+        if ($request->active and $request->active == "Activo") {
+            $request->merge(['active' => 1]);
+        }
+
+        if ($request->active and $request->active == "Inactivo") {
+            $request->merge(['active' => 0]);
+        }
+
+        $validando = $request->validate([
+            'product_id' => ['required', 'integer'],
+            'total' => ['required'],
+            'quantity' => ['required', 'string', 'max:255'],
+            'parts' => ['required', 'integer', 'min:1'],
+            'cost' => ['required'],
+            'active' => ['required', 'boolean'],
+        ]);
+
+        // return response()->json($request->all(), 200);
+        $rawMaterial->update($request->all());
+
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -76,6 +105,12 @@ class RawMaterialController extends Controller
      */
     public function destroy(Request $request)
     {
-        //
+        if ( ! Auth::user()->can('rawMaterial_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $rawMaterial = RawMaterial::find($request->id);
+        $rawMaterial->delete();
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 }
