@@ -145,8 +145,7 @@ const submitDelete = () => {
                     esta Materia prima?</h2>
                 <div class="px-5">
                     <p class="mt-5 text-justify text-gray-400">
-                        Al eliminar esta Materia prima se borrará permanentemente del sistema, y ya no tendrá quedaraá
-                        rastro.
+                        Al eliminar esta Materia prima se borrará permanentemente del sistema.
                         Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
                     </p>
                     <div class="flex justify-end mt-5">
