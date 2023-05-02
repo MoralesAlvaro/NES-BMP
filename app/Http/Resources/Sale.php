@@ -16,7 +16,7 @@ class Sale extends JsonResource
     {
         return [
             'id' => $this->id,
-            'status_sale_id' => $this->statuSale,
+            'status_sale_id' => $this->statusSale,
             'user' => $this->user,
             'type_doc_id' => $this->typeDoc,
             'sup_total' => $this->sup_total,

@@ -20,7 +20,9 @@ class SaleSeeder extends Seeder
                 'type_doc_id' => 1,
                 'sup_total' => 23.45,
                 'discount' => 0,
-                'total' => 23.45
+                'total' => 23.45,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
 

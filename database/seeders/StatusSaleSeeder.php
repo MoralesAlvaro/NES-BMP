@@ -16,11 +16,15 @@ class StatusSaleSeeder extends Seeder
         StatusSale::insert([
             [
                 'name' => 'Pendiente',
-                'description' => 'Pendiente de pago'
+                'description' => 'Pendiente de pago',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Pagada',
-                'description' => 'La factura ya fue pagada'
+                'description' => 'La factura ya fue pagada',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
     }

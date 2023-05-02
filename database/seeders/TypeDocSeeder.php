@@ -16,7 +16,9 @@ class TypeDocSeeder extends Seeder
         TypeDoc::insert([
             [
                 'name' => 'Ticket',
-                'description' => ''
+                'description' => '',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

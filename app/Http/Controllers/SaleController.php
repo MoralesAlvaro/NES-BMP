@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sales;
-use App\Http\Requests\StoreSalesRequest;
-use App\Http\Requests\UpdateSalesRequest;
+use App\Models\Sale;
+use App\Models\StatusSale;
+use App\Models\TypeDoc;
+use App\Models\stock;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Http\Resources\Sale as SaleResources;
+use App\Http\Resources\SaleCollection;
+use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
 {
@@ -13,37 +19,30 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
-    }
+        if ( ! Auth::user()->can('sale_list')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $sales = new SaleCollection( Sale::orderBy('id', 'desc')->paginate(10));
+        $typeDoc = TypeDoc::all();
+        $statusSale = StatusSale::all();
+        $stocks = Stock::all();
+        $permissions = Auth::user()->getAllPermissions();
+
+        return Inertia::render('Sale/Show', [
+            'sales' => $sales,
+            'typeDoc' => $typeDoc,
+            'statusSale' => $statusSale,
+            'stocks' => $stocks,
+            'permissions' => $permissions
+        ]);
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreSalesRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Sales $sales)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sales $sales)
     {
         //
     }

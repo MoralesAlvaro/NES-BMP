@@ -20,7 +20,7 @@ class Sale extends Model
 
     public function statusSale()
     {
-        return $this->belongsTo(StatuSale::class);
+        return $this->belongsTo(StatusSale::class);
     }
 
     public function user()
