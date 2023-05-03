@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_doc', function (Blueprint $table) {
+        Schema::create('type_docs', function (Blueprint $table) {
             $table->id();
             $table->text('name');
             $table->timestamps();

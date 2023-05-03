@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('stock_id')->references('id')->on('stock');
             $table->foreign('category_id')->references('id')->on('category');
-            $table->foreign('sale_id')->references('id')->on('sale');
+            $table->foreign('sale_id')->references('id')->on('sales');
 
         });
     }
