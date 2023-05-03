@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
 
+
 Route::get('/', function () {
     return redirect('login');
 });

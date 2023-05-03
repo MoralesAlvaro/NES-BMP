@@ -49,11 +49,13 @@ class PermissionsSeeder extends Seeder
         $rawMaterial_update = Permission::create(['name' => 'rawMaterial_update', 'descriptions' => 'Vista y acción editar Materia Prima']);
         $rawMaterial_destroy = Permission::create(['name' => 'rawMaterial_destroy', 'descriptions' => 'Vista y acción eliminar Materia Prima']);
 
-        /*STOCK*/
+        /* STOCK */
         $stock_list = Permission::create(['name' => 'stock_list', 'descriptions' => 'Vista lista de stock']);
         $stock_store = Permission::create(['name' => 'stock_store', 'descriptions' => 'Vista y acción crear stock']);
         $stock_update = Permission::create(['name' => 'stock_update', 'descriptions' => 'Vista y acción editar stock']);
         $stock_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Vista y acción eliminar stock']);
+
+
 
 
         // ----------------------------------------
@@ -65,6 +67,7 @@ class PermissionsSeeder extends Seeder
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
+            $stock_list, $stock_store, $stock_update, $stock_destroy,
         ];
         $root->syncPermissions($permission_root);
 
@@ -73,7 +76,10 @@ class PermissionsSeeder extends Seeder
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
-            $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,$stock_list, $stock_store,$stock_update,$stock_destroy,
+
+            $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
+            $stock_list, $stock_store, $stock_update, $stock_destroy,
+
         ];
         $encargado->syncPermissions($permission_encargado);
 

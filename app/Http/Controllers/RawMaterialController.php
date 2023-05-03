@@ -111,6 +111,6 @@ class RawMaterialController extends Controller
 
         $rawMaterial = RawMaterial::find($request->id);
         $rawMaterial->delete();
-        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
+        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
     }
 }

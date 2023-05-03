@@ -5,19 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Stock extends Model
 {
-
-    protected $table = 'stock';
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'product_id',
+        'raw_material_id',
+        'name',
         'cost',
-        'suggested_price',
-        'gain'
+        'mount',
+        'gain',
+        'active'
     ];
-    function productname()
+
+    public function rawMaterial()
     {
-        return $this->BelongsTo('ProductName');
+        return $this->belongsTo(rawMaterial::class);
+
     }
 }
