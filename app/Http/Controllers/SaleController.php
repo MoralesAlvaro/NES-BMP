@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\StatusSale;
 use App\Models\TypeDoc;
 use App\Models\stock;
+use App\Models\TypeProduct;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\Sale as SaleResources;
@@ -27,6 +28,7 @@ class SaleController extends Controller
         $typeDoc = TypeDoc::all();
         $statusSale = StatusSale::all();
         $stocks = Stock::all();
+        $typeProduct = TypeProduct::all();
         $permissions = Auth::user()->getAllPermissions();
 
         return Inertia::render('Sale/Show', [
@@ -34,6 +36,7 @@ class SaleController extends Controller
             'typeDoc' => $typeDoc,
             'statusSale' => $statusSale,
             'stocks' => $stocks,
+            'typeProduct' => $typeProduct,
             'permissions' => $permissions
         ]);
 

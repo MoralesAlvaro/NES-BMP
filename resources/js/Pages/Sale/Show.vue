@@ -15,6 +15,7 @@ const props = defineProps({
     sales: Object,
     stocks: Object,
     typeDoc: Array,
+    typeProduct: Array,
     statusSale: Object,
     permissions: Array
 });
@@ -118,7 +119,7 @@ hasPermission()
     <AppLayout>
 
         <Modal :show="statusModalForm" maxWidth="5xl" @close="toggleFormModal">
-            <FormSale :isEdit="isEdit" :sale="selectedSale" :statusSale="statusSale" :stocks="stocks" @close="toggleFormModal" />
+            <FormSale :isEdit="isEdit" :sale="selectedSale" :statusSale="statusSale" :typeProduct="typeProduct" :stocks="stocks" @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
