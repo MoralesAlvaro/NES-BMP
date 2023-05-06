@@ -20,7 +20,7 @@ class RawMaterialController extends Controller
     public function index()
     {
         if ( ! Auth::user()->can('rawMaterial_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $reawMaterials = new RawMaterialCollection( RawMaterial::orderBy('id', 'desc')->paginate(5));

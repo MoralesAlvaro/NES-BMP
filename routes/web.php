@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
 
-    // Category
+    // rawMaterial
     Route::post('/rawMaterial/store', [RawMaterialController::class, 'store'])->name('rawMaterial.store');
     Route::post('/rawMaterial/update', [RawMaterialController::class, 'update'])->name('rawMaterial.update');
     Route::get('/rawMaterial/destroy', [RawMaterialController::class, 'destroy'])->name('rawMaterial.destroy');

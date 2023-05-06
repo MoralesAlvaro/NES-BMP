@@ -1,3 +1,4 @@
+/* --------------------------------------------------------- */
 /* Estilos generales */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
@@ -13,12 +14,33 @@
     padding: 0;
     margin: 0;
 }
+/* --------------------------------------------------------- */
+
+/* --------------------------------------------------------- */
+/* Personalización de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #C2ADA0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #542F22;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5B2300;
+}
+/* --------------------------------------------------------- */
 
 /* Retirar estilo a los hipervínculos */
 a {
     text-decoration: none !important;
 }
 
+/* Estilo del logo en el formulario de login */
 #ndes_logo_lg {
     width: 30%;
     height: auto;
@@ -33,6 +55,7 @@ a {
     background-image: url(img/banners/NDES_002.jpg);
 }
 
+/* --------------------------------------------------------- */
 /* Dispositivos de mayor tamaño */
 @media (min-width: 501px) {
     #banner_ndes {
@@ -54,12 +77,4 @@ a {
         display: none !important;
     }
 }
-
-/* --------------------------------------------------------- */
-/* Estilo del logo de la empresa */
-img.logo {
-    width: 100px;
-    height: auto;
-}
-
 /* --------------------------------------------------------- */
