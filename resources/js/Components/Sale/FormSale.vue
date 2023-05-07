@@ -35,31 +35,53 @@ const isLoading = ref(false);
 let costo = 0;
 
 const form = useForm({
+    sale_id: props.isEdit && props.sale.id || '',
     status_sale_id: props.isEdit && props.sale.status_sale_id || '',
     sub_total: props.isEdit && props.sale.sub_total || 0.00,
     discount: props.isEdit && props.sale.discount || 0.00,
     total: props.isEdit && props.sale.total || 0.00,
+    totalOrders : '',
     // detail_ sale
     stock_id: '',
     type_product_id: '',
     discount: '',
-    total: '',
+    total: 0,
     orders: '',
 });
 
-const calculatePrice = async() => {
+// Seleccionando Stock
+const selectedStock = ref({});
+const handleSelectedStock = (selected) => {
+    selectedStock.value = { ...selected };
+    form.stock_id = selectedStock.value.id;
+    // console.log(selectedStock.value.id);
+    costStock();
+}
 
-    let stockSelect = props.stocks.filter(stock => stock.id === form.stock_id);
-    let typeProductSelect = props.typeProduct.filter(typeProd => typeProd.id === form.type_product_id);
-    if (stockSelect && typeProductSelect) {
-        // let {cost, mount, gain} = stockSelect[0];
-        // let typeProducCost = typeProductSelect[0].cost;
+// Seleccionando typeProduct
+const selectedTypeProduct = ref({});
+const handleSelectedTypeProduct = (selected) => {
+    selectedTypeProduct.value = { ...selected };
+    form.type_product_id = selectedTypeProduct.value.id;
+    // console.log(selectedTypeProduct.value.id);
+    costStock();
+}
 
-        await console.log([stockSelect, typeProductSelect]);
-    }
+// Calcula el costo de las ordenes a pedir
+const costStock = () => {
+    selectedStock.value.mount ? costo = selectedStock.value.mount : costo = 0;
+    selectedTypeProduct.value.cost ? costo = selectedTypeProduct.value.cost : costo = 0;
+    selectedTypeProduct.value.cost && selectedStock.value.mount ? costo = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
+    totalSale()
+}
 
-    // costo = cost + typeProducCost;
+// Calcula el costo total de la venta
+const totalSale = () => {
+    form.total = costo * form.totalOrders;
+}
 
+const addStockArray = () => {
+    
 }
 
 const submit = () => {
@@ -145,30 +167,13 @@ const headerPreview = reactive([
             </div>
         </div>
         <!-- Seleccionar producto -->
-        <div class="grid grid-cols-3 gap-4 shadow-md p-4 mt-4 bg-white rounded-md">
+        <div class="grid grid-cols-12 gap-4 shadow-md p-4 mt-4 bg-white rounded-md">
 
-            <div class="mb-8">
+            <div class="mb-8 col-span-3">
                 <Label for="rol" value="Producto" />
                 <v-select v-model="form.stock_id" :options="stocks.length ? stocks : []" :reduce="(option) => option.id"
-                    label="name" placeholder="Seleccionar" class="appearance-none capitalize">
-                    <template #open-indicator="{ attributes }">
-                        <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
-                        </svg>
-                    </template>
-                    <template #option="{ name }" >
-                        <span class="capitalize" @click="calculatePrice()">{{ name }}</span>
-                    </template>
-                </v-select>
-                <InputError class="mt-2" :message="form.errors.active" />
-            </div>
-
-            <div class="mb-8">
-                <Label for="rol" value="Tipo producto" />
-                <v-select v-model="form.type_product_id" :options="typeProduct.length ? typeProduct : []"
-                    :reduce="(option) => option.id" label="name" placeholder="Seleccionar"
-                    class="appearance-none capitalize">
+                    label="name" placeholder="Seleccionar" class="appearance-none capitalize"
+                    @option:selected="handleSelectedStock">
                     <template #open-indicator="{ attributes }">
                         <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -176,13 +181,44 @@ const headerPreview = reactive([
                         </svg>
                     </template>
                     <template #option="{ name }">
-                        <span class="capitalize" @click="calculatePrice()">{{ name }}</span>
+                        <span class="capitalize">{{ name }}</span>
                     </template>
                 </v-select>
                 <InputError class="mt-2" :message="form.errors.active" />
             </div>
 
-            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
+            <div class="mb-8 col-span-3">
+                <Label for="rol" value="Tipo producto" />
+                <v-select v-model="form.type_product_id" :options="typeProduct.length ? typeProduct : []"
+                    :reduce="(option) => option.id" label="name" placeholder="Seleccionar"
+                    class="appearance-none capitalize" @option:selected="handleSelectedTypeProduct">
+                    <template #open-indicator="{ attributes }">
+                        <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                        </svg>
+                    </template>
+                    <template #option="{ name }">
+                        <span class="capitalize">{{ name }}</span>
+                    </template>
+                </v-select>
+                <InputError class="mt-2" :message="form.errors.active" />
+            </div>
+
+            <div class="col-span-2">
+                <Label for="totalOrders" value="N° Ordenes" />
+                <Input id="totalOrders" v-model="form.totalOrders" type="number" class="mt-1 block w-full" required
+                    placeholder="0" />
+                <InputError class="mt-2" :message="form.errors.totalOrders" />
+            </div>
+
+            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0 col-span-2 pt-6">
+                <Button @click="addStockArray()" type="button">
+                        Agregar
+                </Button>
+            </div>
+
+            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0 col-span-2">
                 <h6 class="text-brown-900 font-semibold text-base md:text-xl text-end">
                     Costo ${{ costo }}
                 </h6>

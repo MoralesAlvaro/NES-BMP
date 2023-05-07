@@ -48,6 +48,7 @@ const header = reactive([
 ]);
 
 const selectedSale = reactive({
+    id: null,
     status_sale_id: null,
     sub_total: null,
     discount: null,
@@ -66,6 +67,7 @@ const toggleDeleteModal = () => {
     statusModalDelete.value = !statusModalDelete.value;
 };
 const selectItem = (item) => {
+    selectedSale.id = item.id,
     selectedSale.status_sale_id = item.id,
     selectedSale.sub_total = item.sub_total,
     selectedSale.discount = item.discount,
