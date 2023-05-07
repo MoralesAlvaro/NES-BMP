@@ -51,14 +51,14 @@
     <aside id="logo-sidebar"
         class="fixed top-0 left-0 z-40 md:w-50 h-screen pt-20 transition-transform -translate-x-full bg-brown-600 border-r border-gray-200 sm:translate-x-0 shadow-lg"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-brown-600 dark:bg-gray-800">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-brown-600">
 
             <!-- Listado de opciones del menú lateral -->
             <ul class="space-y-2 font-medium">
                 <!-- Opciones del perfil de usuario -->
                 <li>
                     <button type="button"
-                        class="flex items-center w-full p-2 text-brown-500 bg-white hover:text-gray-900 transition duration-75 rounded-lg group "
+                        class="flex items-center w-full p-2 text-brown-500 bg-white hover:text-gray-900 transition duration-75 rounded-lg group"
                         aria-controls="ndes_sidebar_dropdown" data-collapse-toggle="ndes_sidebar_dropdown">
                         <svg aria-hidden="true"
                             class="flex-shtink-0 w-6 h-6 text-brown-800 transition duration-75 hover:text-brown-700"
@@ -108,16 +108,18 @@
                 <ul v-for="(item, index) in menu" :key="index">
                     <li>
                         <button type="button"
-                            class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700"
+                            class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700 transition duration-500"
                             :aria-controls="item.aria" :data-collapse-toggle="item.aria">
                             <i :class="item.icon"></i>
-                            <span class="ml-3">{{item.name}}</span>
-                            <i class="fas fa-sort-down mx-auto"></i>
+                            <span class="ml-3">
+                                {{item.name}}
+                                <i class="fas fa-sort-down"></i>
+                            </span>
                         </button>
                         <ul class="hidden py-2 space-y-2 pl-4" :id="item.aria">
                             <li v-for="child in item.children">
                                 <a :href="route(child.item_url)"
-                                    class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700">
+                                    class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700 transition duration-500">
                                     <i :class="child.icon"></i>
                                     <span class="ml-3">{{child.name}}</span>
                                 </a>

@@ -11,8 +11,6 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import vSelect from "vue-select";
 import Toaster from "@meforma/vue-toaster";
 
-
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({

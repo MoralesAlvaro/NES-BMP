@@ -18,13 +18,12 @@ class StockController extends Controller
     public function index()
     {
         if ( ! Auth::user()->can('stock_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $stocks = new StockCollection( Stock::orderBy('id', 'desc')->paginate(10));
         $raw_materials = RawMaterial::all();
         $permissions = Auth::user()->getAllPermissions();
-        return response()->json(['stocks' => $stocks, 'raw_materials' => $raw_materials, 'permissions' => $permissions], 200); // Eliminar esta lína cuando se agrege la vista
 
         return Inertia::render('Stock/Show', [
             'stocks' => $stocks,
