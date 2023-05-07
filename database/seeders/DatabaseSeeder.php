@@ -40,7 +40,8 @@ class DatabaseSeeder extends Seeder
             'status_sales',
             'type_docs',
             'type_products',
-            'sales'
+            'sales',
+            'detail_sales'
         ]);
         // $this->call(UserSeeder::class);
         $this->call(PermissionsSeeder::class);
