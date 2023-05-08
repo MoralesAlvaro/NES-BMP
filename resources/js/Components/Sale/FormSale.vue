@@ -38,7 +38,7 @@ let exist = reactive({ value: 0 });
 
 const form = useForm({
     sale_id: props.isEdit && props.sale.id || '',
-    status_sale_id: props.isEdit && props.sale.status_sale_id || '',
+    status_sale_id: props.isEdit && props.sale.status_sale_id || 1,
     sup_total: props.isEdit && props.sale.sup_total || 0.00,
     discount: props.isEdit && props.sale.discount || 0.00,
     total: props.isEdit && props.sale.total || 0.00,
@@ -72,7 +72,6 @@ const costStock = () => {
     selectedTypeProduct.value.cost ? costo.value = selectedTypeProduct.value.cost : costo.value = 0;
     selectedTypeProduct.value.cost && selectedStock.value.mount ? costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
     costo.value = costo.value * form.orders;
-    console.log(costo.value);
     totalSale()
 }
 

@@ -6,7 +6,9 @@ use App\Models\Sale;
 use App\Models\StatusSale;
 use App\Models\TypeDoc;
 use App\Models\stock;
+use App\Models\DetailSale;
 use App\Models\TypeProduct;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\Sale as SaleResources;
@@ -54,7 +56,10 @@ class SaleController extends Controller
         }
 
         $request->merge(['status_sale_id' => 1, 'user_id' => Auth::user()->id, 'type_doc_id' => 1]);
-        // return response()->json($request->all(), 200);
+        // return response()->json($request->detail_sale[0], 200);
+        if (count($request->detail_sale) < 1) {
+            return redirect()->back()->withErrors(['warning' => 'Agrega el detalle de venta por favor.']);
+        }
         $validando = $request->validate([
             'status_sale_id' => ['integer'],
             'user_id' => ['integer'],
@@ -66,7 +71,24 @@ class SaleController extends Controller
 
         $sale = new Sale($request->all());
         $sale->save();
-        // return response()->json($request, 200);
+
+        $request->merge(['sale_id' => $sale->id]);
+
+
+        foreach ($request->detail_sale as $key) {
+            DetailSale::insert([
+                'sale_id' => $sale->id,
+                'stock_id' => $key['stock_id'],
+                'type_product_id' => $key['type_product_id'],
+                'discount' => $key['discount'],
+                'total' => $key['total'],
+                'orders' => $key['orders'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Registro creado correctamente!.');
+
+
     }
 
     /**
@@ -80,8 +102,17 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sales $sales)
+    public function destroy(Request $request)
     {
-        //
+        if ( ! Auth::user()->can('sale_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $detail = DetailSale::where('sale_id', $request->id)->delete();
+
+        $sale = Sale::find($request->id);
+        $sale->delete();
+        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+
     }
 }

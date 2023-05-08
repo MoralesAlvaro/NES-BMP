@@ -168,7 +168,7 @@ hasPermission()
                                 <tr v-for=" item in sales.data  " class="mt-2">
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
                                     <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id.name }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">$ {{ item.sub_total }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
@@ -185,7 +185,16 @@ hasPermission()
                             </tbody>
                         </Table>
                     </div>
+                    <div v-else class="py-12 min-h-screen">
+                        <Empty></Empty>
+                    </div>
+                    <div class="p-6">
+                        <Pagination :links=" props.sales.links " :meta=" props.sales.meta " />
+                    </div>
 
+                </div>
+                <div v-else class="py-12 min-h-screen">
+                    <Empty></Empty>
                 </div>
 
             </div>

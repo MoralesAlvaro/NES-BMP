@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('total')->comment('Total de la orden o porción');
             $table->float('orders')->comment('Total de ordenes de este producto');
 
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('sale_id')->references('id')->on('sales');
