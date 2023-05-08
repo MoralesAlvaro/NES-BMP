@@ -1,6 +1,8 @@
 <script setup>
 import Button from '@/Components/PrimaryButton.vue';
+import ButtonSecundary from '@/Components/SecondaryButton.vue';
 import Input from '@/Components/TextInput.vue';
+import Table from '@/Components/Table.vue'
 import Textarea from '@/Components/TexTareaInput.vue';
 import Label from '@/Components/InputLabel.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
@@ -9,7 +11,6 @@ import InputError from '@/Components/InputError.vue';
 import { createToaster } from "@meforma/vue-toaster";
 
 const emit = defineEmits(['close']);
-const fecha = new Date().toLocaleDateString();
 const props = defineProps({
     isEdit: {
         type: Boolean
@@ -32,21 +33,19 @@ const props = defineProps({
 const toaster = createToaster({ /* options */ });
 const isLoading = ref(false);
 
-let costo = 0;
+let costo = reactive({ value: 0 });
+let exist = reactive({ value: 0 });
 
 const form = useForm({
     sale_id: props.isEdit && props.sale.id || '',
     status_sale_id: props.isEdit && props.sale.status_sale_id || '',
-    sub_total: props.isEdit && props.sale.sub_total || 0.00,
+    sup_total: props.isEdit && props.sale.sup_total || 0.00,
     discount: props.isEdit && props.sale.discount || 0.00,
     total: props.isEdit && props.sale.total || 0.00,
-    totalOrders : '',
+    detail_sale: [], // array de detalle de venta
     // detail_ sale
-    stock_id: '',
-    type_product_id: '',
-    discount: '',
-    total: 0,
-    orders: '',
+    orders: '1',
+    discount_sale: '0',
 });
 
 // Seleccionando Stock
@@ -54,7 +53,7 @@ const selectedStock = ref({});
 const handleSelectedStock = (selected) => {
     selectedStock.value = { ...selected };
     form.stock_id = selectedStock.value.id;
-    // console.log(selectedStock.value.id);
+    exist.value = selectedStock.value.raw_material.parts;
     costStock();
 }
 
@@ -69,53 +68,93 @@ const handleSelectedTypeProduct = (selected) => {
 
 // Calcula el costo de las ordenes a pedir
 const costStock = () => {
-    selectedStock.value.mount ? costo = selectedStock.value.mount : costo = 0;
-    selectedTypeProduct.value.cost ? costo = selectedTypeProduct.value.cost : costo = 0;
-    selectedTypeProduct.value.cost && selectedStock.value.mount ? costo = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
+    selectedStock.value.mount ? costo.value = selectedStock.value.mount : costo.value = 0;
+    selectedTypeProduct.value.cost ? costo.value = selectedTypeProduct.value.cost : costo.value = 0;
+    selectedTypeProduct.value.cost && selectedStock.value.mount ? costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
+    costo.value = costo.value * form.orders;
+    console.log(costo.value);
     totalSale()
 }
 
-// Calcula el costo total de la venta
+// Calcula el costo total, descuento total y suptotales de la venta
 const totalSale = () => {
-    form.total = costo * form.totalOrders;
+    form.total = 0;
+    form.sup_total = 0;
+    form.discount = 0;
+    if (form.detail_sale) {
+        form.detail_sale.forEach(element => {
+            form.total += element.total;
+            form.sup_total += element.total;
+            form.discount += element.discount;
+        });
+        form.total = form.total - form.discount;
+    }
 }
 
+// Agregar los elementos de detalle de venta a un array que luego sera recorrido en ele controlador para hacer el registro
+const addDetailSale = reactive([]);
 const addStockArray = () => {
-    
+    if (selectedStock.value.id && selectedTypeProduct.value.id) {
+        addDetailSale.push({
+            stock_id: selectedStock.value.id,
+            stock_name: selectedStock.value.name,
+            type_product_id: selectedTypeProduct.value.id,
+            type_product_name: selectedTypeProduct.value.name,
+            discount: parseInt(form.discount_sale),
+            total: costo.value,
+            orders: form.orders,
+        });
+        // console.log(addDetailSale);
+        form.detail_sale = addDetailSale;
+        totalSale();
+        toaster.success(`${form.orders} Ordenes agregadas`);
+        form.discount_sale = '0';
+    } else {
+        toaster.warning(`Selecciona el producto y su tipo`);
+    }
 }
 
 const submit = () => {
     isLoading.value = true;
-    if (props.isEdit) {
-        form.post(route('sale.update'), {
-            onSuccess: () => {
-                emit('close');
-                toaster.success(`Registro actualizado correctamente.`);
-            },
-            onError: () => {
-                toaster.warning(`Todos los campos son requeridos`);
-            },
-            onFinish: () => {
-                isLoading.value = false
-            }
-        })
-    } else {
-        form.post(route('sale.store'), {
-            onSuccess: () => {
-                emit('close');
-                toaster.success(`Registro creado correctamente.`);
-            },
-            onError: () => {
-                toaster.warning(`Todos los campos son requeridos`);
-            },
-            onFinish: () => {
-                isLoading.value = false
-            }
-        })
+    if (form.detail_sale.length) {
+        if (props.isEdit) {
+            form.post(route('sale.update'), {
+                onSuccess: () => {
+                    emit('close');
+                    toaster.success(`Registro actualizado correctamente.`);
+                },
+                onError: () => {
+                    toaster.warning(`Todos los campos son requeridos`);
+                },
+                onFinish: () => {
+                    isLoading.value = false
+                }
+            })
+        } else {
+            form.post(route('sale.store'), {
+                onSuccess: () => {
+                    emit('close');
+                    toaster.success(`Registro creado correctamente.`);
+                },
+                onError: () => {
+                    toaster.warning(`Todos los campos son requeridos`);
+                },
+                onFinish: () => {
+                    isLoading.value = false
+                }
+            })
+        }
+
+    }else{
+        toaster.warning(`Por favor agrega los productos de la venta`);
     }
 }
 
 const headerPreview = reactive([
+    {
+        name: '#',
+        showInMobile: true
+    },
     {
         name: 'Producto',
         showInMobile: true
@@ -125,11 +164,15 @@ const headerPreview = reactive([
         showInMobile: true
     },
     {
+        name: 'Descuento',
+        showInMobile: true
+    },
+    {
         name: 'Tipo producto',
         showInMobile: true
     },
     {
-        name: 'Total Stock',
+        name: 'Total ordenes',
         showInMobile: true
     },
     {
@@ -137,6 +180,11 @@ const headerPreview = reactive([
         showInMobile: true
     }
 ]);
+
+const deleteItem = (item) => {
+    form.detail_sale.splice(item, 1);
+    toaster.warning(`Se ha removido un item de la venta`);
+}
 
 </script>
 
@@ -150,7 +198,7 @@ const headerPreview = reactive([
 
             <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
                 <h6 class="text-brown-900 ">
-                    Subtotal ${{ form.sub_total }}
+                    Subtotal ${{ form.sup_total.toFixed(2) }}
                 </h6>
             </div>
 
@@ -162,18 +210,17 @@ const headerPreview = reactive([
 
             <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
                 <h6 class="text-brown-900 font-semibold text-base md:text-xl text-end">
-                    Total ${{ form.total }}
+                    Total ${{ form.total.toFixed(2) }}
                 </h6>
             </div>
         </div>
         <!-- Seleccionar producto -->
         <div class="grid grid-cols-12 gap-4 shadow-md p-4 mt-4 bg-white rounded-md">
 
-            <div class="mb-8 col-span-3">
+            <div class="mb-8 col-span-4">
                 <Label for="rol" value="Producto" />
-                <v-select v-model="form.stock_id" :options="stocks.length ? stocks : []" :reduce="(option) => option.id"
-                    label="name" placeholder="Seleccionar" class="appearance-none capitalize"
-                    @option:selected="handleSelectedStock">
+                <v-select :options="stocks.data.length ? stocks.data : []" :reduce="(option) => option.id" label="name"
+                    placeholder="Seleccionar" class="appearance-none capitalize" @option:selected="handleSelectedStock">
                     <template #open-indicator="{ attributes }">
                         <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -187,11 +234,11 @@ const headerPreview = reactive([
                 <InputError class="mt-2" :message="form.errors.active" />
             </div>
 
-            <div class="mb-8 col-span-3">
+            <div class="mb-8 col-span-4">
                 <Label for="rol" value="Tipo producto" />
-                <v-select v-model="form.type_product_id" :options="typeProduct.length ? typeProduct : []"
-                    :reduce="(option) => option.id" label="name" placeholder="Seleccionar"
-                    class="appearance-none capitalize" @option:selected="handleSelectedTypeProduct">
+                <v-select :options="typeProduct.length ? typeProduct : []" :reduce="(option) => option.id" label="name"
+                    placeholder="Seleccionar" class="appearance-none capitalize"
+                    @option:selected="handleSelectedTypeProduct">
                     <template #open-indicator="{ attributes }">
                         <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -206,22 +253,39 @@ const headerPreview = reactive([
             </div>
 
             <div class="col-span-2">
-                <Label for="totalOrders" value="N° Ordenes" />
-                <Input id="totalOrders" v-model="form.totalOrders" type="number" class="mt-1 block w-full" required
-                    placeholder="0" />
-                <InputError class="mt-2" :message="form.errors.totalOrders" />
+                <Label for="orders" value="N° Ordenes" />
+                <Input id="orders" v-model="form.orders" @change="costStock" type="number" class="mt-1 block w-full"
+                    required placeholder="0" />
+                <InputError class="mt-2" :message="form.errors.orders" />
             </div>
 
-            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0 col-span-2 pt-6">
+            <div class="md:w-auto w-full  mb-2 md:mb-0 col-span-2">
+                <h6 class="text-brown-900 font-semibold text-base md:text-xl text-end">
+                    Costo ${{ costo.value.toFixed(2) }}
+                </h6>
+            </div>
+
+            <div class="col-span-2">
+                <Label for="orders" class="text-gray-500" value="Existencias" />
+                <span class=" text-gray-500">{{ exist.value }}</span>
+            </div>
+
+            <div class="col-span-3">
+                <Label for="discount_sale" value="Descuentos" />
+                <Input id="discount_sale" v-model="form.discount_sale" type="number" class="mt-1 block w-full" required
+                    placeholder="0" />
+            </div>
+
+            <div class="md:w-auto w-full mb-2 md:mb-0 col-span-3 pt-6 ">
                 <Button @click="addStockArray()" type="button">
-                        Agregar
+                    Agregar
                 </Button>
             </div>
 
-            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0 col-span-2">
-                <h6 class="text-brown-900 font-semibold text-base md:text-xl text-end">
-                    Costo ${{ costo }}
-                </h6>
+            <div class="md:w-auto w-full mb-2 md:mb-0 col-span-3 pt-6 ">
+                <ButtonSecundary @click="" type="submit">
+                    Ordenar
+                </ButtonSecundary>
             </div>
 
         </div>
@@ -230,8 +294,28 @@ const headerPreview = reactive([
             Detalle de la orden
         </h2>
         <!-- Detalle de la orden  -->
-        <div class="grid grid-cols-3 gap-4 shadow-md p-4 mt-4 bg-white rounded-md">
-
+        <div class="grid shadow-md p-4 mt-4 bg-white rounded-md">
+            <div v-if="headerPreview.length">
+                <Table :header="headerPreview" :items="headerPreview.length" class="overflow-auto h-52" >
+                    <tbody class="px-5">
+                        <tr v-for=" (item, index) in form.detail_sale " class="mt-2">
+                            <td class="text-center p-2 lg:text-base text-xs">{{ index +1 }}</td>
+                            <td class="text-center p-2 lg:text-base text-xs">{{ item.stock_name }}</td>
+                            <td class="text-center p-2 lg:text-base text-xs">${{ item.total }}</td>
+                            <td class="text-center p-2 lg:text-base text-xs">${{ item.discount }}</td>
+                            <td class="text-center p-2 lg:text-base text-xs">{{ item.type_product_name }}</td>
+                            <td class="text-center p-2 lg:text-base text-xs">{{ item.orders }}</td>
+                            <td class="text-center p-2 lg:text-base text-xs">
+                                <div class="flex justify-center">
+                                    <div class="flex flex-row space-x-4">
+                                        <a @click="deleteItem(index)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </div>
 
         </div>
     </form>

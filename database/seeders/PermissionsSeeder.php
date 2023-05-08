@@ -55,7 +55,7 @@ class PermissionsSeeder extends Seeder
         $stock_update = Permission::create(['name' => 'stock_update', 'descriptions' => 'Vista y acción editar stock']);
         $stock_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Vista y acción eliminar stock']);
 
-        /* STOCK */
+        /* SALE */
         $sale_list = Permission::create(['name' => 'sale_list', 'descriptions' => 'Vista lista de ventas']);
         $sale_store = Permission::create(['name' => 'sale_store', 'descriptions' => 'Vista y acción crear ventas']);
         $sale_update = Permission::create(['name' => 'sale_update', 'descriptions' => 'Vista y acción editar ventas']);

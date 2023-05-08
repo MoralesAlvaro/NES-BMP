@@ -120,7 +120,7 @@ hasPermission()
 
     <AppLayout>
 
-        <Modal :show="statusModalForm" maxWidth="5xl" @close="toggleFormModal">
+        <Modal :show="statusModalForm" maxWidth="7xl" @close="toggleFormModal">
             <FormSale :isEdit="isEdit" :sale="selectedSale" :statusSale="statusSale" :typeProduct="typeProduct" :stocks="stocks" @close="toggleFormModal" />
         </Modal>
 
