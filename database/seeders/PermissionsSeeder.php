@@ -55,6 +55,12 @@ class PermissionsSeeder extends Seeder
         $stock_update = Permission::create(['name' => 'stock_update', 'descriptions' => 'Vista y acción editar stock']);
         $stock_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Vista y acción eliminar stock']);
 
+        /* expense */
+        $expense_list = Permission::create(['name' => 'expense_list', 'descriptions' => 'Vista lista de gastos']);
+        $expense_store = Permission::create(['name' => 'expense_store', 'descriptions' => 'Vista y acción crear gastos']);
+        $expense_update = Permission::create(['name' => 'expense_update', 'descriptions' => 'Vista y acción editar gastos']);
+        $expense_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Vista y acción eliminar gastos']);
+
 
 
 
@@ -68,6 +74,7 @@ class PermissionsSeeder extends Seeder
             $product_list, $product_store, $product_update, $product_destroy,
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
             $stock_list, $stock_store, $stock_update, $stock_destroy,
+            $expense_list, $expense_store, $expense_update, $expense_destroy,
         ];
         $root->syncPermissions($permission_root);
 
