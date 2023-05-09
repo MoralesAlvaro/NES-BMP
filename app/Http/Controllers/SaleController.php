@@ -76,6 +76,11 @@ class SaleController extends Controller
 
 
         foreach ($request->detail_sale as $key) {
+            // Descargadno stock
+            $stock = Stock::find($key['stock_id'])->rawMaterial;
+            $stock->parts = $stock->parts - $key['orders'];
+            $stock->save();
+            // Insertando detalle
             DetailSale::insert([
                 'sale_id' => $sale->id,
                 'stock_id' => $key['stock_id'],
