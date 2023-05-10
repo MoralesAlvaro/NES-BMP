@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\SaleDetail;
+use App\Http\Resources\DetailSale;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Sale extends JsonResource
@@ -23,7 +23,7 @@ class Sale extends JsonResource
             'sup_total' => $this->sup_total,
             'discount' => $this->discount,
             'total' => $this->total,
-            'detailSale' => $this->detailSale,
+            'detailSale' => DetailSale::collection($this->detailSale),
             'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'created_at' => $this->created_at->format('d-m-y'),

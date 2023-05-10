@@ -19,4 +19,14 @@ class DetailSale extends Model
         'total',
         'orders',
     ];
+
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
+    }
+
+    public function typeProduct()
+    {
+        return $this->belongsTo(TypeProduct::class);
+    }
 }

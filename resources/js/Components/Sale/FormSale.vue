@@ -368,7 +368,7 @@ const deleteItem = (item) => {
                             <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
                                 class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index + 1 }}</td>
                             <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
-                                class="text-center p-2 lg:text-base text-xs">{{ item.stock_name }}</td>
+                                class="text-center p-2 lg:text-base text-xs">{{ item.stock_name.name }}</td>
                             <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
                                 class="text-center p-2 lg:text-base text-xs">${{ item.total }}</td>
                             <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"

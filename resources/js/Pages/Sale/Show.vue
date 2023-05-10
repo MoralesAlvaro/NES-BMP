@@ -11,6 +11,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import Empty from '@/Components/Empty.vue';
 import Pagination from '@/Components/Pagination.vue';
 import IsLoanding from '@/Components/IsLoanding.vue';
+import ShowDetailSale from '@/Components/Sale/ShowDetailSale.vue'
 
 const props = defineProps({
     sales: Object,
@@ -65,14 +66,21 @@ const selectedSale = reactive({
 const toaster = createToaster({ /* options */ });
 const isEdit = ref(false);
 const statusModalForm = ref(false);
+const statusDetailSale = ref(false);
 const statusModalDelete = ref(false);
 
 const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
 };
+
+const toggleDetailSale = () => {
+    statusDetailSale.value = !statusDetailSale.value;
+};
+
 const toggleDeleteModal = () => {
     statusModalDelete.value = !statusModalDelete.value;
 };
+
 const selectItem = (item) => {
     selectedSale.id = item.id,
         selectedSale.status_sale_id = item.status_sale_id,
@@ -123,6 +131,16 @@ const hasPermission = () => {
 }
 hasPermission()
 
+const showDetail = (item) => {
+    selectedSale.id = item.id,
+        selectedSale.status_sale_id = item.status_sale_id,
+        selectedSale.sup_total = item.sup_total,
+        selectedSale.discount = item.discount,
+        selectedSale.total = item.total,
+        selectedSale.detailSale = item.detailSale.map(item => ({ ...item, kind: 'old' })),
+        toggleDetailSale()
+}
+
 </script>
 <template>
     <Head title="Ventas" />
@@ -132,6 +150,10 @@ hasPermission()
         <Modal :show="statusModalForm" maxWidth="7xl" @close="toggleFormModal">
             <FormSale :isEdit="isEdit" :sale="selectedSale" :typeProduct="typeProduct" :stocks="stocks"
                 @close="toggleFormModal" />
+        </Modal>
+
+        <Modal :show="statusDetailSale" maxWidth="4xl" @close="toggleDetailSale">
+            <ShowDetailSale :sale="selectedSale" @close="toggleDetailSale" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
@@ -177,14 +199,14 @@ hasPermission()
                     <div v-if="sales.data.length">
                         <Table :header="header" :items="sales.data.length">
                             <tbody class="px-5">
-                                <tr v-for=" (item, index) in sales.data  " class="mt-2">
-                                    <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index + 1 }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
-                                    <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ?
+                                <tr v-for=" (item, index) in sales.data " class="mt-2 hover:bg-gray-50">
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index + 1 }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
+                                    <td @click="showDetail(item)" class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ?
                                         "Pagado" : "Pendiente" }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">
                                             <div class="flex flex-row space-x-4">
