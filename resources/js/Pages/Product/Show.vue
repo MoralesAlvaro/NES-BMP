@@ -8,6 +8,7 @@ import { reactive, ref } from 'vue';
 import FormProduct from '@/Components/Product/FormProduct.vue'
 import Empty from '@/Components/Empty.vue'
 import { createToaster } from "@meforma/vue-toaster";
+import IsLoanding from '@/Components/IsLoanding.vue';
 import Pagination from '@/Components/Pagination.vue';
 
 
@@ -50,6 +51,7 @@ const toaster = createToaster({ /* options */ });
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
+const isLoading = ref(false);
 
 const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
@@ -86,6 +88,7 @@ const hasPermission = () => {
 hasPermission()
 
 const submitDelete = () => {
+    isLoading.value = true;
     formDelete.get(route('product.destroy', formDelete.id), {
         onSuccess: () => {
             toaster.success(`Registro eliminado`);
@@ -101,6 +104,7 @@ const submitDelete = () => {
         },
         onFinish: () => {
             toggleDeleteModal();
+            isLoading.value = false;
         }
     });
 }
@@ -118,6 +122,7 @@ const submitDelete = () => {
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
+            <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
                 <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
                     este producto?</h2>
@@ -154,9 +159,9 @@ const submitDelete = () => {
                 </div>
                 <div
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <div v-if=" product_list " class="">
-                        <div v-if=" products.data.length ">
-                            <Table :header=" header " :items=" products.data.length ">
+                    <div v-if="product_list" class="">
+                        <div v-if="products.data.length">
+                            <Table :header="header" :items="products.data.length">
                                 <tbody class="px-5">
                                     <tr v-for=" item  in  products.data " class="mt-2">
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.id }}</td>
@@ -166,9 +171,9 @@ const submitDelete = () => {
                                         <td class="text-center p-2 lg:text-base text-xs">
                                             <div class="flex justify-center">
                                                 <div class="flex flex-row space-x-4">
-                                                    <a v-if=" product_update " @click=" selectItem(item) "
+                                                    <a v-if="product_update" @click=" selectItem(item)"
                                                         class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                                    <a v-if=" product_destroy " @click=" selectDeleteItem(item) "
+                                                    <a v-if="product_destroy" @click=" selectDeleteItem(item)"
                                                         class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                                                 </div>
                                             </div>
@@ -181,10 +186,7 @@ const submitDelete = () => {
                             <Empty></Empty>
                         </div>
                         <div class="p-6">
-                            <Pagination
-                                :links="props.products.links"
-                                :meta="props.products.meta"
-                            />
+                            <Pagination :links="props.products.links" :meta="props.products.meta" />
                         </div>
                     </div>
                     <div v-else class="py-12 min-h-screen">

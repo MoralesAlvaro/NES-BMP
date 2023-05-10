@@ -1,71 +1,50 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue'
 import Button from '@/Components/PrimaryButton.vue'
 import Modal from '@/Components/Modal.vue'
+import FormSale from '@/Components/Sale/FormSale.vue'
 import { reactive, ref } from 'vue';
-import FormStock from '@/Components/Stock/FormStock.vue';
-import Empty from '@/Components/Empty.vue';
 import { createToaster } from "@meforma/vue-toaster";
-import IsLoanding from '@/Components/IsLoanding.vue'
+import { useForm, usePage } from '@inertiajs/vue3';
+import Empty from '@/Components/Empty.vue';
 import Pagination from '@/Components/Pagination.vue';
+import IsLoanding from '@/Components/IsLoanding.vue';
 
 const props = defineProps({
+    sales: Object,
     stocks: Object,
-    raw_materials: Object,
+    typeDoc: Array,
+    typeProduct: Array,
+    statusSale: Object,
     permissions: Array
 });
 
-const toaster = createToaster({ /* options */ });
-const isEdit = ref(false);
-const statusModalForm = ref(false);
-const statusModalDelete = ref(false);
-
-let stock_list = false; let stock_store = false; let stock_update = false; let stock_destroy = false;
-const hasPermission = () => {
-    props.permissions.find(item => item.name === 'stock_list') ? stock_list = true : stock_list = false;
-    props.permissions.find(item => item.name === 'stock_store') ? stock_store = true : stock_store = false;
-    props.permissions.find(item => item.name === 'stock_update') ? stock_update = true : stock_update = false;
-    props.permissions.find(item => item.name === 'stock_destroy') ? stock_destroy = true : stock_destroy = false;
-}
-hasPermission()
-
-const toggleFormModal = () => {
-    statusModalForm.value = !statusModalForm.value;
-};
-
-const toggleDeleteModal = () => {
-    statusModalDelete.value = !statusModalDelete.value;
-};
-
+const isLoading = ref(false);
 const header = reactive([
     {
-        name: "#",
+        name: '#',
         showInMobile: true
     },
     {
-        name: "Materia prima",
-        showInMobile: true
-    },
-    {
-        name: "Nombre",
-        showInMobile: true
-    },
-    {
-        name: "Costo",
-        showInMobile: true
-    },
-    {
-        name: "Previo de venta",
-        showInMobile: true
-    },
-    {
-        name: "Ganancia",
+        name: "Fecha",
         showInMobile: true
     },
     {
         name: "Estado",
+        showInMobile: true
+    },
+    {
+        name: "Sub total",
+        showInMobile: true
+    },
+    {
+        name: 'Descuentos',
+        showInMobile: true
+    },
+    {
+        name: 'Total',
         showInMobile: true
     },
     {
@@ -74,36 +53,34 @@ const header = reactive([
     }
 ]);
 
-const selectedStock = reactive({
+const selectedSale = reactive({
     id: null,
-    raw_material_id: null,
-    name: null,
-    cost: null,
-    mount: null,
-    time: null,
-    gain: null,
-    active: null,
+    status_sale_id: null,
+    sup_total: null,
+    discount: null,
+    total: null,
+    detailSale: null,
 });
 
-const selectedStockDelete = reactive({
-    id: null
-});
+const toaster = createToaster({ /* options */ });
+const isEdit = ref(false);
+const statusModalForm = ref(false);
+const statusModalDelete = ref(false);
 
-const selectDeleteItem = (item) => {
-    formDelete.id = item.id,
-        toggleDeleteModal()
-}
-
+const toggleFormModal = () => {
+    statusModalForm.value = !statusModalForm.value;
+};
+const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
+};
 const selectItem = (item) => {
-    selectedStock.id = item.id,
-        selectedStock.raw_material_id = item.raw_material_id.id,
-        selectedStock.name = item.name,
-        selectedStock.cost = item.cost,
-        selectedStock.mount = item.mount,
-        selectedStock.time = item.time,
-        selectedStock.gain = item.gain,
-        selectedStock.active = item.active,
-        isEdit.value = true,
+    selectedSale.id = item.id,
+        selectedSale.status_sale_id = item.status_sale_id,
+        selectedSale.sup_total = item.sup_total,
+        selectedSale.discount = item.discount,
+        selectedSale.total = item.total,
+        selectedSale.detailSale = item.detailSale.map(item => ({ ...item, kind: 'old' }))
+    isEdit.value = true,
         toggleFormModal()
 }
 
@@ -111,13 +88,16 @@ const formDelete = useForm({
     id: null
 });
 
-const isLoading = ref(false);
+const selectDeleteItem = item => {
+    formDelete.id = item.id;
+    toggleDeleteModal();
+};
 
 const submitDelete = () => {
     isLoading.value = true;
-    formDelete.get(route('stock.destroy', formDelete.id), {
+    formDelete.get(route('sale.destroy', formDelete.id), {
         onSuccess: () => {
-            toaster.success(`Registro eliminado`);
+            toaster.info(`Registro eliminado`);
             toggleDeleteModal();
         },
         onError: () => {
@@ -130,28 +110,39 @@ const submitDelete = () => {
         },
         onFinish: () => {
             toggleDeleteModal();
-            isLoading.value = false;
         }
     });
 }
-</script>
 
+let sale_list = false; let sale_store = false; let sale_update = false; let sale_destroy = false;
+const hasPermission = () => {
+    props.permissions.find(item => item.name === 'sale_list') ? sale_list = true : sale_list = false;
+    props.permissions.find(item => item.name === 'sale_store') ? sale_store = true : sale_store = false;
+    props.permissions.find(item => item.name === 'sale_update') ? sale_update = true : sale_update = false;
+    props.permissions.find(item => item.name === 'sale_destroy') ? sale_destroy = true : sale_destroy = false;
+}
+hasPermission()
+
+</script>
 <template>
-    <Head title="Stocks" />
+    <Head title="Ventas" />
+
     <AppLayout>
 
-        <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            <FormStock :isEdit="isEdit" :stock="selectedStock" @close="toggleFormModal" />
+        <Modal :show="statusModalForm" maxWidth="7xl" @close="toggleFormModal">
+            <FormSale :isEdit="isEdit" :sale="selectedSale" :typeProduct="typeProduct" :stocks="stocks"
+                @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
+
             <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
                 <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
-                    este stock?</h2>
+                    esta categoría?</h2>
                 <div class="px-5">
                     <p class="mt-5 text-justify text-gray-400">
-                        Al eliminar este stock se borrará permanentemente del sistema.
+                        Al eliminar esta categoría se borrará permanentemente del sistema, y ya no tendrá quedaraá rastro.
                         Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
                     </p>
                     <div class="flex justify-end mt-5">
@@ -174,52 +165,54 @@ const submitDelete = () => {
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
                 <div class="flex justify-between items-center mb-5">
                     <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Stock
+                        Ventas
                     </h2>
-                    <Button v-if="stock_store" @click="toggleFormModal(); isEdit = false">
+                    <Button v-if="sale_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
                     </Button>
                 </div>
-                <div v-if="stock_list"
+
+                <div v-if="sale_list"
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <div v-if="stocks.data.length">
-                        <Table :header="header" :items="stocks.data.length">
+                    <div v-if="sales.data.length">
+                        <Table :header="header" :items="sales.data.length">
                             <tbody class="px-5">
-                                <tr v-for="   item   in   stocks.data  " class="mt-2">
-                                    <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ item.id }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.raw_material_id.quantity }}
-                                    </td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.cost }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.mount }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.gain }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
+                                <tr v-for=" (item, index) in sales.data  " class="mt-2">
+                                    <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index + 1 }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
+                                    <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ?
+                                        "Pagado" : "Pendiente" }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">
                                             <div class="flex flex-row space-x-4">
-                                                <a v-if="stock_update" @click=" selectItem(item)"
+                                                <a v-if="sale_update" @click=" selectItem(item)"
                                                     class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                                <a v-if="stock_destroy" @click=" selectDeleteItem(item)"
+                                                <a v-if="sale_destroy" @click=" selectDeleteItem(item)"
                                                     class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
-
                         </Table>
                     </div>
                     <div v-else class="py-12 min-h-screen">
                         <Empty></Empty>
                     </div>
                     <div class="p-6">
-                        <Pagination :links="props.stocks.links" :meta="props.stocks.meta" />
+                        <Pagination :links="props.sales.links" :meta="props.sales.meta" />
                     </div>
+
                 </div>
                 <div v-else class="py-12 min-h-screen">
                     <Empty></Empty>
                 </div>
+
             </div>
         </div>
+
     </AppLayout>
 </template>

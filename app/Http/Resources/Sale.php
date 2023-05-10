@@ -3,9 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\SaleDetail;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Stock extends JsonResource
+class Sale extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +17,13 @@ class Stock extends JsonResource
     {
         return [
             'id' => $this->id,
-            'raw_material_id' => $this->rawMaterial->id,
-            'raw_material' => $this->rawMaterial,
-            'name' => $this->name,
-            'mount' => $this->mount,
-            'gain' => $this->gain,
-            'active' => $this->active = 1 ? 'Activo' : 'Inactivo',
+            'status_sale_id' => $this->status_sale_id === 1? false : true,
+            'user' => $this->user,
+            'type_doc_id' => $this->typeDoc,
+            'sup_total' => $this->sup_total,
+            'discount' => $this->discount,
+            'total' => $this->total,
+            'detailSale' => $this->detailSale,
             'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'created_at' => $this->created_at->format('d-m-y'),

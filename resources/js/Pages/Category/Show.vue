@@ -9,6 +9,7 @@ import FormCategory from '@/Components/Category/FormCategory.vue'
 import { createToaster } from "@meforma/vue-toaster";
 import { useForm, usePage } from '@inertiajs/vue3';
 import Empty from '@/Components/Empty.vue';
+import IsLoanding from '@/Components/IsLoanding.vue';
 import Pagination from '@/Components/Pagination.vue';
 
 const props = defineProps({
@@ -46,6 +47,7 @@ const toaster = createToaster({ /* options */ });
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
+const isLoading = ref(false);
 
 const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
@@ -72,6 +74,7 @@ const selectDeleteItem = item => {
 };
 
 const submitDelete = () => {
+            isLoading.value = true;
     formDelete.get(route('category.destroy', formDelete.id), {
         onSuccess: () => {
             toaster.info(`Registro eliminado`);
@@ -86,6 +89,7 @@ const submitDelete = () => {
             }
         },
         onFinish: () => {
+            isLoading.value = true;
             toggleDeleteModal();
         }
     });
@@ -111,6 +115,7 @@ hasPermission()
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
+            <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
                 <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
                     esta categoría?</h2>

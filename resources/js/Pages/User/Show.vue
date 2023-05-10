@@ -61,6 +61,7 @@
     selectedUser.user_id = item.id
     selectedUser.name = item.name
     selectedUser.email = item.email
+    selectedUser.telephone = item.telephone
     selectedUser.user_role = item.user_role
     isEdit.value = true
     toggleFormModal()
@@ -118,7 +119,7 @@
                 <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a v-if="change_role" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a v-if="change_role, item.user_role[0] !== 'master'" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
                       <a v-if="user_destroy" @click="eliminar(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>

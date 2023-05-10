@@ -12,6 +12,9 @@ use Database\Seeders\ProductSeeder;
 use Database\Seeders\RawMaterialSeeder;
 use Database\Seeders\StockSeeder;
 use Database\Seeders\StatusSaleSeeder;
+use Database\Seeders\TypeDocSeeder;
+use Database\Seeders\SaleSeeder;
+use Database\Seeders\TypeProductSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,6 +38,10 @@ class DatabaseSeeder extends Seeder
             'raw_materials',
             'stocks',
             'status_sales',
+            'type_docs',
+            'type_products',
+            'sales',
+            'detail_sales'
         ]);
         // $this->call(UserSeeder::class);
         $this->call(PermissionsSeeder::class);
@@ -44,6 +51,9 @@ class DatabaseSeeder extends Seeder
         $this->call(RawMaterialSeeder::class);
         $this->call(StockSeeder::class);
         $this->call(StatusSaleSeeder::class);
+        $this->call(TypeDocSeeder::class);
+        $this->call(TypeProductSeeder::class);
+        $this->call(SaleSeeder::class);
 
     }
 

@@ -8,6 +8,7 @@ import Pagination from '@/Components/Pagination.vue';
 import { createToaster } from "@meforma/vue-toaster";
 import { reactive, ref } from 'vue';
 import Empty from '@/Components/Empty.vue';
+import IsLoanding from '@/Components/IsLoanding.vue';
 import FormRawMaterial from "@/Components/RawMaterial/FormRawMaterial.vue";
 
 
@@ -16,6 +17,7 @@ const props = defineProps({
     products: Object,
     permissions: Array
 });
+const isLoading = ref(false);
 
 const toaster = createToaster({ /* options */ });
 const isEdit = ref(false);
@@ -90,19 +92,19 @@ const selectedRawDelete = reactive({
 
 const selectDeleteItem = (item) => {
     formDelete.id = item.id,
-    toggleDeleteModal()
+        toggleDeleteModal()
 }
 
 const selectItem = (item) => {
     selectedRaw.id = item.id,
-    selectedRaw.product_id = item.product_id.id,
-    selectedRaw.total = item.total,
-    selectedRaw.quantity = item.quantity,
-    selectedRaw.parts = item.parts,
-    selectedRaw.cost = item.cost,
-    selectedRaw.active = item.active,
-    isEdit.value = true,
-    toggleFormModal()
+        selectedRaw.product_id = item.product_id.id,
+        selectedRaw.total = item.total,
+        selectedRaw.quantity = item.quantity,
+        selectedRaw.parts = item.parts,
+        selectedRaw.cost = item.cost,
+        selectedRaw.active = item.active,
+        isEdit.value = true,
+        toggleFormModal()
 }
 
 const formDelete = useForm({
@@ -110,6 +112,7 @@ const formDelete = useForm({
 });
 
 const submitDelete = () => {
+    isLoading.value = true;
     formDelete.get(route('rawMaterial.destroy', formDelete.id), {
         onSuccess: () => {
             toaster.success(`Registro eliminado`);
@@ -125,6 +128,7 @@ const submitDelete = () => {
         },
         onFinish: () => {
             toggleDeleteModal();
+            isLoading.value = false;
         }
     });
 }
@@ -136,10 +140,12 @@ const submitDelete = () => {
     <AppLayout>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            <FormRawMaterial :isEdit="isEdit" :products="props.products" :rawMaterial="selectedRaw" @close="toggleFormModal" />
+            <FormRawMaterial :isEdit="isEdit" :products="props.products" :rawMaterial="selectedRaw"
+                @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
+            <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
                 <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
                     esta Materia prima?</h2>
@@ -175,10 +181,10 @@ const submitDelete = () => {
                         Nuevo
                     </Button>
                 </div>
-                <div v-if=" rawMaterial_list "
+                <div v-if="rawMaterial_list"
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <div v-if=" reawMaterials.data.length ">
-                        <Table :header=" header " :items=" reawMaterials.data.length ">
+                    <div v-if="reawMaterials.data.length">
+                        <Table :header="header" :items="reawMaterials.data.length">
                             <tbody class="px-5">
                                 <tr v-for="   item   in   reawMaterials.data  " class="mt-2">
                                     <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ item.id }}</td>
@@ -191,9 +197,9 @@ const submitDelete = () => {
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">
                                             <div class="flex flex-row space-x-4">
-                                                <a v-if=" rawMaterial_update " @click=" selectItem(item) "
+                                                <a v-if="rawMaterial_update" @click=" selectItem(item)"
                                                     class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                                <a v-if=" rawMaterial_destroy " @click=" selectDeleteItem(item) "
+                                                <a v-if="rawMaterial_destroy" @click=" selectDeleteItem(item)"
                                                     class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                                             </div>
                                         </div>
@@ -207,7 +213,7 @@ const submitDelete = () => {
                         <Empty></Empty>
                     </div>
                     <div class="p-6">
-                        <Pagination :links=" props.reawMaterials.links " :meta=" props.reawMaterials.meta " />
+                        <Pagination :links="props.reawMaterials.links" :meta="props.reawMaterials.meta" />
                     </div>
                 </div>
                 <div v-else class="py-12 min-h-screen">

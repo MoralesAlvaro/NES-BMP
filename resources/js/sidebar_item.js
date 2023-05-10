@@ -23,8 +23,8 @@ export const sidebarItems = [
         icon: 'fas fa-money-bill',
         children: [
             {
-                name: 'Ventas1',
-                item_url: 'sales',
+                name: 'Ventas',
+                item_url: 'sale.list',
                 icon: 'fa fa-circle fa-xs'
             }
         ]

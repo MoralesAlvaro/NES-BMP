@@ -24,7 +24,7 @@ class UserController extends Controller
         }
 
         $users = new UserCollection(User::where('active', 1)->orderBy('id', 'desc')->get());
-        $roles = Role::all();
+        $roles = Role::where('id', '<>', 1)->get();
         $permissions = Auth::user()->getAllPermissions();
 
         //return response()->json($permissions, 200);
@@ -47,6 +47,7 @@ class UserController extends Controller
         $validando = \Validator::make($request->all(), [
             'email' => 'required|string|email|unique:users',
             'role_id' => 'required|integer',
+            'telephone' => 'nullable|integer',
         ]);
 
         if ($validando->fails())
@@ -55,7 +56,7 @@ class UserController extends Controller
         }
 
         // Creando usuario y asignando rol
-        $password = Str::random(8);
+        $password = Str::random(12);
         $user = new User([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
