@@ -10,6 +10,7 @@ import { createToaster } from "@meforma/vue-toaster";
 import { useForm, usePage } from '@inertiajs/vue3';
 import Empty from '@/Components/Empty.vue';
 import Pagination from '@/Components/Pagination.vue';
+import IsLoanding from '@/Components/IsLoanding.vue';
 
 const props = defineProps({
     sales: Object,
@@ -20,6 +21,7 @@ const props = defineProps({
     permissions: Array
 });
 
+const isLoading = ref(false);
 const header = reactive([
     {
         name: '#',
@@ -73,13 +75,13 @@ const toggleDeleteModal = () => {
 };
 const selectItem = (item) => {
     selectedSale.id = item.id,
-    selectedSale.status_sale_id = item.status_sale_id,
-    selectedSale.sup_total = item.sup_total,
-    selectedSale.discount = item.discount,
-    selectedSale.total = item.total,
-    selectedSale.detailSale = item.detailSale.map(item => ({...item, kind:'old'}))
+        selectedSale.status_sale_id = item.status_sale_id,
+        selectedSale.sup_total = item.sup_total,
+        selectedSale.discount = item.discount,
+        selectedSale.total = item.total,
+        selectedSale.detailSale = item.detailSale.map(item => ({ ...item, kind: 'old' }))
     isEdit.value = true,
-    toggleFormModal()
+        toggleFormModal()
 }
 
 const formDelete = useForm({
@@ -92,6 +94,7 @@ const selectDeleteItem = item => {
 };
 
 const submitDelete = () => {
+    isLoading.value = true;
     formDelete.get(route('sale.destroy', formDelete.id), {
         onSuccess: () => {
             toaster.info(`Registro eliminado`);
@@ -127,10 +130,13 @@ hasPermission()
     <AppLayout>
 
         <Modal :show="statusModalForm" maxWidth="7xl" @close="toggleFormModal">
-            <FormSale :isEdit="isEdit" :sale="selectedSale" :typeProduct="typeProduct" :stocks="stocks" @close="toggleFormModal" />
+            <FormSale :isEdit="isEdit" :sale="selectedSale" :typeProduct="typeProduct" :stocks="stocks"
+                @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
+
+            <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
                 <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
                     esta categoría?</h2>
@@ -166,24 +172,25 @@ hasPermission()
                     </Button>
                 </div>
 
-                <div v-if=" sale_list "
+                <div v-if="sale_list"
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <div v-if=" sales.data.length ">
-                        <Table :header=" header " :items=" sales.data.length ">
+                    <div v-if="sales.data.length">
+                        <Table :header="header" :items="sales.data.length">
                             <tbody class="px-5">
                                 <tr v-for=" (item, index) in sales.data  " class="mt-2">
-                                    <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index +1 }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index + 1 }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
-                                    <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ? "Pagado":"Pendiente" }}</td>
+                                    <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ?
+                                        "Pagado" : "Pendiente" }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">
                                             <div class="flex flex-row space-x-4">
-                                                <a v-if=" sale_update " @click=" selectItem(item) "
+                                                <a v-if="sale_update" @click=" selectItem(item)"
                                                     class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                                <a v-if=" sale_destroy " @click=" selectDeleteItem(item) "
+                                                <a v-if="sale_destroy" @click=" selectDeleteItem(item)"
                                                     class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                                             </div>
                                         </div>
@@ -196,7 +203,7 @@ hasPermission()
                         <Empty></Empty>
                     </div>
                     <div class="p-6">
-                        <Pagination :links=" props.sales.links " :meta=" props.sales.meta " />
+                        <Pagination :links="props.sales.links" :meta="props.sales.meta" />
                     </div>
 
                 </div>

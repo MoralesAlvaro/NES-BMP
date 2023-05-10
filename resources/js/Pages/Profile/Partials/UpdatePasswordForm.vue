@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { createToaster } from "@meforma/vue-toaster";
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -32,6 +33,13 @@ const updatePassword = () => {
         },
     });
 };
+
+const toaster = createToaster({ /* options */ });
+const procesado = () => {
+    if (form.recentlySuccessful) {
+        toaster.success(`La contraseña se ha actualizado correctamente`);
+    }
+}
 </script>
 
 <template>
@@ -70,6 +78,7 @@ const updatePassword = () => {
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
+                    minlength="8"
                 />
 
                 <InputError :message="form.errors.password" class="mt-2" />
@@ -84,6 +93,7 @@ const updatePassword = () => {
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
+                    minlength="8"
                 />
 
                 <InputError :message="form.errors.password_confirmation" class="mt-2" />
@@ -93,7 +103,7 @@ const updatePassword = () => {
                 <PrimaryButton :disabled="form.processing">Cambiar</PrimaryButton>
 
                 <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Cambiada.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">{{procesado()}}</p>
                 </Transition>
             </div>
         </form>
