@@ -61,6 +61,12 @@ class PermissionsSeeder extends Seeder
         $sale_update = Permission::create(['name' => 'sale_update', 'descriptions' => 'Vista y acción editar ventas']);
         $sale_destroy = Permission::create(['name' => 'sale_destroy', 'descriptions' => 'Vista y acción eliminar ventas']);
 
+        /* DETAIL SALE */
+        $detailSale_list = Permission::create(['name' => 'detailSale_list', 'descriptions' => 'Vista lista de ventas']);
+        $detailSale_store = Permission::create(['name' => 'detailSale_store', 'descriptions' => 'Vista y acción crear ventas']);
+        $detailSale_update = Permission::create(['name' => 'detailSale_update', 'descriptions' => 'Vista y acción editar ventas']);
+        $detailSale_destroy = Permission::create(['name' => 'detailSale_destroy', 'descriptions' => 'Vista y acción eliminar ventas']);
+
 
 
         // ----------------------------------------
@@ -74,6 +80,7 @@ class PermissionsSeeder extends Seeder
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
             $stock_list, $stock_store, $stock_update, $stock_destroy,
             $sale_list, $sale_store, $sale_update, $sale_destroy,
+            $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
         ];
         $root->syncPermissions($permission_root);
 
@@ -85,6 +92,7 @@ class PermissionsSeeder extends Seeder
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
             $stock_list, $stock_store, $stock_update, $stock_destroy,
             $sale_list, $sale_store, $sale_update, $sale_destroy,
+            $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
         ];
         $encargado->syncPermissions($permission_encargado);
 

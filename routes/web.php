@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\DetailSaleController;
 
 
 Route::get('/', function () {
@@ -80,6 +81,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/sale/store', [SaleController::class, 'store'])->name('sale.store');
     Route::post('/sale/update', [SaleController::class, 'update'])->name('sale.update');
     Route::get('/sale/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
+
+    // Detail sale
+    Route::get('/detailSale/destroy', [DetailSaleController::class, 'destroy'])->name('detailSale.destroy');
 });
 
 require __DIR__.'/auth.php';

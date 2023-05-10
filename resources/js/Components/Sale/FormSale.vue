@@ -9,6 +9,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { reactive, ref, getCurrentInstance } from 'vue';
 import InputError from '@/Components/InputError.vue';
 import { createToaster } from "@meforma/vue-toaster";
+import { fromJSON } from 'postcss';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -16,9 +17,6 @@ const props = defineProps({
         type: Boolean
     },
     sale: {
-        type: Object
-    },
-    statusSale: {
         type: Object
     },
     stocks: {
@@ -35,14 +33,15 @@ const isLoading = ref(false);
 
 let costo = reactive({ value: 0 });
 let exist = reactive({ value: 0 });
+let detailSaleEmpty = reactive({ value: false });
 
 const form = useForm({
     sale_id: props.isEdit && props.sale.id || '',
-    status_sale_id: props.isEdit && props.sale.status_sale_id || 1,
+    status_sale_id: props.isEdit && props.sale.status_sale_id || false,
     sup_total: props.isEdit && props.sale.sup_total || 0.00,
     discount: props.isEdit && props.sale.discount || 0.00,
     total: props.isEdit && props.sale.total || 0.00,
-    detail_sale: [], // array de detalle de venta
+    detail_sale: props.isEdit && props.sale.detailSale || [], // array de detalle de venta
     // detail_ sale
     orders: '1',
     discount_sale: '0',
@@ -81,20 +80,25 @@ const totalSale = () => {
     form.sup_total = 0;
     form.discount = 0;
     if (form.detail_sale) {
+
         form.detail_sale.forEach(element => {
-            form.total += element.total;
-            form.sup_total += element.total;
-            form.discount += element.discount;
+            if (element.kind !== 'delete') {
+                // Si tiene el valor de delete, significa que será sacado del detalle de venta
+                form.total += element.total;
+                form.sup_total += element.total;
+                form.discount += element.discount;
+            }
         });
         form.total = form.total - form.discount;
     }
 }
 
 // Agregar los elementos de detalle de venta a un array que luego sera recorrido en ele controlador para hacer el registro
-const addDetailSale = reactive([]);
 const addStockArray = () => {
     if (selectedStock.value.id && selectedTypeProduct.value.id) {
-        addDetailSale.push({
+        form.detail_sale.push({
+            id: '',
+            sale_id: form.sale_id,
             stock_id: selectedStock.value.id,
             stock_name: selectedStock.value.name,
             type_product_id: selectedTypeProduct.value.id,
@@ -102,12 +106,14 @@ const addStockArray = () => {
             discount: parseInt(form.discount_sale),
             total: costo.value,
             orders: form.orders,
+            kind: 'new',
         });
-        // console.log(addDetailSale);
-        form.detail_sale = addDetailSale;
-        totalSale();
         toaster.success(`${form.orders} Ordenes agregadas`);
         form.discount_sale = '0';
+        // Siempre que se agrege un nuevo elemento, la bandera pasa a false
+        totalSale();
+        detailSaleEmpty.value = false;
+
     } else {
         toaster.warning(`Selecciona el producto y su tipo`);
     }
@@ -116,35 +122,38 @@ const addStockArray = () => {
 const submit = () => {
     isLoading.value = true;
     if (form.detail_sale.length) {
-        if (props.isEdit) {
-            form.post(route('sale.update'), {
-                onSuccess: () => {
-                    emit('close');
-                    toaster.success(`Registro actualizado correctamente.`);
-                },
-                onError: () => {
-                    toaster.warning(`Todos los campos son requeridos`);
-                },
-                onFinish: () => {
-                    isLoading.value = false
-                }
-            })
+        if (detailSaleEmpty.value === false) {
+            if (props.isEdit) {
+                form.post(route('sale.update'), {
+                    onSuccess: () => {
+                        emit('close');
+                        toaster.success(`Registro actualizado correctamente.`);
+                    },
+                    onError: () => {
+                        toaster.warning(`Todos los campos son requeridos`);
+                    },
+                    onFinish: () => {
+                        isLoading.value = false
+                    }
+                })
+            } else {
+                form.post(route('sale.store'), {
+                    onSuccess: () => {
+                        emit('close');
+                        toaster.success(`Registro creado correctamente.`);
+                    },
+                    onError: () => {
+                        toaster.warning(`Todos los campos son requeridos`);
+                    },
+                    onFinish: () => {
+                        isLoading.value = false
+                    }
+                })
+            }
         } else {
-            form.post(route('sale.store'), {
-                onSuccess: () => {
-                    emit('close');
-                    toaster.success(`Registro creado correctamente.`);
-                },
-                onError: () => {
-                    toaster.warning(`Todos los campos son requeridos`);
-                },
-                onFinish: () => {
-                    isLoading.value = false
-                }
-            })
+            toaster.warning(`Por favor agrega los productos de la venta`);
         }
-
-    }else{
+    } else {
         toaster.warning(`Por favor agrega los productos de la venta`);
     }
 }
@@ -180,9 +189,30 @@ const headerPreview = reactive([
     }
 ]);
 
+const formDelete = useForm({
+    id: null
+});
+
 const deleteItem = (item) => {
-    form.detail_sale.splice(item, 1);
-    toaster.warning(`Se ha removido un item de la venta`);
+
+    if (form.detail_sale[item].kind === 'old') {
+        form.detail_sale[item].kind = 'delete';
+        totalSale();
+        // console.log(form.detail_sale[item].kind);
+        toaster.info(`El detalle de venta será eliminado de la venta hasta que de click en el botón "Editar"`);
+    } else if (form.detail_sale[item].kind === 'delete') {
+        form.detail_sale[item].kind = 'old';
+        totalSale();
+        // console.log(form.detail_sale[item].kind);
+        toaster.info(`El detalle de venta se ha activado nuevamente"`);
+    }
+
+    if (form.detail_sale[item].kind === 'new') {
+        form.detail_sale.splice(item, 1);
+        totalSale();
+        toaster.warning(`Se ha removido un item de la venta`);
+    }
+    totalSale();
 }
 
 </script>
@@ -195,28 +225,28 @@ const deleteItem = (item) => {
         <!-- Resumen de venta -->
         <div class="grid grid-cols-3 gap-4 shadow-md p-4 bg-white rounded-md">
 
-            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
+            <div class="md:w-auto w-full md:order-last mb-2 md:mb-0">
                 <h6 class="text-brown-900 ">
                     Subtotal ${{ form.sup_total.toFixed(2) }}
                 </h6>
             </div>
 
-            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
+            <div class="md:w-auto w-full md:order-last mb-2 md:mb-0">
                 <h6 class="text-brown-900 ">
                     Descuentos ${{ form.discount }}
                 </h6>
             </div>
 
-            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
+            <div class="md:w-auto w-full md:order-last mb-2 md:mb-0">
                 <h6 class="text-brown-900 font-semibold text-base md:text-xl text-end">
                     Total ${{ form.total.toFixed(2) }}
                 </h6>
             </div>
         </div>
         <!-- Seleccionar producto -->
-        <div class="grid grid-cols-12 gap-4 shadow-md p-4 mt-4 bg-white rounded-md">
+        <div class="grid md:grid-cols-12 gap-4 shadow-md p-4 mt-4 bg-white rounded-md">
 
-            <div class="mb-8 col-span-4">
+            <div class="mb-8 md:col-span-4 col-span-2">
                 <Label for="rol" value="Producto" />
                 <v-select :options="stocks.data.length ? stocks.data : []" :reduce="(option) => option.id" label="name"
                     placeholder="Seleccionar" class="appearance-none capitalize" @option:selected="handleSelectedStock">
@@ -233,7 +263,7 @@ const deleteItem = (item) => {
                 <InputError class="mt-2" :message="form.errors.active" />
             </div>
 
-            <div class="mb-8 col-span-4">
+            <div class="mb-8 md:col-span-4 col-span-2">
                 <Label for="rol" value="Tipo producto" />
                 <v-select :options="typeProduct.length ? typeProduct : []" :reduce="(option) => option.id" label="name"
                     placeholder="Seleccionar" class="appearance-none capitalize"
@@ -258,7 +288,7 @@ const deleteItem = (item) => {
                 <InputError class="mt-2" :message="form.errors.orders" />
             </div>
 
-            <div class="md:w-auto w-full  mb-2 md:mb-0 col-span-2">
+            <div class="md:w-auto w-full  mb-2 md:mb-0 md:col-span-2 col-span-3 sm:order-first md:order-none">
                 <h6 class="text-brown-900 font-semibold text-base md:text-xl text-end">
                     Costo ${{ costo.value.toFixed(2) }}
                 </h6>
@@ -275,16 +305,26 @@ const deleteItem = (item) => {
                     placeholder="0" />
             </div>
 
-            <div class="md:w-auto w-full mb-2 md:mb-0 col-span-3 pt-6 ">
+            <div class="md:w-auto w-full mb-2 md:mb-0 md:col-span-3 pt-6 ">
                 <Button @click="addStockArray()" type="button">
                     Agregar
                 </Button>
             </div>
 
-            <div class="md:w-auto w-full mb-2 md:mb-0 col-span-3 pt-6 ">
+            <div class="md:w-auto w-full mb-2 md:mb-0 md:col-span-3 pt-6 ">
                 <ButtonSecundary @click="" type="submit">
-                    Ordenar
+                    {{ isEdit ? 'Editar' : 'Ordenar' }}
                 </ButtonSecundary>
+            </div>
+
+            <div class="md:w-auto w-full mb-2 md:mb-0 pt-2 ">
+                <Label class="pb-2" for="discount_sale" value="Pagado" />
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" v-model="form.status_sale_id" class="sr-only peer">
+                    <div
+                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                    </div>
+                </label>
             </div>
 
         </div>
@@ -293,21 +333,30 @@ const deleteItem = (item) => {
             Detalle de la orden
         </h2>
         <!-- Detalle de la orden  -->
-        <div class="grid shadow-md p-4 mt-4 bg-white rounded-md">
+        <div class="grid shadow-md p-4 mt-4 bg-white rounded-md overflow-auto">
             <div v-if="headerPreview.length">
-                <Table :header="headerPreview" :items="headerPreview.length" class="overflow-auto h-52" >
+                <Table :header="headerPreview" :items="headerPreview.length" class="  h-52">
                     <tbody class="px-5">
                         <tr v-for=" (item, index) in form.detail_sale " class="mt-2">
-                            <td class="text-center p-2 lg:text-base text-xs">{{ index +1 }}</td>
-                            <td class="text-center p-2 lg:text-base text-xs">{{ item.stock_name }}</td>
-                            <td class="text-center p-2 lg:text-base text-xs">${{ item.total }}</td>
-                            <td class="text-center p-2 lg:text-base text-xs">${{ item.discount }}</td>
-                            <td class="text-center p-2 lg:text-base text-xs">{{ item.type_product_name }}</td>
-                            <td class="text-center p-2 lg:text-base text-xs">{{ item.orders }}</td>
+                            <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
+                                class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index + 1 }}</td>
+                            <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
+                                class="text-center p-2 lg:text-base text-xs">{{ item.stock_name }}</td>
+                            <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
+                                class="text-center p-2 lg:text-base text-xs">${{ item.total }}</td>
+                            <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
+                                class="text-center p-2 lg:text-base text-xs">${{ item.discount }}</td>
+                            <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
+                                class="text-center p-2 lg:text-base text-xs">{{ item.type_product_name }}</td>
+                            <td :class="{ 'line-through text-gray-300': item.kind === 'delete' }"
+                                class="text-center p-2 lg:text-base text-xs">{{ item.orders }}</td>
                             <td class="text-center p-2 lg:text-base text-xs">
                                 <div class="flex justify-center">
                                     <div class="flex flex-row space-x-4">
-                                        <a @click="deleteItem(index)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                                        <a @click="deleteItem(index)"
+                                            :class="{ 'line-none text-red-500': item.kind !== 'delete', 'line-none': item.kind === 'delete' }"
+                                            class="text-blue-500 font-medium cursor-pointer">{{ item.kind === 'delete' ?
+                                                'Activar' : 'Eliminar' }}</a>
                                     </div>
                                 </div>
                             </td>
@@ -317,5 +366,4 @@ const deleteItem = (item) => {
             </div>
 
         </div>
-    </form>
-</template>
+    </form></template>

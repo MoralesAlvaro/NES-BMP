@@ -22,6 +22,10 @@ const props = defineProps({
 
 const header = reactive([
     {
+        name: '#',
+        showInMobile: true
+    },
+    {
         name: "Fecha",
         showInMobile: true
     },
@@ -50,9 +54,10 @@ const header = reactive([
 const selectedSale = reactive({
     id: null,
     status_sale_id: null,
-    sub_total: null,
+    sup_total: null,
     discount: null,
     total: null,
+    detailSale: null,
 });
 
 const toaster = createToaster({ /* options */ });
@@ -68,10 +73,11 @@ const toggleDeleteModal = () => {
 };
 const selectItem = (item) => {
     selectedSale.id = item.id,
-    selectedSale.status_sale_id = item.id,
-    selectedSale.sub_total = item.sub_total,
+    selectedSale.status_sale_id = item.status_sale_id,
+    selectedSale.sup_total = item.sup_total,
     selectedSale.discount = item.discount,
     selectedSale.total = item.total,
+    selectedSale.detailSale = item.detailSale.map(item => ({...item, kind:'old'}))
     isEdit.value = true,
     toggleFormModal()
 }
@@ -121,7 +127,7 @@ hasPermission()
     <AppLayout>
 
         <Modal :show="statusModalForm" maxWidth="7xl" @close="toggleFormModal">
-            <FormSale :isEdit="isEdit" :sale="selectedSale" :statusSale="statusSale" :typeProduct="typeProduct" :stocks="stocks" @close="toggleFormModal" />
+            <FormSale :isEdit="isEdit" :sale="selectedSale" :typeProduct="typeProduct" :stocks="stocks" @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
@@ -165,9 +171,10 @@ hasPermission()
                     <div v-if=" sales.data.length ">
                         <Table :header=" header " :items=" sales.data.length ">
                             <tbody class="px-5">
-                                <tr v-for=" item in sales.data  " class="mt-2">
+                                <tr v-for=" (item, index) in sales.data  " class="mt-2">
+                                    <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ index +1 }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
-                                    <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id.name }}</td>
+                                    <td class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ? "Pagado":"Pendiente" }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
