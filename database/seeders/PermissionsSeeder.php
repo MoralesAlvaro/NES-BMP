@@ -18,7 +18,7 @@ class PermissionsSeeder extends Seeder
 
         // ----------------------------------------
         // ROLES
-        $root = Role::create(['name' => 'root']);
+        $master = Role::create(['name' => 'master']);
         $encargado = Role::create(['name' => 'encargado']);
         $empleado = Role::create(['name' => 'empleado']);
 
@@ -72,8 +72,8 @@ class PermissionsSeeder extends Seeder
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
-        // ----------------- PERMISOS root -----------------
-        $permission_root = [
+        // ----------------- PERMISOS master -----------------
+        $permission_master = [
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
@@ -82,7 +82,7 @@ class PermissionsSeeder extends Seeder
             $sale_list, $sale_store, $sale_update, $sale_destroy,
             $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
         ];
-        $root->syncPermissions($permission_root);
+        $master->syncPermissions($permission_master);
 
         // ----------------- PERMISOS ADMINISTRADORES -----------------
         $permission_encargado = [

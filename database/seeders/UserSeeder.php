@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
         foreach ($users as $item ) {
             if ($item->id == 1) {
-                $item->assignRole('root');
+                $item->assignRole('master');
             }else {
                 $item->assignRole('empleado');
             }

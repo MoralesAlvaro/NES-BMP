@@ -93,26 +93,53 @@ const totalSale = () => {
     }
 }
 
+const validateNegatives = () => {
+    if (form.discount_sale < 0) {
+        form.discount_sale = 0;
+        toaster.info("No puedes asignar descuentos negativos");
+    }
+    if (form.orders < 0 || form.orders < 1 ) {
+        form.orders = 1;
+        toaster.info("No puedes agregar ordenes negativas");
+    }
+}
+
+// Hace el caculo de las partes disponibles en stock
+const dischargetParts = (stock_id) => {
+    exist.value -= form.orders;
+    let stock = props.stocks.data.filter(item => item.id === stock_id)
+    stock[0].raw_material.parts = exist.value;
+}
+
 // Agregar los elementos de detalle de venta a un array que luego sera recorrido en ele controlador para hacer el registro
 const addStockArray = () => {
     if (selectedStock.value.id && selectedTypeProduct.value.id) {
-        form.detail_sale.push({
-            id: '',
-            sale_id: form.sale_id,
-            stock_id: selectedStock.value.id,
-            stock_name: selectedStock.value.name,
-            type_product_id: selectedTypeProduct.value.id,
-            type_product_name: selectedTypeProduct.value.name,
-            discount: parseInt(form.discount_sale),
-            total: costo.value,
-            orders: form.orders,
-            kind: 'new',
-        });
-        toaster.success(`${form.orders} Ordenes agregadas`);
-        form.discount_sale = '0';
-        // Siempre que se agrege un nuevo elemento, la bandera pasa a false
-        totalSale();
-        detailSaleEmpty.value = false;
+        validateNegatives();
+        let stock = props.stocks.data.filter(item => item.id === selectedStock.value.id)
+        let parts = stock[0].raw_material.parts - form.orders;
+        if (parts < 0) {
+            toaster.warning(`No puedes agregar más de ${stock[0].raw_material.parts} ordenes`);
+        }else{
+            form.detail_sale.push({
+                id: '',
+                sale_id: form.sale_id,
+                stock_id: selectedStock.value.id,
+                stock_name: selectedStock.value.name,
+                type_product_id: selectedTypeProduct.value.id,
+                type_product_name: selectedTypeProduct.value.name,
+                discount: parseInt(form.discount_sale),
+                total: costo.value,
+                orders: form.orders,
+                kind: 'new',
+            });
+            toaster.success(`${form.orders} Ordenes agregadas`);
+            form.discount_sale = '0';
+            // Siempre que se agrege un nuevo elemento, la bandera pasa a false
+            totalSale();
+            dischargetParts(selectedStock.value.id);
+            detailSaleEmpty.value = false;
+        }
+
 
     } else {
         toaster.warning(`Selecciona el producto y su tipo`);
@@ -283,7 +310,7 @@ const deleteItem = (item) => {
 
             <div class="col-span-2">
                 <Label for="orders" value="N° Ordenes" />
-                <Input id="orders" v-model="form.orders" @change="costStock" type="number" class="mt-1 block w-full"
+                <Input id="orders" v-model="form.orders" @change="costStock" @click="validateNegatives()" type="number" class="mt-1 block w-full"
                     required placeholder="0" />
                 <InputError class="mt-2" :message="form.errors.orders" />
             </div>
@@ -301,7 +328,7 @@ const deleteItem = (item) => {
 
             <div class="col-span-3">
                 <Label for="discount_sale" value="Descuentos" />
-                <Input id="discount_sale" v-model="form.discount_sale" type="number" class="mt-1 block w-full" required
+                <Input id="discount_sale" v-model="form.discount_sale" @click="validateNegatives()" type="number" class="mt-1 block w-full" required
                     placeholder="0" />
             </div>
 
