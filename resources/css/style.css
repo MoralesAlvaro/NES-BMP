@@ -1,0 +1,80 @@
+/* --------------------------------------------------------- */
+/* Estilos generales */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+/* Variables de raíz */
+:root {
+    --logBG-height-PC: 100vh;
+    --logBG-width-PC: 70vh;
+    --white-color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+/* --------------------------------------------------------- */
+
+/* --------------------------------------------------------- */
+/* Personalización de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #C2ADA0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #542F22;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5B2300;
+}
+/* --------------------------------------------------------- */
+
+/* Retirar estilo a los hipervínculos */
+a {
+    text-decoration: none !important;
+}
+
+/* Estilo del logo en el formulario de login */
+#ndes_logo_lg {
+    width: 30%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 5px 5px 5px 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo de banner */
+#banner_ndes {
+    background-image: url(img/banners/NDES_002.jpg);
+}
+
+/* --------------------------------------------------------- */
+/* Dispositivos de mayor tamaño */
+@media (min-width: 501px) {
+    #banner_ndes {
+        background-image: url(img/banners/NDES_002.jpg);
+    }
+    #auth_layout {
+        margin-left: 12em;
+    }
+
+}
+
+/* Dispositivos de menor tamaño */
+@media (max-width: 500px) {
+    #banner_ndes {
+        display: none;
+    }
+
+    .navbar_logo {
+        display: none !important;
+    }
+}
+/* --------------------------------------------------------- */
