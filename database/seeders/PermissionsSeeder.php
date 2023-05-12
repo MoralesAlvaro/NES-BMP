@@ -71,7 +71,7 @@ class PermissionsSeeder extends Seeder
         $expense_list = Permission::create(['name' => 'expense_list', 'descriptions' => 'Vista lista de gastos']);
         $expense_store = Permission::create(['name' => 'expense_store', 'descriptions' => 'Vista y acción crear gastos']);
         $expense_update = Permission::create(['name' => 'expense_update', 'descriptions' => 'Vista y acción editar gastos']);
-        $expense_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Vista y acción eliminar gastos']);
+        $expense_destroy = Permission::create(['name' => 'expense_destroy', 'descriptions' => 'Vista y acción eliminar gastos']);
 
 
 

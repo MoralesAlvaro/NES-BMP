@@ -45,18 +45,19 @@ const selectItem = (item) => {
 <template>
     <Head title="Roles" />
     <AppLayout>
+        <!-- Encabezado del componente -->
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-700 leading-tight sm:text-end md:text-start text-start">
+                Roles
+            </h2>
+        </template>
 
-        <div class="py-12 min-h-screen">
+        <div class="py-6 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-                <div class="flex justify-between items-center mb-5">
-                    <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Roles
-                    </h2>
-
+                <div class="flex md:justify-end sm:justify-start items-center mb-5">
                     <Button @click="toggleFormModal(); isEdit = false">
                         Invitar
                     </Button>
-
                 </div>
 
                 <div
