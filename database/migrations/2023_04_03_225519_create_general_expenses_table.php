@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('general_expenses', function (Blueprint $table) {
-            $table->increments('id')->comment('Identificador único de la tabla');
+            $table->increments('id');
             $table->text('name')->comment('Nombre del gasto realizado');
-            $table->decimal('total',8,2)->comment('Total de gasto');
+            $table->float('total')->comment('Total de gasto');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

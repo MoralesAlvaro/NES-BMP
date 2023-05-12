@@ -86,6 +86,9 @@ class PermissionsSeeder extends Seeder
             $product_list, $product_store, $product_update, $product_destroy,
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
             $stock_list, $stock_store, $stock_update, $stock_destroy,
+            $sale_list, $sale_store, $sale_update, $sale_destroy,
+            $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
+            $expense_list, $expense_store, $expense_update, $expense_destroy,
         ];
         $master->syncPermissions($permission_master);
 
@@ -97,6 +100,9 @@ class PermissionsSeeder extends Seeder
 
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
             $stock_list, $stock_store, $stock_update, $stock_destroy,
+            $sale_list, $sale_store, $sale_update, $sale_destroy,
+            $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
+            $expense_list, $expense_store, $expense_update, $expense_destroy,
         ];
         $encargado->syncPermissions($permission_encargado);
 
