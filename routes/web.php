@@ -14,6 +14,7 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DetailSaleController;
+use App\Http\Controllers\DailySaleController;
 
 
 Route::get('/', function () {
@@ -53,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rawMaterial/list', [RawMaterialController::class, 'index'])->name('rawMaterial.list');
     Route::get('/stock/list', [StockController::class, 'index'])->name('stock.list');
     Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
+    Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
 });
 
 
@@ -83,7 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sale/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
 
     // Detail sale
-    Route::get('/detailSale/destroy', [DetailSaleController::class, 'destroy'])->name('detailSale.destroy');
+    Route::get('/dailySales', [DailySaleController::class, 'index'])->name('dailySales');
 });
 
 require __DIR__.'/auth.php';
