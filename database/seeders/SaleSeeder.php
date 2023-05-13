@@ -4,22 +4,27 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\TypeDoc;
+use App\Models\Sale;
 
-class TypeDocSeeder extends Seeder
+class SaleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        TypeDoc::insert([
+        Sale::insert([
             [
-                'name' => 'Ticket',
-                'description' => '',
+                'status_sale_id' => 1,
+                'user_id' => 1,
+                'type_doc_id' => 1,
+                'sup_total' => 23.45,
+                'discount' => 0,
+                'total' => 23.45,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
+            ]
         ]);
+
     }
 }

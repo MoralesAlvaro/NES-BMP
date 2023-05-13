@@ -12,7 +12,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
-use App\Http\Controllers\GeneralExpensesController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\DetailSaleController;
 
 
 Route::get('/', function () {
@@ -51,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/list', [ProductController::class, 'index'])->name('product.list');
     Route::get('/rawMaterial/list', [RawMaterialController::class, 'index'])->name('rawMaterial.list');
     Route::get('/stock/list', [StockController::class, 'index'])->name('stock.list');
-    Route::get('/expense/list', [GeneralExpensesController::class, 'index'])->name('expense.list');
+    Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
 });
 
 
@@ -76,12 +77,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/rawMaterial/update', [RawMaterialController::class, 'update'])->name('rawMaterial.update');
     Route::get('/rawMaterial/destroy', [RawMaterialController::class, 'destroy'])->name('rawMaterial.destroy');
 
-    // rawMaterial
-   /* Route::post('/rawMaterial/store', [RawMaterialController::class, 'store'])->name('rawMaterial.store');
-    Route::post('/rawMaterial/update', [RawMaterialController::class, 'update'])->name('rawMaterial.update');
-    Route::get('/rawMaterial/destroy', [RawMaterialController::class, 'destroy'])->name('rawMaterial.destroy');
+    // Sale
+    Route::post('/sale/store', [SaleController::class, 'store'])->name('sale.store');
+    Route::post('/sale/update', [SaleController::class, 'update'])->name('sale.update');
+    Route::get('/sale/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
 
-    */
+    // Detail sale
+    Route::get('/detailSale/destroy', [DetailSaleController::class, 'destroy'])->name('detailSale.destroy');
 });
 
 require __DIR__.'/auth.php';

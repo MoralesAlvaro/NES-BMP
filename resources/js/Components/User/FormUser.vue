@@ -3,7 +3,7 @@ import Button from '@/Components/PrimaryButton.vue'
 import Input from '@/Components/TextInput.vue'
 import Label from '@/Components/InputLabel.vue'
 import { useForm, usePage } from '@inertiajs/vue3';
-import { computed, ref, getCurrentInstance } from 'vue';
+import { computed, ref } from 'vue';
 import InputError from '@/Components/InputError.vue';
 import { createToaster } from "@meforma/vue-toaster";
 
@@ -30,6 +30,7 @@ const getInfoRol = rol => {
 const form = useForm({
     name: props.isEdit && props.user.name || "",
     email: props.isEdit && props.user.email || "",
+    telephone: props.isEdit && props.user.telephone || "",
     role_id: props.isEdit && getInfoRol(props.user.user_role).id || null,
 });
 
@@ -77,14 +78,19 @@ const submit = () => {
         </h2>
         <div class="mb-5">
             <Label for="name" value="Nombre" />
-            <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus
-                :disabled="isEdit" />
+            <Input id="name" v-model="form.name" min="3" type="text" class="mt-1 block w-full" required autofocus
+                />
             <InputError class="mt-2" :message="form.errors.name" />
         </div>
         <div class="mb-5">
             <Label for="email" value="Correo Electrónico" />
             <Input type="email" id="email" v-model="form.email" class="mt-1 block w-full" :disabled="isEdit" />
             <InputError class="mt-2" :message="form.errors.email" />
+        </div>
+        <div class="mb-5">
+            <Label for="telephone" value="Teléfono" />
+            <Input type="text" id="telephone" maxlength="8" v-model="form.telephone" class="mt-1 block w-full" />
+            <InputError class="mt-2" :message="form.errors.telephone" />
         </div>
         <div class="mb-8">
             <Label for="rol" value="Rol" />

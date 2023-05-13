@@ -45,13 +45,6 @@ const selectItem = (item) => {
 <template>
     <Head title="Roles" />
     <AppLayout>
-        <Modal :show="statusModalForm" maxWidth="2xl" @close="toggleFormModal">
-            <p>Hello</p>
-        </Modal>
-        <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
-            <DeleteRoles :role="selectedUID" @close="toggleDeleteModal" />
-        </Modal>
-
 
         <div class="py-12 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
@@ -72,16 +65,6 @@ const selectItem = (item) => {
                         <tbody class="px-5">
                             <tr v-for="item in roles" class="mt-2">
                                 <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
-                                <td class="text-center p-2 lg:text-base text-xs">
-                                    <div class="flex justify-center">
-                                        <div class="flex flex-row space-x-4">
-                                            <a @click="selectItem(item)"
-                                                class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                                            <a @click="toggleDeleteModal(); selectedUID = item.id;"
-                                                class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
-                                        </div>
-                                    </div>
-                                </td>
                             </tr>
                         </tbody>
                     </Table>

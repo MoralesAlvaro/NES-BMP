@@ -6,7 +6,7 @@ use App\Models\Stock;
 use App\Models\RawMaterial;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Http\Resources\Product as StockResources;
+use App\Http\Resources\Stock as StockResources;
 use App\Http\Resources\StockCollection;
 use Illuminate\Support\Facades\Auth;
 
