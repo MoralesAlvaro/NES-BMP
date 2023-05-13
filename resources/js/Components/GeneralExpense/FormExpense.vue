@@ -1,6 +1,7 @@
 <script setup>
 import Button from '@/Components/PrimaryButton.vue'
 import Input from '@/Components/TextInput.vue'
+import numberInput from '@/Components/NumberInput.vue'
 import Label from '@/Components/InputLabel.vue'
 import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, getCurrentInstance } from 'vue';
@@ -21,7 +22,7 @@ const props = defineProps({
 const toaster = createToaster({ /* options */ });
 const isLoading = ref(false);
 const form = useForm({
-    expense_id: props.isEdit && props.expense_id || '',
+    expense_id: props.isEdit && props.expense.expense_id || '',
     name: props.isEdit && props.expense.name || '',
     total: props.isEdit && props.expense.total || '',
 });
@@ -73,7 +74,7 @@ const submit = () => {
 
         <div class="mb-5">
             <Label for="total" value="Total" />
-            <Input id="total" v-model="form.total" type="text" class="mt-1 block w-full" required autofocus />
+            <Input id="total" v-model="form.total" type="text" class="mt-1 block w-full" placeholder="0.00" required autofocus />
             <InputError class="mt-2" :message="form.errors.total" />
         </div>
 

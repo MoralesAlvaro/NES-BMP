@@ -63,7 +63,8 @@ class GeneralExpensesController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'total' => ['numeric'],
         ]);
-         return response()->json($request->all(), 200);
+
+        // return response()->json($request->all(), 200);
 
         $category->update($request->all());
 
