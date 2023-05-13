@@ -14,6 +14,7 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DetailSaleController;
+use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\GeneralExpensesController;
 
 
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rawMaterial/list', [RawMaterialController::class, 'index'])->name('rawMaterial.list');
     Route::get('/stock/list', [StockController::class, 'index'])->name('stock.list');
     Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
+    Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
     Route::get('/expense/list', [GeneralExpensesController::class, 'index'])->name('expense.list');
 });
 
@@ -86,11 +88,15 @@ Route::middleware('auth')->group(function () {
 
     // Detail sale
     Route::get('/detailSale/destroy', [DetailSaleController::class, 'destroy'])->name('detailSale.destroy');
+  
+    // dailySales
+    Route::get('/dailySales', [DailySaleController::class, 'index'])->name('dailySales');
 
     // General expenses
     Route::post('/expense/store', [GeneralExpensesController::class, 'store'])->name('expense.store');
     Route::post('/expense/update', [GeneralExpensesController::class, 'update'])->name('expense.update');
     Route::get('/expense/destroy', [GeneralExpensesController::class, 'destroy'])->name('expense.destroy');
+
 });
 
 require __DIR__.'/auth.php';
