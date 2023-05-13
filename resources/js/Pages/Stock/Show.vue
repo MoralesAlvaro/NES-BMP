@@ -139,6 +139,12 @@ const submitDelete = () => {
 <template>
     <Head title="Stocks" />
     <AppLayout>
+        <!-- Encabezado del componente -->
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-700 leading-tight sm:text-end md:text-start text-start">
+                Stock
+            </h2>
+        </template>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
             <FormStock :isEdit="isEdit" :stock="selectedStock" @close="toggleFormModal" />
@@ -147,8 +153,7 @@ const submitDelete = () => {
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
             <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
-                <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
-                    este stock?</h2>
+                <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar este stock?</h2>
                 <div class="px-5">
                     <p class="mt-5 text-justify text-gray-400">
                         Al eliminar este stock se borrará permanentemente del sistema.
@@ -166,17 +171,13 @@ const submitDelete = () => {
                             </Button>
                         </div>
                     </div>
-
                 </div>
             </form>
         </Modal>
 
-        <div class="py-12 min-h-screen">
+        <div class="py-6 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-                <div class="flex justify-between items-center mb-5">
-                    <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Stock
-                    </h2>
+                <div class="flex md:justify-end sm:justify-start items-center mb-5">
                     <Button v-if="stock_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
                     </Button>
@@ -186,9 +187,9 @@ const submitDelete = () => {
                     <div v-if="stocks.data.length">
                         <Table :header="header" :items="stocks.data.length">
                             <tbody class="px-5">
-                                <tr v-for="   item   in   stocks.data  " class="mt-2">
+                                <tr v-for="item in stocks.data" class="mt-2">
                                     <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ item.id }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.raw_material_id.quantity }}
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.raw_material_id }}
                                     </td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.cost }}</td>

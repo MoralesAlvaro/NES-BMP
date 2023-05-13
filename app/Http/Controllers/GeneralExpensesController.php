@@ -2,78 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\General_expense;
 use Inertia\Inertia;
-use App\Http\Resources\Product as ProductResources;
-use App\Http\Resources\ProductCollection;
+use App\Http\Resources\GeneralExpensesCollection;
 use Illuminate\Support\Facades\Auth;
 
-class ProductController extends Controller
+
+
+class GeneralExpensesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        if ( ! Auth::user()->can('product_list')){
+        if ( ! Auth::user()->can('expense_list')){//cambiar luego el permiso
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
-        $products = new ProductCollection( Product::orderBy('id', 'desc')->paginate(10));
+        $expenses = new GeneralExpensesCollection( General_expense::orderBy('id', 'desc')->paginate(10));
         $permissions = Auth::user()->getAllPermissions();
 
-        return Inertia::render('Product/Show', [
-            'products' => $products,
+        return Inertia::render('GeneralExpense/Show', [
+            'expenses' => $expenses,
             'permissions' => $permissions
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        if ( ! Auth::user()->can('product_store')){
+        if ( ! Auth::user()->can('expense_store')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $validando = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:products'],
-            'description' => ['string'],
-            'active' => ['boolean'],
+            'name' => ['string'],
+            'total' => ['string']
         ]);
 
-        $product = new Product($request->all());
-        $product->save();
+        $expense = new General_expense($request->all());
+        $expense->save();
         return redirect()->back()->with('success', 'Regristro creado correctamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
-        if ( ! Auth::user()->can('product_update')){
+        if ( ! Auth::user()->can('expense_update')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        if (!$request->product_id) {
+        if (!$request->expense_id) {
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
         }
-        $category = Product::find($request->product_id);
-        if ($request->active and $request->active == "Activo") {
+        $category = General_expense::find($request->expense_id);
+        /*if ($request->active and $request->active == "Activo") {
             $request->merge(['active' => 1]);
         }
         if ($request->active and $request->active == "Inactivo") {
             $request->merge(['active' => 0]);
-        }
+        }*/
         $validando = \Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:products,name'],
-            'description' => ['string'],
-            'active' => ['boolean'],
+            'name' => ['required', 'string', 'max:255'],
+            'total' => ['numeric'],
         ]);
-        // return response()->json($request->all(), 200);
+         return response()->json($request->all(), 200);
 
         $category->update($request->all());
 
@@ -81,18 +71,16 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request)
     {
-        if ( ! Auth::user()->can('product_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        if ( ! Auth::user()->can('expense_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
-        $product = Product::find($request->id);
-        $product->delete();
+        $expense = General_expense::find($request->id);
+        $expense->delete();
         return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
 
     }
+
 }

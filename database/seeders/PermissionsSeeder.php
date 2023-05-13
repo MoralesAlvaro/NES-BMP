@@ -67,6 +67,13 @@ class PermissionsSeeder extends Seeder
         $detailSale_update = Permission::create(['name' => 'detailSale_update', 'descriptions' => 'Vista y acción editar ventas']);
         $detailSale_destroy = Permission::create(['name' => 'detailSale_destroy', 'descriptions' => 'Vista y acción eliminar ventas']);
 
+        /* expense */
+        $expense_list = Permission::create(['name' => 'expense_list', 'descriptions' => 'Vista lista de gastos']);
+        $expense_store = Permission::create(['name' => 'expense_store', 'descriptions' => 'Vista y acción crear gastos']);
+        $expense_update = Permission::create(['name' => 'expense_update', 'descriptions' => 'Vista y acción editar gastos']);
+        $expense_destroy = Permission::create(['name' => 'expense_destroy', 'descriptions' => 'Vista y acción eliminar gastos']);
+
+
 
 
         // ----------------------------------------
@@ -81,6 +88,7 @@ class PermissionsSeeder extends Seeder
             $stock_list, $stock_store, $stock_update, $stock_destroy,
             $sale_list, $sale_store, $sale_update, $sale_destroy,
             $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
+            $expense_list, $expense_store, $expense_update, $expense_destroy,
         ];
         $master->syncPermissions($permission_master);
 
@@ -89,10 +97,12 @@ class PermissionsSeeder extends Seeder
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
+
             $rawMaterial_list, $rawMaterial_store, $rawMaterial_update, $rawMaterial_destroy,
             $stock_list, $stock_store, $stock_update, $stock_destroy,
             $sale_list, $sale_store, $sale_update, $sale_destroy,
             $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
+            $expense_list, $expense_store, $expense_update, $expense_destroy,
         ];
         $encargado->syncPermissions($permission_encargado);
 
