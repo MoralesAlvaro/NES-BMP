@@ -146,6 +146,12 @@ const showDetail = (item) => {
     <Head title="Ventas" />
 
     <AppLayout>
+        <!-- Encabezado del componente -->
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-700 leading-tight sm:text-end md:text-start text-start">
+                Ventas
+            </h2>
+        </template>
 
         <Modal :show="statusModalForm" maxWidth="7xl" @close="toggleFormModal">
             <FormSale :isEdit="isEdit" :sale="selectedSale" :typeProduct="typeProduct" :stocks="stocks"
@@ -183,12 +189,9 @@ const showDetail = (item) => {
                 </div>
             </form>
         </Modal>
-        <div class="py-12 min-h-screen">
+        <div class="py-6 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-                <div class="flex justify-between items-center mb-5">
-                    <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Ventas
-                    </h2>
+                <div class="flex md:justify-end sm:justify-start items-center mb-5">
                     <Button v-if="sale_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
                     </Button>

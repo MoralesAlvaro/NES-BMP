@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\General_expense;
 
 class GeneralExpenseSeeder extends Seeder
 {
@@ -14,15 +14,18 @@ class GeneralExpenseSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::table('general_expenses')->insert([
+        General_expense::insert([
             [
                 'name'=> 'Agua',
-                'total'=>8.50
+                'total'=>8.50,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name'=> 'Luz',
-                'total'=>20.00
-
+                'total'=>20.00,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
 
         ]);

@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function index()
     {
         if ( ! Auth::user()->can('product_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $products = new ProductCollection( Product::orderBy('id', 'desc')->paginate(10));
@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         if ( ! Auth::user()->can('product_store')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $validando = $request->validate([

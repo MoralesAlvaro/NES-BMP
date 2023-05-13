@@ -30,8 +30,20 @@ export const sidebarItems = [
         ]
     },
     {
-        name: 'Inventario',
+        name: 'Gastos',
         aria: 'dropdown3',
+        icon: 'fa fa-table',
+        children: [
+            {
+                name: 'Gastos generales',
+                item_url: 'expense.list',
+                icon: 'fa fa-circle fa-xs'
+            }
+        ]
+    },
+    {
+        name: 'Inventario',
+        aria: 'dropdown4',
         icon: 'fas fa-boxes',
         children: [
             {
@@ -54,16 +66,11 @@ export const sidebarItems = [
                 item_url: 'category.list',
                 icon: 'fa fa-circle fa-xs'
             },
-            {
-                name: 'Stock',
-                item_url: 'stock.list',
-                icon: 'fa fa-circle fa-xs'
-            }
         ]
     },
     {
         name: 'Reportes',
-        aria: 'dropdown4',
+        aria: 'dropdown5',
         icon: 'fas fa-paste',
         children: [
             {
@@ -75,7 +82,7 @@ export const sidebarItems = [
     },
     {
         name: 'Roles y usuarios',
-        aria: 'dropdown5',
+        aria: 'dropdown6',
         icon: 'fas fa-users',
         children: [
             {

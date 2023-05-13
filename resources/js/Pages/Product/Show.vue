@@ -62,11 +62,11 @@ const toggleDeleteModal = () => {
 };
 const selectItem = (item) => {
     selectedProduct.product_id = item.id,
-        selectedProduct.name = item.name,
-        selectedProduct.description = item.description,
-        selectedProduct.active = item.active,
-        isEdit.value = true,
-        toggleFormModal()
+    selectedProduct.name = item.name,
+    selectedProduct.description = item.description,
+    selectedProduct.active = item.active,
+    isEdit.value = true,
+    toggleFormModal()
 }
 
 const selectDeleteItem = item => {
@@ -116,6 +116,12 @@ const submitDelete = () => {
 <template>
     <Head title="products" />
     <AppLayout>
+        <!-- Encabezado del componente -->
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-700 leading-tight sm:text-end md:text-start text-start">
+                Productos
+            </h2>
+        </template>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
             <FormProduct :isEdit="isEdit" :product="selectedProduct" @close="toggleFormModal" />
@@ -147,12 +153,10 @@ const submitDelete = () => {
                 </div>
             </form>
         </Modal>
-        <div class="py-12 min-h-screen">
+
+        <div class="py-6 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-                <div class="flex justify-between items-center mb-5">
-                    <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-                        Productos
-                    </h2>
+                <div class="flex md:justify-end sm:justify-start items-center mb-5">
                     <Button v-if="product_store" @click="toggleFormModal(); isEdit = false">
                         Nuevo
                     </Button>
