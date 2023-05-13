@@ -118,7 +118,7 @@ const submitDelete = () => {
         </template>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            <FormExpense isEdit="isEdit" :product="selectedExpense" @close="toggleFormModal" />
+            <FormExpense :isEdit="isEdit" :expense="selectedExpense" @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">

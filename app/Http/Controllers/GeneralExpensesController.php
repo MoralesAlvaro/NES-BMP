@@ -20,7 +20,7 @@ class GeneralExpensesController extends Controller
 
         $expenses = new GeneralExpensesCollection( General_expense::orderBy('id', 'desc')->paginate(10));
         $permissions = Auth::user()->getAllPermissions();
-        
+
         return Inertia::render('GeneralExpense/Show', [
             'expenses' => $expenses,
             'permissions' => $permissions
@@ -35,7 +35,7 @@ class GeneralExpensesController extends Controller
 
         $validando = $request->validate([
             'name' => ['string'],
-            'total' => ['decimal']
+            'total' => ['string']
         ]);
 
         $expense = new General_expense($request->all());
@@ -53,17 +53,17 @@ class GeneralExpensesController extends Controller
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
         }
         $category = General_expense::find($request->expense_id);
-        if ($request->active and $request->active == "Activo") {
+        /*if ($request->active and $request->active == "Activo") {
             $request->merge(['active' => 1]);
         }
         if ($request->active and $request->active == "Inactivo") {
             $request->merge(['active' => 0]);
-        }
+        }*/
         $validando = \Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'total' => ['decimal'],
+            'total' => ['numeric'],
         ]);
-        // return response()->json($request->all(), 200);
+         return response()->json($request->all(), 200);
 
         $category->update($request->all());
 

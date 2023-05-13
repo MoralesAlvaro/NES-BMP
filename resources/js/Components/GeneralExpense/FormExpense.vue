@@ -21,7 +21,7 @@ const props = defineProps({
 const toaster = createToaster({ /* options */ });
 const isLoading = ref(false);
 const form = useForm({
-    expense_id: props.isEdit && props.expense.expense_id || '',
+    expense_id: props.isEdit && props.expense_id || '',
     name: props.isEdit && props.expense.name || '',
     total: props.isEdit && props.expense.total || '',
 });
@@ -35,7 +35,7 @@ const submit = () => {
                 toaster.success(`Registro actualizado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del gasto debe ser único`);
+                toaster.warning(`ERROR EN LOS GASTOS`);
             },
             onFinish: () => {
                 isLoading.value = false
