@@ -21,6 +21,7 @@ class Stock extends JsonResource
             'name' => $this->name,
             'mount' => $this->mount,
             'gain' => $this->gain,
+            'cost' => $this->cost,
             'active' => $this->active = 1 ? 'Activo' : 'Inactivo',
             'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),

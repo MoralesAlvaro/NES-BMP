@@ -16,6 +16,9 @@ const props = defineProps({
     product: {
         type: Object
     },
+    category: {
+        type: Object
+    },
     success: String,
 });
 
@@ -24,6 +27,7 @@ const isLoading = ref(false);
 const form = useForm({
     product_id: props.isEdit && props.product.product_id || '',
     name: props.isEdit && props.product.name || '',
+    category_id: props.isEdit && props.product.category_id || '',
     description: props.isEdit && props.product.description || '',
     active: props.isEdit && props.product.active || null,
 })
@@ -49,7 +53,12 @@ const submit = () => {
                 toaster.success(`Registro actualizado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del producto debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false
@@ -62,7 +71,12 @@ const submit = () => {
                 toaster.success(`Registro creado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del producto debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false
@@ -86,12 +100,23 @@ const submit = () => {
         </div>
 
         <div class="mb-5">
-            <Label for="description" value="Descripción" />
-            <Textarea id="description" v-model="form.description" type="text" class="mt-1 block w-full" required autofocus />
-            <InputError class="mt-2" :message="form.errors.description" />
+            <Label for="rol" value="Categoría" />
+            <v-select v-model="form.category_id" :options="category.length ? category : []" :reduce="(option) => option.id"
+                label="name" placeholder="Selecciona una categoría" class="appearance-none capitalize">
+                <template #open-indicator="{ attributes }">
+                    <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                    </svg>
+                </template>
+                <template #option="{ name }">
+                    <span class="capitalize">{{ name }}</span>
+                </template>
+            </v-select>
+            <InputError class="mt-2" :message="form.errors.active" />
         </div>
 
-        <div class="mb-8">
+        <div class="mb-5">
             <Label for="rol" value="Estado" />
             <v-select v-model="form.active" :options="options.length ? options : []" :reduce="(option) => option.id"
                 label="name" placeholder="Seleccionar un estado" class="appearance-none capitalize">
@@ -106,6 +131,12 @@ const submit = () => {
                 </template>
             </v-select>
             <InputError class="mt-2" :message="form.errors.active" />
+        </div>
+
+        <div class="mb-5">
+            <Label for="description" value="Descripción" />
+            <Textarea id="description" v-model="form.description" type="text" class="mt-1 block w-full" autofocus />
+            <InputError class="mt-2" :message="form.errors.description" />
         </div>
 
 

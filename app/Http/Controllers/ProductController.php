@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\Product as ProductResources;
@@ -22,10 +23,12 @@ class ProductController extends Controller
 
         $products = new ProductCollection( Product::orderBy('id', 'desc')->paginate(10));
         $permissions = Auth::user()->getAllPermissions();
+        $category = Category::all();
 
         return Inertia::render('Product/Show', [
             'products' => $products,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'category' => $category,
         ]);
     }
 
@@ -34,13 +37,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return response()->json($request->all());
         if ( ! Auth::user()->can('product_store')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $validando = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:products'],
-            'description' => ['string'],
+            'description' => [''],
+            'category_id' => ['integer'],
             'active' => ['boolean'],
         ]);
 

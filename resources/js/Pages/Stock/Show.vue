@@ -57,7 +57,7 @@ const header = reactive([
         showInMobile: true
     },
     {
-        name: "Previo de venta",
+        name: "Precio de venta",
         showInMobile: true
     },
     {
@@ -192,9 +192,9 @@ const submitDelete = () => {
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.raw_material.name }}
                                     </td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.cost }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.mount }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.gain }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">${{ item.cost.toFixed(2) }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">${{ item.mount.toFixed(2) }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">${{ item.gain.toFixed(2) }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">

@@ -19,6 +19,7 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->text(20),
+            'category_id' => $this->faker->numberBetween($min = 1, $max = 4),
             'active' => true
         ];
     }

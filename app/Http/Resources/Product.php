@@ -17,6 +17,7 @@ class Product extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'category_id' => $this->category,
             'description' => $this->description,
             'active' => $this->active = 1 ? 'Activo' : 'Inactivo',
             'created' => $this->created_at->diffForHumans(),

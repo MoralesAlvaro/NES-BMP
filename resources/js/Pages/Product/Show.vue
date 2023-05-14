@@ -14,6 +14,7 @@ import Pagination from '@/Components/Pagination.vue';
 
 const props = defineProps({
     products: Object,
+    category: Object,
     permissions: Array
 });
 
@@ -24,6 +25,10 @@ const header = reactive([
     },
     {
         name: "Producto",
+        showInMobile: true
+    },
+    {
+        name: "Categoría",
         showInMobile: true
     },
     {
@@ -63,6 +68,7 @@ const toggleDeleteModal = () => {
 const selectItem = (item) => {
     selectedProduct.product_id = item.id,
     selectedProduct.name = item.name,
+    selectedProduct.category_id = item.category_id,
     selectedProduct.description = item.description,
     selectedProduct.active = item.active,
     isEdit.value = true,
@@ -124,7 +130,7 @@ const submitDelete = () => {
         </template>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            <FormProduct :isEdit="isEdit" :product="selectedProduct" @close="toggleFormModal" />
+            <FormProduct :isEdit="isEdit" :product="selectedProduct" :category="category" @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
@@ -170,6 +176,7 @@ const submitDelete = () => {
                                     <tr v-for=" item  in  products.data " class="mt-2">
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.id }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                                        <td class="text-center p-2 lg:text-base text-xs">{{ item.category_id.name }}</td>
                                         <td class="p-2 lg:text-base text-xs">{{ item.description }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">
