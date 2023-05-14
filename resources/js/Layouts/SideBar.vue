@@ -130,7 +130,7 @@
 
                 <!-- Opción de ayuda del sistema -->
                 <li>
-                    <a :href="route('help')"
+                    <a href="https://drive.google.com/drive/folders/1dXgWxXtu_fnqkRpZWZtffDN8gHsaX3Aq?usp=sharing" target="_blank"
                         class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700">
                         <i class="fas fa-question-circle"></i>
                         <span class="flex-1 ml-3 whitespace-nowrap">Centro de ayuda</span>
