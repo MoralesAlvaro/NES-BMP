@@ -1,22 +1,5 @@
 // Exportando la información para el componente del SideBar.
 export const sidebarItems = [
-    // {
-    //     name: 'Dashboard',
-    //     aria: 'dropdown1',
-    //     icon: 'fas fa-chart-bar',
-    //     children: [
-    //         {
-    //             name: 'Dashboard1',
-    //             item_url: 'dashboard',
-    //             icon: 'fa fa-circle fa-xs'
-    //         },
-    //         {
-    //             name: 'Dashboard2',
-    //             item_url: 'dashboard',
-    //             icon: 'fa fa-circle fa-xs'
-    //         }
-    //     ]
-    // },
     {
         name: 'Ventas',
         aria: 'dropdown2',
@@ -76,6 +59,11 @@ export const sidebarItems = [
             {
                 name: 'Venta Diaria',
                 item_url: 'dailySales',
+                icon: 'fa fa-circle fa-xs'
+            },
+            {
+                name: 'Bitácora ventas',
+                item_url: 'saleLog',
                 icon: 'fa fa-circle fa-xs'
             }
         ]

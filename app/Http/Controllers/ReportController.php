@@ -10,11 +10,11 @@ use App\Http\Resources\SaleCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class DailySaleController extends Controller
+class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        if ( ! Auth::user()->can('expense_list')){//cambiar luego el permiso
+        if ( ! Auth::user()->can('dailySale_list')){//cambiar luego el permiso
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
@@ -46,5 +46,23 @@ class DailySaleController extends Controller
             'permissions' => $permissions
         ]);
 
+    }
+
+    public function saleLog(Request $request)
+    {
+        if ( ! Auth::user()->can('sale_log')){//cambiar luego el permiso
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
+        }
+
+        $sales = DB::select('SELECT SUM(s.total) AS total_suma, DATE(s.created_at) AS fecha
+        FROM sales s
+        WHERE YEAR(s.created_at) = YEAR(NOW())
+        GROUP BY DATE(s.created_at);');
+
+        $permissions = Auth::user()->getAllPermissions();
+        return Inertia::render('SaleLog/Show', [
+            'permissions' => $permissions,
+            'sales' => $sales
+        ]);
     }
 }

@@ -14,7 +14,7 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DetailSaleController;
-use App\Http\Controllers\DailySaleController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GeneralExpensesController;
 
 
@@ -58,7 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
     Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
     Route::get('/expense/list', [GeneralExpensesController::class, 'index'])->name('expense.list');
-    Route::get('/dailySales', [DailySaleController::class, 'index'])->name('dailySales');
+    Route::get('/dailySales', [ReportController::class, 'index'])->name('dailySales');
+    Route::get('/saleLog', [ReportController::class, 'saleLog'])->name('saleLog');
 });
 
 

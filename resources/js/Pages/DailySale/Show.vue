@@ -3,14 +3,7 @@ import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import Label from '@/Components/InputLabel.vue';
-import Button from '@/Components/PrimaryButton.vue'
-import Modal from '@/Components/Modal.vue'
-import { reactive, ref, onMounted } from 'vue';
-import FormExpense from '@/Components/GeneralExpense/FormExpense.vue'
 import Empty from '@/Components/Empty.vue'
-import { createToaster } from "@meforma/vue-toaster";
-import IsLoanding from '@/Components/IsLoanding.vue';
-import Pagination from '@/Components/Pagination.vue';
 import Input from '@/Components/TextInput.vue';
 
 const props = defineProps({
