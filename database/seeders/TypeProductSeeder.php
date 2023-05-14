@@ -28,6 +28,13 @@ class TypeProductSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Sin cargo',
+                'cost' => '0.00',
+                'description' => 'Para bebidas, licores, antojitos u otro tipo que no requiere cargo adicional',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

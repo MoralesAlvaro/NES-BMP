@@ -68,8 +68,17 @@ const handleSelectedTypeProduct = (selected) => {
 // Calcula el costo de las ordenes a pedir
 const costStock = () => {
     selectedStock.value.mount ? costo.value = selectedStock.value.mount : costo.value = 0;
-    selectedTypeProduct.value.cost ? costo.value = selectedTypeProduct.value.cost : costo.value = 0;
-    selectedTypeProduct.value.cost && selectedStock.value.mount ? costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
+
+    if (selectedTypeProduct.value.cost && selectedStock.value.mount) {
+        if (selectedTypeProduct.value.cost > 0.00) {
+            costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount
+        }else{
+            costo.value = selectedStock.value.mount
+        }
+    }
+
+    // selectedTypeProduct.value.cost ? costo.value = selectedTypeProduct.value.cost : costo.value = 0;
+    // selectedTypeProduct.value.cost && selectedStock.value.mount ? costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
     costo.value = costo.value * form.orders;
     totalSale()
 }
@@ -124,7 +133,7 @@ const addStockArray = () => {
                 id: '',
                 sale_id: form.sale_id,
                 stock_id: selectedStock.value.id,
-                stock_name: selectedStock.value.name,
+                stock_name: selectedStock.value,
                 type_product_id: selectedTypeProduct.value.id,
                 type_product_name: selectedTypeProduct.value.name,
                 discount: parseInt(form.discount_sale),

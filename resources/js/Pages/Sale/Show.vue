@@ -207,9 +207,9 @@ const showDetail = (item) => {
                                     <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">{{ item.created }}</td>
                                     <td @click="showDetail(item)" class="p-2 lg:text-base text-xs">{{ item.status_sale_id === true ?
                                         "Pagado" : "Pendiente" }}</td>
-                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total }}</td>
-                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount }}</td>
-                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">$ {{ item.total }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">$ {{ item.sup_total.toFixed(2) }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs text-red-400">$ {{ item.discount.toFixed(2) }}</td>
+                                    <td @click="showDetail(item)" class="text-center p-2 lg:text-base text-xs">$ {{ item.total.toFixed(2) }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">
                                             <div class="flex flex-row space-x-4">

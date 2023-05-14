@@ -17,11 +17,11 @@ class DailySaleController extends Controller
         if ( ! Auth::user()->can('expense_list')){//cambiar luego el permiso
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
+
         if ($request->date) {
-            # code...
             $fecha = $request->date;
         }else{
-            $fecha = now();
+            $fecha = date("Y-m-d");
         }
 
         $sales = new SaleCollection(Sale::all());
