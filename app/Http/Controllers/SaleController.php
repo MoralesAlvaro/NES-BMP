@@ -89,6 +89,8 @@ class SaleController extends Controller
                 'discount' => $key['discount'],
                 'total' => $key['total'],
                 'orders' => $key['orders'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
@@ -135,6 +137,8 @@ class SaleController extends Controller
                         'discount' => $key['discount'],
                         'total' => $key['total'],
                         'orders' => $key['orders'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
                     $stock = Stock::find($key['stock_id'])->rawMaterial;
                     $stock->parts = $stock->parts - $key['orders'];

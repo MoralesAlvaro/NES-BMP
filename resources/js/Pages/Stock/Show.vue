@@ -189,7 +189,7 @@ const submitDelete = () => {
                             <tbody class="px-5">
                                 <tr v-for="item in stocks.data" class="mt-2">
                                     <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ item.id }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.raw_material_id }}
+                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.raw_material.name }}
                                     </td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.cost }}</td>

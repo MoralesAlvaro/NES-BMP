@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/detailSale/destroy', [DetailSaleController::class, 'destroy'])->name('detailSale.destroy');
 });
 
 // ONLY VIEWS RESPONSE
@@ -57,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
     Route::get('/sale/list', [SaleController::class, 'index'])->name('sale.list');
     Route::get('/expense/list', [GeneralExpensesController::class, 'index'])->name('expense.list');
+    Route::get('/dailySales', [DailySaleController::class, 'index'])->name('dailySales');
 });
 
 
@@ -87,10 +89,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sale/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
 
     // Detail sale
-    Route::get('/detailSale/destroy', [DetailSaleController::class, 'destroy'])->name('detailSale.destroy');
-  
+
     // dailySales
-    Route::get('/dailySales', [DailySaleController::class, 'index'])->name('dailySales');
 
     // General expenses
     Route::post('/expense/store', [GeneralExpensesController::class, 'store'])->name('expense.store');

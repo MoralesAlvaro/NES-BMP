@@ -17,7 +17,7 @@ class Stock extends JsonResource
         return [
             'id' => $this->id,
             'raw_material_id' => $this->rawMaterial->id,
-            'raw_material' => $this->rawMaterial,
+            'raw_material' => $this->rawMaterial->product,
             'name' => $this->name,
             'mount' => $this->mount,
             'gain' => $this->gain,

@@ -73,8 +73,8 @@ class PermissionsSeeder extends Seeder
         $expense_update = Permission::create(['name' => 'expense_update', 'descriptions' => 'Vista y acción editar gastos']);
         $expense_destroy = Permission::create(['name' => 'expense_destroy', 'descriptions' => 'Vista y acción eliminar gastos']);
 
-
-
+        /* expense */
+        $dailySale_list = Permission::create(['name' => 'dailySale_list', 'descriptions' => 'Vista lista de gastos']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
@@ -89,6 +89,7 @@ class PermissionsSeeder extends Seeder
             $sale_list, $sale_store, $sale_update, $sale_destroy,
             $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
             $expense_list, $expense_store, $expense_update, $expense_destroy,
+            $dailySale_list,
         ];
         $master->syncPermissions($permission_master);
 
@@ -103,6 +104,7 @@ class PermissionsSeeder extends Seeder
             $sale_list, $sale_store, $sale_update, $sale_destroy,
             $detailSale_list, $detailSale_store, $detailSale_update, $detailSale_destroy,
             $expense_list, $expense_store, $expense_update, $expense_destroy,
+            $dailySale_list,
         ];
         $encargado->syncPermissions($permission_encargado);
 

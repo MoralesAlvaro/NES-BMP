@@ -23,7 +23,7 @@ const header = reactive([
         showInMobile: true
     },
     {
-        name: "Categoría",
+        name: "Producto",
         showInMobile: true
     },
     {

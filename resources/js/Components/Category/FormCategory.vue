@@ -85,7 +85,7 @@ const submit = () => {
             {{ isEdit ? 'Editar categoría' : 'Registrar categoría' }}
         </h2>
         <div class="mb-5">
-            <Label for="name" value="Nombre" />
+            <Label for="name" value="Categoría" />
             <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus />
             <InputError class="mt-2" :message="form.errors.name" />
         </div>

@@ -74,8 +74,8 @@ export const sidebarItems = [
         icon: 'fas fa-paste',
         children: [
             {
-                name: 'Reportes1',
-                item_url: 'report',
+                name: 'Venta Diaria',
+                item_url: 'dailySales',
                 icon: 'fa fa-circle fa-xs'
             }
         ]
