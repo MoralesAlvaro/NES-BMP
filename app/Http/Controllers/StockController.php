@@ -37,7 +37,22 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ( ! Auth::user()->can('stock_store')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
+        }
+
+        $validando = $request->validate([
+            'raw_material_id' => ['required', 'integer'],
+            'name' => ['required', 'string', 'max:255'],
+            'cost' => ['required'],
+            'mount' => ['required'],
+            'gain' => ['required'],
+            'active' => ['boolean'],
+        ]);
+
+        $stock = new Stock($request->all());
+        $stock->save();
+        return redirect()->back()->with('success', 'Regristro creado correctamente.');
     }
 
     /**
@@ -46,11 +61,11 @@ class StockController extends Controller
     public function update(Request $request)
     {
         if ( ! Auth::user()->can('stock_update')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         if (!$request->stock_id) {
-            return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
+            return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible.']);
         }
 
         $stock = Stock::find($request->stock_id);
@@ -82,11 +97,11 @@ class StockController extends Controller
     public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('stock_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $stock = Stock::find($request->id);
         $stock->delete();
-        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        return redirect()->back()->with('success', 'Registro eliminado correctamente.');
     }
 }

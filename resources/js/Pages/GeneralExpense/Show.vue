@@ -108,7 +108,7 @@ const submitDelete = () => {
 </script>
 
 <template>
-    <Head title="expenses" />
+    <Head title="Gastos generales" />
     <AppLayout>
         <!-- Encabezado del componente -->
         <template #header>
@@ -164,7 +164,7 @@ const submitDelete = () => {
                                     <tr v-for=" item  in  expenses.data " class="mt-2">
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.id }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
-                                        <td class="p-2 lg:text-base text-xs">{{ item.total }}</td>
+                                        <td class="text-center p-2 lg:text-base text-xs">{{ item.total }}</td>
                                         <td class="text-center p-2 lg:text-base text-xs">
                                             <div class="flex justify-center">
                                                 <div class="flex flex-row space-x-4">

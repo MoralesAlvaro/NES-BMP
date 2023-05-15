@@ -78,6 +78,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
+    
+    // Stock
+    Route::post('/stock/store', [StockController::class, 'store'])->name('stock.store');
+    Route::post('/stock/update', [StockController::class, 'update'])->name('stock.update');
+    Route::get('/stock/destroy', [StockController::class, 'destroy'])->name('stock.destroy');
 
     // rawMaterial
     Route::post('/rawMaterial/store', [RawMaterialController::class, 'store'])->name('rawMaterial.store');

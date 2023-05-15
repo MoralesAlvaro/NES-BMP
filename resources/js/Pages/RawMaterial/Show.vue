@@ -136,7 +136,7 @@ const submitDelete = () => {
 </script>
 
 <template>
-    <Head title="MateriaPrima" />
+    <Head title="Materia Prima" />
     <AppLayout>
         <!-- Encabezado del componente -->
         <template #header>
@@ -153,8 +153,7 @@ const submitDelete = () => {
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
             <IsLoanding :isLoading="isLoading"> </IsLoanding>
             <form @submit.prevent="submitDelete" class="py-8 px-5">
-                <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar
-                    esta Materia prima?</h2>
+                <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar esta Materia prima?</h2>
                 <div class="px-5">
                     <p class="mt-5 text-justify text-gray-400">
                         Al eliminar esta Materia prima se borrará permanentemente del sistema.

@@ -17,27 +17,6 @@ const props = defineProps({
     permissions: Array
 });
 
-const toaster = createToaster({ /* options */ });
-const isEdit = ref(false);
-const statusModalForm = ref(false);
-const statusModalDelete = ref(false);
-
-let stock_list = false; let stock_store = false; let stock_update = false; let stock_destroy = false;
-const hasPermission = () => {
-    props.permissions.find(item => item.name === 'stock_list') ? stock_list = true : stock_list = false;
-    props.permissions.find(item => item.name === 'stock_store') ? stock_store = true : stock_store = false;
-    props.permissions.find(item => item.name === 'stock_update') ? stock_update = true : stock_update = false;
-    props.permissions.find(item => item.name === 'stock_destroy') ? stock_destroy = true : stock_destroy = false;
-}
-hasPermission()
-
-const toggleFormModal = () => {
-    statusModalForm.value = !statusModalForm.value;
-};
-
-const toggleDeleteModal = () => {
-    statusModalDelete.value = !statusModalDelete.value;
-};
 
 const header = reactive([
     {
@@ -75,43 +54,58 @@ const header = reactive([
 ]);
 
 const selectedStock = reactive({
-    id: null,
+    stock_id: null,
     raw_material_id: null,
     name: null,
     cost: null,
     mount: null,
-    time: null,
     gain: null,
     active: null,
 });
 
-const selectedStockDelete = reactive({
-    id: null
-});
+const toaster = createToaster({ /* options */ });
+const isEdit = ref(false);
+const statusModalForm = ref(false);
+const statusModalDelete = ref(false);
+const isLoading = ref(false);
+
+const toggleFormModal = () => {
+    statusModalForm.value = !statusModalForm.value;
+};
+
+const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
+};
+
+const selectItem = (item) => {
+    selectedStock.stock_id = item.id,
+    selectedStock.raw_material_id = item.raw_material_id.id,
+    selectedStock.name = item.name,
+    selectedStock.cost = item.cost,
+    selectedStock.mount = item.mount,
+    selectedStock.gain = item.gain,
+    selectedStock.active = item.active,
+    isEdit.value = true,
+    toggleFormModal()
+}
 
 const selectDeleteItem = (item) => {
     formDelete.id = item.id,
-        toggleDeleteModal()
-}
-
-const selectItem = (item) => {
-    selectedStock.id = item.id,
-        selectedStock.raw_material_id = item.raw_material_id.id,
-        selectedStock.name = item.name,
-        selectedStock.cost = item.cost,
-        selectedStock.mount = item.mount,
-        selectedStock.time = item.time,
-        selectedStock.gain = item.gain,
-        selectedStock.active = item.active,
-        isEdit.value = true,
-        toggleFormModal()
+    toggleDeleteModal()
 }
 
 const formDelete = useForm({
     id: null
 });
 
-const isLoading = ref(false);
+let stock_list = false; let stock_store = false; let stock_update = false; let stock_destroy = false;
+const hasPermission = () => {
+    props.permissions.find(item => item.name === 'stock_list') ? stock_list = true : stock_list = false;
+    props.permissions.find(item => item.name === 'stock_store') ? stock_store = true : stock_store = false;
+    props.permissions.find(item => item.name === 'stock_update') ? stock_update = true : stock_update = false;
+    props.permissions.find(item => item.name === 'stock_destroy') ? stock_destroy = true : stock_destroy = false;
+}
+hasPermission()
 
 const submitDelete = () => {
     isLoading.value = true;
@@ -147,7 +141,7 @@ const submitDelete = () => {
         </template>
 
         <Modal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-            <FormStock :isEdit="isEdit" :stock="selectedStock" @close="toggleFormModal" />
+            <FormStock :isEdit="isEdit"  :raw_materials="props.raw_materials" :stock="selectedStock" @close="toggleFormModal" />
         </Modal>
 
         <Modal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
