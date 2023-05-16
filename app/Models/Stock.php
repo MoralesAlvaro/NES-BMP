@@ -21,6 +21,6 @@ class Stock extends Model
 
     public function rawMaterial()
     {
-        return $this->belongsTo(rawMaterial::class);
+        return $this->belongsTo(RawMaterial::class);
     }
 }

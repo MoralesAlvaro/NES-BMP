@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\StatusSale;
 use App\Models\TypeDoc;
-use App\Models\stock;
+use App\Models\Stock;
 use App\Models\DetailSale;
 use App\Models\TypeProduct;
 use Illuminate\Support\Facades\DB;
