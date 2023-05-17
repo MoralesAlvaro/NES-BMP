@@ -4,6 +4,11 @@ import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { reactive, ref } from 'vue';
 
+
+const props = defineProps({
+    SaleMonth: Object
+});
+
 </script>
 
 
