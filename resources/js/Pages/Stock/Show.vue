@@ -79,7 +79,7 @@ const toggleDeleteModal = () => {
 
 const selectItem = (item) => {
     selectedStock.stock_id = item.id,
-    selectedStock.raw_material_id = item.raw_material_id.id,
+    selectedStock.raw_material_id = item.raw_material_id,
     selectedStock.name = item.name,
     selectedStock.cost = item.cost,
     selectedStock.mount = item.mount,

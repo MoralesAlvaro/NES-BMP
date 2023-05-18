@@ -14,6 +14,6 @@ class RawMaterialSeeder extends Seeder
     public function run(): void
     {
         //
-        RawMaterial::factory()->count(15)->create();
+        RawMaterial::factory()->count(10)->create();
     }
 }

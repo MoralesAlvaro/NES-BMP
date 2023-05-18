@@ -28,9 +28,9 @@ const form = useForm({
     stock_id: props.isEdit && props.stock.stock_id || '',
     raw_material_id: props.isEdit && props.stock.raw_material_id || '',
     name: props.isEdit && props.stock.name || '',
-    cost: props.isEdit && props.stock.cost || '',
-    mount: props.isEdit && props.stock.mount || '',
-    gain: props.isEdit && props.stock.gain || '',
+    cost: props.isEdit && props.stock.cost || '0',
+    mount: props.isEdit && props.stock.mount || '0',
+    gain: props.isEdit && props.stock.gain || '0',
     active: props.isEdit && props.stock.active || '',
 })
 
@@ -41,7 +41,7 @@ const options = ([
         value: true
     },
     {
-        id: 2,
+        id: 0,
         name: "Inactivo",
         value: false
     }
@@ -88,9 +88,17 @@ const submit = () => {
 
         <div class="grid grid-cols-2 gap-4">
 
+
+            <div class="">
+                <Label for="name" value="Nombre" />
+                <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required
+                placeholder="Carne al carbón" />
+                <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
             <div class="">
                 <Label for="raw_material_id" value="Materia prima" />
-                <v-select v-model="form.raw_material_id" :options="raw_materials.length ? raw_materials : []" :reduce="(raw_materials) => raw_materials.id"
+                <v-select v-model="form.raw_material_id" :options="raw_materials.data.length ? raw_materials.data : []" :reduce="(option) => option.id"
                     label="name" placeholder="Seleccionar materia prima" class="appearance-none capitalize">
                     <template #open-indicator="{ attributes }">
                         <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
@@ -98,8 +106,8 @@ const submit = () => {
                             <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
                         </svg>
                     </template>
-                    <template #option="{ product }">
-                        <span class="capitalize">{{ product }}</span>
+                    <template #option="{ name }">
+                        <span class="capitalize">{{ name }}</span>
                     </template>
                 </v-select>
                 <InputError class="mt-2" :message="form.errors.raw_material_id" />
@@ -107,22 +115,22 @@ const submit = () => {
 
             <div class="">
                 <Label for="cost" value="Costo" />
-                <Input id="cost" v-model="form.cost" type="number" class="mt-1 block w-full" required
+                <Input id="cost" v-model="form.cost" type="number" step="0.01" class="mt-1 block w-full" required
                     placeholder="$ 00.00" />
                 <InputError class="mt-2" :message="form.errors.cost" />
             </div>
 
             <div class="">
                 <Label for="mount" value="Precio a venta" />
-                <Input id="mount" v-model="form.mount" type="text" class="mt-1 block w-full" required
-                    placeholder="1 LB Lomo" />
+                <Input id="mount" v-model="form.mount" type="number" step="0.01" class="mt-1 block w-full" required
+                placeholder="$ 00.00" />
                 <InputError class="mt-2" :message="form.errors.mount" />
             </div>
 
             <div class="">
                 <Label for="gain" value="Ganancia" />
-                <Input id="gain" v-model="form.gain" type="text" class="mt-1 block w-full" required
-                    placeholder="1 LB Lomo" />
+                <Input id="gain" v-model="form.gain" type="number" step="0.01" class="mt-1 block w-full" required
+                placeholder="$ 00.00" />
                 <InputError class="mt-2" :message="form.errors.gain" />
             </div>
 

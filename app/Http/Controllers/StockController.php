@@ -9,6 +9,8 @@ use Inertia\Inertia;
 use App\Http\Resources\Stock as StockResources;
 use App\Http\Resources\StockCollection;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\RawMaterial as RawMaterialResources;
+use App\Http\Resources\RawMaterialCollection;
 
 class StockController extends Controller
 {
@@ -22,7 +24,7 @@ class StockController extends Controller
         }
 
         $stocks = new StockCollection( Stock::orderBy('id', 'desc')->paginate(10));
-        $raw_materials = RawMaterial::all();
+        $raw_materials = new RawMaterialCollection( RawMaterial::all() );
         $permissions = Auth::user()->getAllPermissions();
 
         return Inertia::render('Stock/Show', [
@@ -68,14 +70,14 @@ class StockController extends Controller
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible.']);
         }
 
-        $stock = Stock::find($request->stock_id);
-        if ($request->active and $request->active == "Activo") {
-            $request->merge(['active' => 1]);
-        }
-        if ($request->active and $request->active == "Inactivo") {
-            $request->merge(['active' => 0]);
-        }
+        // $stock = Stock::find($request->stock_id);
+        // if ($request->active and $request->active == "Activo" || $request->active == 1) {
+        //     $request->merge(['active' => true]);
+        // }else{
+        //     $request->merge(['active' => false]);
+        // }
 
+        // return response()->json($request->all(), 200);
         $validando = \Validator::make($request->all(), [
             'raw_material_id' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255', 'unique:categories,name'],

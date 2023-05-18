@@ -17,7 +17,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->unique()->name(),
             'description' => fake()->text(20),
             'category_id' => $this->faker->numberBetween($min = 1, $max = 4),
             'active' => true
