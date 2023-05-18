@@ -12,7 +12,9 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        $SaleMonth= DB::select('select stock_id, orders, count(stock_id) as Ntimes FROM `detail_sales` group by stock_id, orders order by 2 desc');
+        $SaleMonth= DB::select('SELECT stocks.name, SUM(detail_sales.orders) as totales FROM `detail_sales`
+        INNER JOIN `stocks`  ON detail_sales.stock_id = stocks.id
+        WHERE detail_sales.stock_id = detail_sales.stock_id GROUP BY stocks.name ORDER BY totales DESC LIMIT 3;');
         //$SaleMonth= DB::table('detail_sales')->get()->count('stock_id','stock');
 
 
