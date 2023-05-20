@@ -5,6 +5,7 @@ import Table from '@/Components/Table.vue';
 import Label from '@/Components/InputLabel.vue';
 import Empty from '@/Components/Empty.vue'
 import Input from '@/Components/TextInput.vue';
+import { reactive, ref } from 'vue';
 
 const props = defineProps({
     sales: Object,

@@ -46,8 +46,12 @@ const submit = () => {
                 emit('close')
             },
             onError: () => {
-                console.log( usePage().props.errors)
-                toaster.warning(`Algo salio mal, por favor ponte en contacto con el encargado`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false
@@ -60,7 +64,12 @@ const submit = () => {
                 toaster.success(`Notificación enviada con éxito.`);
             },
             onError: () => {
-                toaster.warning(`Algo salio mal, por favor ponte en contacto con el encargado`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false

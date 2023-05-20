@@ -57,7 +57,12 @@ const submit = () => {
                 toaster.success(`Registro actualizado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del producto debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false
@@ -70,7 +75,12 @@ const submit = () => {
                 toaster.success(`Registro creado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del producto debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false

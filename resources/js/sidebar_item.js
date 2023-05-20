@@ -13,18 +13,6 @@ export const sidebarItems = [
         ]
     },
     {
-        name: 'Gastos',
-        aria: 'dropdown3',
-        icon: 'fa fa-table',
-        children: [
-            {
-                name: 'Gastos generales',
-                item_url: 'expense.list',
-                icon: 'fa fa-circle fa-xs'
-            }
-        ]
-    },
-    {
         name: 'Inventario',
         aria: 'dropdown4',
         icon: 'fas fa-boxes',
@@ -64,6 +52,11 @@ export const sidebarItems = [
             {
                 name: 'Bitácora ventas',
                 item_url: 'saleLog',
+                icon: 'fa fa-circle fa-xs'
+            },
+            {
+                name: 'Gastos generales',
+                item_url: 'expense.list',
                 icon: 'fa fa-circle fa-xs'
             }
         ]
