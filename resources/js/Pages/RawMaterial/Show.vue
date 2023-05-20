@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import Button from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';

@@ -1,13 +1,12 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue'
 import Button from '@/Components/PrimaryButton.vue'
 import Modal from '@/Components/Modal.vue'
 import FormSale from '@/Components/Sale/FormSale.vue'
 import { reactive, ref } from 'vue';
 import { createToaster } from "@meforma/vue-toaster";
-import { useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import Empty from '@/Components/Empty.vue';
 import Pagination from '@/Components/Pagination.vue';
 import IsLoanding from '@/Components/IsLoanding.vue';

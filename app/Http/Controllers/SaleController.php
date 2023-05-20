@@ -25,7 +25,7 @@ class SaleController extends Controller
     public function index()
     {
         if ( ! Auth::user()->can('sale_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $sales = new SaleCollection( Sale::orderBy('id', 'desc')->paginate(10));
@@ -157,7 +157,7 @@ class SaleController extends Controller
     public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('sale_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $detail = DetailSale::where('sale_id', $request->id)->delete();

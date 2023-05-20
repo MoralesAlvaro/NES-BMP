@@ -98,7 +98,7 @@ const submit = () => {
         </div>
         <div class="mb-5">
             <Label for="telephone" value="Teléfono" />
-            <Input type="text" id="telephone" maxlength="8" v-model="form.telephone" class="mt-1 block w-full" />
+            <Input type="text" id="telephone" maxlength="8" minlength="8" v-model="form.telephone" class="mt-1 block w-full" />
             <InputError class="mt-2" :message="form.errors.telephone" />
         </div>
         <div class="mb-8">
