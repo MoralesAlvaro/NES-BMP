@@ -8,6 +8,7 @@
     // Importando los componentes para montar e iniciar Flowbite.
     import { onMounted } from 'vue';
     import { initFlowbite } from 'flowbite';
+    import { Inertia } from '@inertiajs/inertia';
 
     // Instanciando la información del menú lateral en una constante.
     const menu = sidebarItems;
@@ -16,6 +17,11 @@
     onMounted(() => {
         initFlowbite();
     });
+
+    const signOut = () => {
+        Inertia.post(route('logout'));
+        window.location.reload()
+    }
 </script>
 <template>
     <!-- Apartado superior del componente del menú lateral -->
@@ -89,7 +95,7 @@
                             </a>
                         </li>
                         <li>
-                            <Link :href="route('logout')" method="post" as="button"
+                            <a @click="signOut" method="post" as="button"
                                 class="flex items-center justify-around w-full p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -97,7 +103,7 @@
                                     d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                             </svg>
                             <span class="ml-3">Cerrar sesión</span>
-                            </Link>
+                            </a>
                         </li>
                     </ul>
                 </li>

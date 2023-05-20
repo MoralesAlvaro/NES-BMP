@@ -17,6 +17,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.11.1",
         "@meforma/vue-toaster": "^1.3.0",
         "flowbite": "^1.6.5",
         "flowbite-vue": "^0.0.10",
