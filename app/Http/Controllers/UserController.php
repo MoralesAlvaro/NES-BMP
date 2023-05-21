@@ -102,6 +102,8 @@ class UserController extends Controller
                     $user->removeRole($user->roles[0]->name);
                 }
                 $user->assignRole($rol->name);
+
+                $user->update($request->all());
                 return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
 
             }else{
