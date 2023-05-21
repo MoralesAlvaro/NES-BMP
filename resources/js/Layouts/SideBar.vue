@@ -1,27 +1,31 @@
 <script setup>
-    // Importando el logo del sistema.
-    import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-    // Importando el componente "Link" de Intertia.
-    import { Link } from '@inertiajs/vue3';
-    // Importando la información del menú lateral.
-    import { sidebarItems } from '@/sidebar_item';
-    // Importando los componentes para montar e iniciar Flowbite.
-    import { onMounted } from 'vue';
-    import { initFlowbite } from 'flowbite';
-    import { Inertia } from '@inertiajs/inertia';
+// Importando el logo del sistema.
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+// Importando el componente "Link" de Intertia.
+import { Link, usePage } from '@inertiajs/vue3';
+// Importando la información del menú lateral.
+import { sidebarItems } from '@/sidebar_item';
+// Importando los componentes para montar e iniciar Flowbite.
+import { onMounted } from 'vue';
+import { initFlowbite } from 'flowbite';
+import { Inertia } from '@inertiajs/inertia';
 
-    // Instanciando la información del menú lateral en una constante.
-    const menu = sidebarItems;
+// Instanciando la información del menú lateral en una constante.
+const menu = sidebarItems;
 
-    // Inicializando los componentes de Flowbite.
-    onMounted(() => {
-        initFlowbite();
-    });
+// Inicializando los componentes de Flowbite.
+onMounted(() => {
+    initFlowbite();
+});
 
-    const signOut = () => {
-        Inertia.post(route('logout'));
-        window.location.reload()
+const signOut = () => {
+    let user = usePage().props.auth.user.id;
+    if (!user) {
+        Inertia.visit(route('login'), { replace: true })
     }
+    Inertia.post(route('logout'));
+    // window.location.reload()
+}
 </script>
 <template>
     <!-- Apartado superior del componente del menú lateral -->
@@ -85,7 +89,8 @@
                     </button>
                     <ul id="ndes_sidebar_dropdown" class="hidden py-2 space-y-2">
                         <li>
-                            <a :href="route('profile.edit')" class="flex items-center p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700">
+                            <a :href="route('profile.edit')"
+                                class="flex items-center p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-6 h-6 mr-4 ml-2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -96,13 +101,13 @@
                         </li>
                         <li>
                             <a @click="signOut" method="post" as="button"
-                                class="flex items-center justify-around w-full p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            <span class="ml-3">Cerrar sesión</span>
+                                class="flex items-center justify-around w-full p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                <span class="ml-3">Cerrar sesión</span>
                             </a>
                         </li>
                     </ul>
@@ -118,7 +123,7 @@
                             :aria-controls="item.aria" :data-collapse-toggle="item.aria">
                             <i :class="item.icon"></i>
                             <span class="ml-3">
-                                {{item.name}}
+                                {{ item.name }}
                                 <i class="fas fa-sort-down"></i>
                             </span>
                         </button>
@@ -127,7 +132,7 @@
                                 <a :href="route(child.item_url)"
                                     class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700 transition duration-500">
                                     <i :class="child.icon"></i>
-                                    <span class="ml-3">{{child.name}}</span>
+                                    <span class="ml-3">{{ child.name }}</span>
                                 </a>
                             </li>
                         </ul>
@@ -136,7 +141,8 @@
 
                 <!-- Opción de ayuda del sistema -->
                 <li>
-                    <a href="https://drive.google.com/drive/folders/1dXgWxXtu_fnqkRpZWZtffDN8gHsaX3Aq?usp=sharing" target="_blank"
+                    <a href="https://drive.google.com/drive/folders/1dXgWxXtu_fnqkRpZWZtffDN8gHsaX3Aq?usp=sharing"
+                        target="_blank"
                         class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700">
                         <i class="fas fa-question-circle"></i>
                         <span class="flex-1 ml-3 whitespace-nowrap">Centro de ayuda</span>

@@ -6,7 +6,6 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import authMiddleware from '@/Components/Auth/authMiddleware.vue';
 
 defineProps({
     canResetPassword: {
@@ -31,7 +30,6 @@ const submit = () => {
 </script>
 
 <template>
-    <authMiddleware />
     <GuestLayout>
         <Head title="Log in" />
 
