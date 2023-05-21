@@ -330,7 +330,7 @@ const deleteItem = (item) => {
             <div class="col-span-2">
                 <Label for="orders" value="N° Ordenes" />
                 <Input id="orders" v-model="form.orders" @change="costStock" @click="validateNegatives()" type="number"
-                    class="mt-1 block w-full" required placeholder="0" />
+                    class="mt-1 block w-full" required placeholder="0" min="1" />
                 <InputError class="mt-2" :message="form.errors.orders" />
             </div>
 
@@ -347,7 +347,7 @@ const deleteItem = (item) => {
 
             <div class="col-span-3">
                 <Label for="discount_sale" value="Descuentos" />
-                <Input id="discount_sale" v-model="form.discount_sale" @click="validateNegatives()" type="number"
+                <Input id="discount_sale" v-model="form.discount_sale" @click="validateNegatives()" type="number" min="0"
                     class="mt-1 block w-full" required placeholder="0" />
             </div>
 
