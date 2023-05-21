@@ -28,7 +28,7 @@ class SaleController extends Controller
             return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $sales = new SaleCollection( Sale::orderBy('id', 'desc')->paginate(10));
+        $sales = new SaleCollection( Sale::where('status_sale_id', 1)->orderBy('id', 'desc')->paginate(10));
         $typeDoc = TypeDoc::all();
         $statusSale = StatusSale::all();
         $stocks = new StockCollection( Stock::orderBy('id', 'desc')->get());

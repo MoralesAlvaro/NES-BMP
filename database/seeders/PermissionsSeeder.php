@@ -113,7 +113,16 @@ class PermissionsSeeder extends Seeder
 
         // ----------------- PERMISOS EMPLEADO -----------------
         $permission_empleado = [
-
+            $user_list,
+            $category_list, $category_store,
+            $product_list, $product_store,
+            $rawMaterial_list, $rawMaterial_store,
+            $stock_list, $stock_store,
+            $sale_list, $sale_store,
+            $detailSale_list, $detailSale_store,
+            $expense_list, $expense_store,
+            $dailySale_list,
+            $sale_log,
         ];
         $empleado->syncPermissions($permission_empleado);
 
