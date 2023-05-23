@@ -61,7 +61,7 @@ class StockController extends Controller
     public function update(Request $request)
     {
         if ( ! Auth::user()->can('stock_update')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         if (!$request->stock_id) {
@@ -97,10 +97,13 @@ class StockController extends Controller
     public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('stock_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $stock = Stock::find($request->id);
+        if (count($stock->detailSales)) {
+            return redirect()->back()->withErrors(['warning' => '¡No se puede eliminar este registro, dado que ya se encuentra relacionado con otras entradas en el sistema!.']);
+        }
         $stock->delete();
         return redirect()->back()->with('success', 'Registro eliminado correctamente.');
     }

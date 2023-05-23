@@ -13,7 +13,7 @@ class RolePermissionController extends Controller
     {
 
         /* if ( ! Auth::user()->can('permission_index')){
-            return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con tu manager!.');
+            return redirect()->back()->with('warning', '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.');
         } */
 
         $roles = Role::all();
