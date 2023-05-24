@@ -6,7 +6,9 @@ import { reactive, ref } from 'vue';
 
 
 const props = defineProps({
-    SaleMonth: Object
+    SaleMonth: Object,
+    Top3: Object,
+    SaleWeek: Object
 });
 
 </script>
