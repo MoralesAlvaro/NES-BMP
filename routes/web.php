@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\StockController;
@@ -16,7 +17,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DetailSaleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GeneralExpensesController;
-
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return redirect('login');
@@ -26,7 +27,9 @@ Route::get('/', function () {
 // ONLY DEFAULT
 Route::middleware('auth', 'verified')->group(function () {
     // Ruteo para el dashboard.
-    Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+    //Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+
     // Ruteo para las ventas.
     Route::get('/sales', function () { return Inertia::render('Sales'); })->name('sales');
     // Ruteo para el inventario.
@@ -78,7 +81,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
-    
+
     // Stock
     Route::post('/stock/store', [StockController::class, 'store'])->name('stock.store');
     Route::post('/stock/update', [StockController::class, 'update'])->name('stock.update');
