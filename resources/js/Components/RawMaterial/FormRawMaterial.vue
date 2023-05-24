@@ -56,7 +56,12 @@ const submit = () => {
                 toaster.success(`Registro actualizado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del producto debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false
@@ -69,7 +74,12 @@ const submit = () => {
                 toaster.success(`Registro creado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre del producto debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false
@@ -107,7 +117,7 @@ const submit = () => {
 
             <div class="">
                 <Label for="total" value="Total" />
-                <Input id="total" v-model="form.total" type="number" class="mt-1 block w-full" required
+                <Input id="total" v-model="form.total" type="number" step="0.01" min="0.01" pattern="[0-9]+([.,][0-9]+)?" class="mt-1 block w-full" required
                     placeholder="$ 00.00" />
                 <InputError class="mt-2" :message="form.errors.total" />
             </div>
@@ -121,13 +131,13 @@ const submit = () => {
 
             <div class="">
                 <Label for="parts" value="Partes" />
-                <Input id="parts" v-model="form.parts" type="number" class="mt-1 block w-full" required placeholder="0" />
+                <Input id="parts" v-model="form.parts" type="number" step="0.01" min="0.01" pattern="[0-9]+([.,][0-9]+)?" class="mt-1 block w-full" required placeholder="0" />
                 <InputError class="mt-2" :message="form.errors.parts" />
             </div>
 
             <div class="">
                 <Label for="cost" value="Costo" />
-                <Input id="cost" v-model="form.cost" type="number" class="mt-1 block w-full" required
+                <Input id="cost" v-model="form.cost" type="number" step="0.01" min="0.01" pattern="[0-9]+([.,][0-9]+)?" class="mt-1 block w-full" required
                     placeholder="$ 00.00" />
                 <InputError class="mt-2" :message="form.errors.cost" />
             </div>

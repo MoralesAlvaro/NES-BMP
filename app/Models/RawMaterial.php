@@ -24,4 +24,9 @@ class RawMaterial extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function stoks()
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

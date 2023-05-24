@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         if ( ! Auth::user()->can('user_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $users = new UserCollection(User::where('active', 1)->orderBy('id', 'desc')->get());
@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         // Validando permiso
         if ( ! Auth::user()->can('send_invitation')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         // Validando data
@@ -60,6 +60,7 @@ class UserController extends Controller
         $user = new User([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
+            'telephone' => $request->get('telephone'),
             'password' => bcrypt($password),
         ]);
         $user->save();
@@ -101,6 +102,8 @@ class UserController extends Controller
                     $user->removeRole($user->roles[0]->name);
                 }
                 $user->assignRole($rol->name);
+
+                $user->update($request->all());
                 return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
 
             }else{
@@ -114,7 +117,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ( ! Auth::user()->can('user_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         if (!$user) {

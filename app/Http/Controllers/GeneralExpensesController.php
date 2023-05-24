@@ -46,7 +46,7 @@ class GeneralExpensesController extends Controller
     public function update(Request $request)
     {
         if ( ! Auth::user()->can('expense_update')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         if (!$request->expense_id) {

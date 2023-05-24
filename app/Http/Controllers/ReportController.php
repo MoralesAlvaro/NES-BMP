@@ -14,7 +14,7 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        if ( ! Auth::user()->can('dailySale_list')){//cambiar luego el permiso
+        if ( ! Auth::user()->can('dailySale_list')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
@@ -31,12 +31,16 @@ class ReportController extends Controller
             (SELECT SUM(d2.orders * s2.cost)
             FROM detail_sales d2
             INNER JOIN stocks s2 ON s2.id = d2.stock_id
-            WHERE DATE(d2.created_at) = ?) AS 'suma_total'
+            INNER JOIN sales s ON s.id = d2.sale_id
+            WHERE DATE(d2.created_at) = ?
+			AND s.status_sale_id = 2) AS 'suma_total'
         FROM detail_sales d
         INNER JOIN stocks s ON s.id = d.stock_id
         INNER JOIN raw_materials r ON s.raw_material_id = r.id
         INNER JOIN type_products t ON d.type_product_id = t.id
+        INNER JOIN sales s4 ON s4.id = d.sale_id
         WHERE DATE(d.created_at) = ?
+        AND s4.status_sale_id = 2
         GROUP BY s.name, s.cost, t.name;
         ", [$fecha, $fecha]);
         $permissions = Auth::user()->getAllPermissions();

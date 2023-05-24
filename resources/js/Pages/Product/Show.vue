@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue'
 import Button from '@/Components/PrimaryButton.vue'
 import Modal from '@/Components/Modal.vue'
@@ -67,12 +67,12 @@ const toggleDeleteModal = () => {
 };
 const selectItem = (item) => {
     selectedProduct.product_id = item.id,
-    selectedProduct.name = item.name,
-    selectedProduct.category_id = item.category_id,
-    selectedProduct.description = item.description,
-    selectedProduct.active = item.active,
-    isEdit.value = true,
-    toggleFormModal()
+        selectedProduct.name = item.name,
+        selectedProduct.category_id = item.category_id,
+        selectedProduct.description = item.description,
+        selectedProduct.active = item.active,
+        isEdit.value = true,
+        toggleFormModal()
 }
 
 const selectDeleteItem = item => {

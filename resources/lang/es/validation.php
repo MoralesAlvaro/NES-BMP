@@ -146,6 +146,20 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'product_id' => 'producto',
+        'active' => 'estado',
+        'sale_id' => 'venta',
+        'stock_id' => 'stock',
+        'type_product_id' => 'tipo de producto',
+        'discount' => 'descuento',
+        'category_id' => 'categoría',
+        'status_sale_id' => 'estado de venta',
+        'sup_total' => 'subtotal',
+        'type_doc_id' => 'tipo de documento',
+        'raw_material_id' => 'materia prima',
+        'mount' => 'monto',
+        'cost' => 'costo',
+    ],
 
 ];

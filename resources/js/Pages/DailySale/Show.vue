@@ -1,10 +1,11 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import Table from '@/Components/Table.vue';
 import Label from '@/Components/InputLabel.vue';
 import Empty from '@/Components/Empty.vue'
 import Input from '@/Components/TextInput.vue';
+import { reactive, ref } from 'vue';
 
 const props = defineProps({
     sales: Object,

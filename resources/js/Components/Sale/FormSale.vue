@@ -72,7 +72,7 @@ const costStock = () => {
     if (selectedTypeProduct.value.cost && selectedStock.value.mount) {
         if (selectedTypeProduct.value.cost > 0.00) {
             costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount
-        }else{
+        } else {
             costo.value = selectedStock.value.mount
         }
     }
@@ -107,7 +107,7 @@ const validateNegatives = () => {
         form.discount_sale = 0;
         toaster.info("No puedes asignar descuentos negativos");
     }
-    if (form.orders < 0 || form.orders < 1 ) {
+    if (form.orders < 0 || form.orders < 1) {
         form.orders = 1;
         toaster.info("No puedes agregar ordenes negativas");
     }
@@ -128,7 +128,7 @@ const addStockArray = () => {
         let parts = stock[0].raw_material.parts - form.orders;
         if (parts < 0) {
             toaster.warning(`No puedes agregar más de ${stock[0].raw_material.parts} ordenes`);
-        }else{
+        } else {
             form.detail_sale.push({
                 id: '',
                 sale_id: form.sale_id,
@@ -166,7 +166,12 @@ const submit = () => {
                         toaster.success(`Registro actualizado correctamente.`);
                     },
                     onError: () => {
-                        toaster.warning(`Todos los campos son requeridos`);
+                        const errors = usePage().props.errors;
+                        for (const key in errors) {
+                            if (Object.hasOwnProperty.call(errors, key)) {
+                                toaster.warning(`${errors[key]}`);
+                            }
+                        }
                     },
                     onFinish: () => {
                         isLoading.value = false
@@ -179,7 +184,12 @@ const submit = () => {
                         toaster.success(`Registro creado correctamente.`);
                     },
                     onError: () => {
-                        toaster.warning(`Todos los campos son requeridos`);
+                        const errors = usePage().props.errors;
+                        for (const key in errors) {
+                            if (Object.hasOwnProperty.call(errors, key)) {
+                                toaster.warning(`${errors[key]}`);
+                            }
+                        }
                     },
                     onFinish: () => {
                         isLoading.value = false
@@ -319,8 +329,8 @@ const deleteItem = (item) => {
 
             <div class="col-span-2">
                 <Label for="orders" value="N° Ordenes" />
-                <Input id="orders" v-model="form.orders" @change="costStock" @click="validateNegatives()" type="number" class="mt-1 block w-full"
-                    required placeholder="0" />
+                <Input id="orders" v-model="form.orders" @change="costStock" @click="validateNegatives()" type="number"
+                    class="mt-1 block w-full" required placeholder="0" min="1" />
                 <InputError class="mt-2" :message="form.errors.orders" />
             </div>
 
@@ -337,8 +347,8 @@ const deleteItem = (item) => {
 
             <div class="col-span-3">
                 <Label for="discount_sale" value="Descuentos" />
-                <Input id="discount_sale" v-model="form.discount_sale" @click="validateNegatives()" type="number" class="mt-1 block w-full" required
-                    placeholder="0" />
+                <Input id="discount_sale" v-model="form.discount_sale" @click="validateNegatives()" type="number" min="0"
+                    class="mt-1 block w-full" required placeholder="0" />
             </div>
 
             <div class="md:w-auto w-full mb-2 md:mb-0 md:col-span-3 pt-6 ">
@@ -402,4 +412,5 @@ const deleteItem = (item) => {
             </div>
 
         </div>
-    </form></template>
+    </form>
+</template>

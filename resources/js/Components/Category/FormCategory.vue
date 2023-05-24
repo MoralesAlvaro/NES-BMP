@@ -67,7 +67,12 @@ const submit = () => {
                 toaster.success(`Registro creado correctamente.`);
             },
             onError: () => {
-                toaster.warning(`El nombre de la categoría debe ser único`);
+                const errors = usePage().props.errors;
+                for (const key in errors) {
+                    if (Object.hasOwnProperty.call(errors, key)) {
+                        toaster.warning(`${errors[key]}`);
+                    }
+                }
             },
             onFinish: () => {
                 isLoading.value = false

@@ -60,7 +60,7 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         if ( ! Auth::user()->can('product_update')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         if (!$request->product_id) {
@@ -92,12 +92,24 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('product_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $product = Product::find($request->id);
-        $product->delete();
-        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        try {
+            $product = Product::find($request->id);
+
+            if (count($product->rawMaterials)) {
+                return redirect()->back()->withErrors(['warning' => '¡No se puede eliminar este registro, dado que ya se encuentra relacionado con otras entradas en el sistema!.']);
+                return response()->json($product->rawMaterials, 200);
+            }else{
+                $product->delete();
+                return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+            }
+
+            // return response()->json($product->rawMaterials, 200);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        }
 
     }
 }

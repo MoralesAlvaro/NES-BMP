@@ -14,6 +14,19 @@ class RawMaterialSeeder extends Seeder
     public function run(): void
     {
         //
-        RawMaterial::factory()->count(10)->create();
+        // RawMaterial::factory()->count(1)->create();
+        RawMaterial::insert([
+            [
+                "product_id" => 11,
+                "total" => 4,
+                "quantity" => "2 bandejas",
+                "parts" => 8,
+                "cost" => 0.50,
+                "active" => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+
+            ]
+        ]);
     }
 }

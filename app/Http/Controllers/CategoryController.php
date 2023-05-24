@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         if ( ! Auth::user()->can('category_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $categories = new CategoryCollection( Category::orderBy('id', 'desc')->paginate(10));
@@ -36,7 +36,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         if ( ! Auth::user()->can('category_store')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $validando = $request->validate([
@@ -56,7 +56,7 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         if ( ! Auth::user()->can('category_update')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         if (!$request->category_id) {
@@ -88,11 +88,22 @@ class CategoryController extends Controller
     public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('category_destroy')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+            return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $category = Category::find($request->id);
-        $category->delete();
-        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        try {
+            $category = Category::find($request->id);
+
+            if (count($category->products)) {
+                return redirect()->back()->withErrors(['warning' => '¡No se puede eliminar este registro, dado que ya se encuentra relacionado con otras entradas en el sistema!.']);
+            }else{
+                $category->delete();
+                return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+            }
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        }
+
     }
 }
