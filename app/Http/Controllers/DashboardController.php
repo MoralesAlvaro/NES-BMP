@@ -21,7 +21,7 @@ class DashboardController extends Controller
        //venta del mes
        $SaleMonth = DB::table('detail_sales')
     ->selectRaw('SUM(total) as totales, DATE_FORMAT(created_at, "%M") AS month')
-    ->where(DB::raw('YEAR(now())'), '=', $year)
+    ->where(DB::raw("DATE_FORMAT(created_at, '%X')"), '=', $year)
     ->groupBy('month')
     ->orderBy('month', 'asc')
     ->get();
@@ -30,11 +30,12 @@ class DashboardController extends Controller
 
         $SaleWeek = DB::table('detail_sales')
     ->select(DB::raw("SUM(total) as totales"), DB::raw("DATE_FORMAT(created_at, '%V') as week"))
-    ->where(DB::raw("DATE_FORMAT(created_at, '%V')"), '=', $week)
+    ->where(DB::raw("DATE_FORMAT(created_at, '%V')"), '=', $week)->where(DB::raw("DATE_FORMAT(created_at, '%X')",'=',$year), '=', $year)
     ->groupBy(DB::raw("DATE_FORMAT(created_at, '%V')"))
     ->get();
 
         //return var_dump(json_encode( $SaleWeek));
+        //return var_dump(json_encode( $SaleMonth));
 
        //return var_dump(json_encode( $Top3));
         return Inertia::render('Dashboard/Show',['Top3'=>$Top3,'SaleMonth'=>$SaleMonth,'SaleWeek'=>$SaleWeek]);
