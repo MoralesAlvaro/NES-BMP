@@ -17,12 +17,14 @@ class DashboardController extends Controller
        INNER JOIN `stocks`  ON detail_sales.stock_id = stocks.id
        WHERE detail_sales.stock_id = detail_sales.stock_id GROUP BY stocks.name ORDER BY totales DESC LIMIT 3;');
 
+       $year = date("Y");
        //venta del mes
-       $SaleMonth=DB::table('detail_sales')
-       ->selectRaw('SUM(total) as totales, DATE_FORMAT(created_at, "%M") AS month')
-       ->groupBy('month')
-       ->orderBy('month', 'asc')
-       ->get();
+       $SaleMonth = DB::table('detail_sales')
+    ->selectRaw('SUM(total) as totales, DATE_FORMAT(created_at, "%M") AS month')
+    ->where(DB::raw('YEAR(now())'), '=', $year)
+    ->groupBy('month')
+    ->orderBy('month', 'asc')
+    ->get();
 
         $week =date("W");
 
