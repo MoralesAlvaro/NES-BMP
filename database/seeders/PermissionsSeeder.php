@@ -25,6 +25,9 @@ class PermissionsSeeder extends Seeder
 
         // **** PERMISOS ****
 
+        /* DASHBOARD */
+        // $dashboard_list = Permission::create(['name' => 'dashboard_list', 'descriptions' => 'Vista lista de estadísticas']);
+
         /* USUARIOS */
         $user_list = Permission::create(['name' => 'user_list', 'descriptions' => 'Vista lista de usuarios']);
         $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Vista enviar invitación']);
@@ -82,6 +85,7 @@ class PermissionsSeeder extends Seeder
 
         // ----------------- PERMISOS master -----------------
         $permission_master = [
+            //$dashboard_list,
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
@@ -97,6 +101,7 @@ class PermissionsSeeder extends Seeder
 
         // ----------------- PERMISOS ADMINISTRADORES -----------------
         $permission_encargado = [
+            //$dashboard_list,
             $user_list, $send_invitation, $change_role, $user_destroy,
             $category_list, $category_store, $category_update, $category_destroy,
             $product_list, $product_store, $product_update, $product_destroy,
@@ -113,6 +118,7 @@ class PermissionsSeeder extends Seeder
 
         // ----------------- PERMISOS EMPLEADO -----------------
         $permission_empleado = [
+            // $dashboard_list,
             $user_list,
             $category_list, $category_store,
             $product_list, $product_store,
