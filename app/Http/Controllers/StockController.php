@@ -70,12 +70,12 @@ class StockController extends Controller
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible.']);
         }
 
-        // $stock = Stock::find($request->stock_id);
-        // if ($request->active and $request->active == "Activo" || $request->active == 1) {
-        //     $request->merge(['active' => true]);
-        // }else{
-        //     $request->merge(['active' => false]);
-        // }
+        $stock = Stock::find($request->stock_id);
+        if ($request->active and $request->active == "Activo" || $request->active == 1) {
+             $request->merge(['active' => true]);
+         }else{
+             $request->merge(['active' => false]);
+         }
 
         // return response()->json($request->all(), 200);
         $validando = \Validator::make($request->all(), [
@@ -87,6 +87,7 @@ class StockController extends Controller
             'active' => ['boolean'],
         ]);
         // return response()->json($request->all(), 200);
+
 
         $stock->update($request->all());
 
