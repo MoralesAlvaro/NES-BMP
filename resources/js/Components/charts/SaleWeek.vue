@@ -36,9 +36,9 @@ export default {
     data() {
         return {
             chartData: {
-                labels: [`Semana ${this.value.map(item => item.week)}`],
+                labels: this.value.map(item => item.dia),
                 datasets: [{
-                    label: 'Número de Ventas',
+                    label: 'Semanal por día',
                     backgroundColor: '#DB763B',
                     borderColor: '#d1d5db',
                     fill: false,

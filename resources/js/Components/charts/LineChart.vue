@@ -38,7 +38,7 @@ export default {
             chartData: {
                 labels: this.value.map(item => item.month),
                 datasets: [{
-                    label: 'Número de Ventas',
+                    label: 'Anual por mes',
                     backgroundColor: '#DB763B',
                     borderColor: '#d1d5db',
                     fill: false,
