@@ -72,12 +72,12 @@ class StockController extends Controller
 
         $stock = Stock::find($request->stock_id);
         if ($request->active and $request->active == "Activo" || $request->active == 1) {
-             $request->merge(['active' => true]);
-         }else{
-             $request->merge(['active' => false]);
-         }
-
+            $request->merge(['active' => 1]);
+        }else{
+            $request->merge(['active' => 0]);
+        }
         // return response()->json($request->all(), 200);
+
         $validando = \Validator::make($request->all(), [
             'raw_material_id' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255', 'unique:categories,name'],
