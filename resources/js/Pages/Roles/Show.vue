@@ -16,7 +16,7 @@ const header = reactive([{
     showInMobile: true
 },
 {
-    name: 'Acciones',
+    name: 'Fecha',
     showInMobile: true
 }
 ]);
@@ -54,11 +54,6 @@ const selectItem = (item) => {
 
         <div class="py-6 min-h-screen">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-                <div class="flex md:justify-end sm:justify-start items-center mb-5">
-                    <Button @click="toggleFormModal(); isEdit = false">
-                        Invitar
-                    </Button>
-                </div>
 
                 <div
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
@@ -66,6 +61,7 @@ const selectItem = (item) => {
                         <tbody class="px-5">
                             <tr v-for="item in roles" class="mt-2">
                                 <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                                <td class="text-center p-2 lg:text-base text-xs">{{ new Date(item.created_at).toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' }) }}</td>
                             </tr>
                         </tbody>
                     </Table>
