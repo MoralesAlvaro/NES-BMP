@@ -111,6 +111,9 @@ const validateNegatives = () => {
         form.orders = 1;
         toaster.info("No puedes agregar ordenes negativas");
     }
+    if (form.discount_sale === "") {
+        form.discount_sale = 0;
+    }
 }
 
 // Hace el caculo de las partes disponibles en stock
