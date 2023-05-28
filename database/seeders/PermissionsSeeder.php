@@ -129,6 +129,7 @@ class PermissionsSeeder extends Seeder
             $expense_list, $expense_store,
             $dailySale_list,
             $sale_log,
+            $sale_update, $detailSale_update
         ];
         $empleado->syncPermissions($permission_empleado);
 

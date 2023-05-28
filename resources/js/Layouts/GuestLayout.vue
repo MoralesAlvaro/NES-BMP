@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/vue3';
     <div class="grid md:grid-cols-12 sm:grid-cols-1 gap-2 bg-gray-100">
 
         <div class="md:col-span-5 rounded-xl bg-contain bg-center hover:bg-contain" id="banner_ndes">
+            <img src="@/../../public/img/banners/NDES_002.jpg" alt="" >
         </div>
 
         <div class="md:col-span-7 min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 ">
