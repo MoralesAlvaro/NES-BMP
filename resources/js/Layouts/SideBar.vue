@@ -1,31 +1,44 @@
 <script setup>
-// Importando el logo del sistema.
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-// Importando el componente "Link" de Intertia.
-import { Link, usePage } from '@inertiajs/vue3';
-// Importando la información del menú lateral.
-import { sidebarItems } from '@/sidebar_item';
-// Importando los componentes para montar e iniciar Flowbite.
-import { onMounted } from 'vue';
-import { initFlowbite } from 'flowbite';
-import { Inertia } from '@inertiajs/inertia';
+    // Importando el logo del sistema.
+    import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+    // Importando el componente "Link" de Intertia.
+    import {
+        Link,
+        usePage
+    } from '@inertiajs/vue3';
+    // Importando la información del menú lateral.
+    import {
+        sidebarItems
+    } from '@/sidebar_item';
+    // Importando los componentes para montar e iniciar Flowbite.
+    import {
+        onMounted
+    } from 'vue';
+    import {
+        initFlowbite
+    } from 'flowbite';
+    import {
+        Inertia
+    } from '@inertiajs/inertia';
 
-// Instanciando la información del menú lateral en una constante.
-const menu = sidebarItems;
+    // Instanciando la información del menú lateral en una constante.
+    const menu = sidebarItems;
 
-// Inicializando los componentes de Flowbite.
-onMounted(() => {
-    initFlowbite();
-});
+    // Inicializando los componentes de Flowbite.
+    onMounted(() => {
+        initFlowbite();
+    });
 
-const signOut = () => {
-    let user = usePage().props.auth.user.id;
-    if (!user) {
-        Inertia.visit(route('login'), { replace: true })
+    const signOut = () => {
+        let user = usePage().props.auth.user.id;
+        if (!user) {
+            Inertia.visit(route('login'), {
+                replace: true
+            })
+        }
+        Inertia.post(route('logout'));
+        // window.location.reload()
     }
-    Inertia.post(route('logout'));
-    // window.location.reload()
-}
 </script>
 <template>
     <!-- Apartado superior del componente del menú lateral -->
@@ -40,8 +53,8 @@ const signOut = () => {
             <!-- Inicio del botón de menú lateral en vista móvil -->
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start">
-                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
-                        type="button"
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+                        aria-controls="logo-sidebar" type="button"
                         class="inline-flex items-center p-2 text-sm text-white rounded-lg md:hidden hover:bg-gray-100  dark:text-gray-400 dark:hover:bg-gray-700 ">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -78,7 +91,7 @@ const signOut = () => {
                         </svg>
                         <!-- Imprimiendo el nombre del usuario -->
                         <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>
-                            {{ $page.props.auth.user.name }}
+                            {{ $page . props . auth . user . name }}
                         </span>
                         <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -91,8 +104,8 @@ const signOut = () => {
                         <li>
                             <a :href="route('profile.edit')"
                                 class="flex items-center p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-6 h-6 mr-4 ml-2.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-4 ml-2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
@@ -102,8 +115,8 @@ const signOut = () => {
                         <li>
                             <a @click="signOut" method="post" as="button"
                                 class="flex items-center justify-around w-full p-2 text-white rounded-lg hover:bg-brown-100 hover:text-brown-700 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-6 h-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                                 </svg>
@@ -123,7 +136,7 @@ const signOut = () => {
                             :aria-controls="item.aria" :data-collapse-toggle="item.aria">
                             <i :class="item.icon"></i>
                             <span class="ml-3">
-                                {{ item.name }}
+                                {{ item . name }}
                                 <i class="fas fa-sort-down"></i>
                             </span>
                         </button>
@@ -132,20 +145,29 @@ const signOut = () => {
                                 <a :href="route(child.item_url)"
                                     class="flex items-center w-full p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700 transition duration-500">
                                     <i :class="child.icon"></i>
-                                    <span class="ml-3">{{ child.name }}</span>
+                                    <span class="ml-3">{{ child . name }}</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                 </ul>
 
-                <!-- Opción de ayuda del sistema -->
+                <!-- Centro de ayuda -->
                 <li>
                     <a href="https://drive.google.com/drive/folders/1dXgWxXtu_fnqkRpZWZtffDN8gHsaX3Aq?usp=sharing"
                         target="_blank"
                         class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700">
                         <i class="fas fa-question-circle"></i>
                         <span class="flex-1 ml-3 whitespace-nowrap">Centro de ayuda</span>
+                    </a>
+                </li>
+
+                <!-- Acerca de -->
+                <li>
+                    <a :href="route('acercaDe')"
+                        class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-brown-700">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Acerca de</span>
                     </a>
                 </li>
             </ul>

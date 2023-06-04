@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->groupBy('month')
             ->orderBy('month', 'asc')
             ->get();
-        
+
         $monthTranslations = [
             'Jan' => 'Enero',
             'Feb' => 'Febrero',
@@ -88,5 +88,10 @@ class DashboardController extends Controller
             'SaleMonth' => $SaleMonth,
             'SaleWeek' => $result,
         ]);
+    }
+
+    public function acercaDe()
+    {
+        return Inertia::render('acercade/Show',);
     }
 }

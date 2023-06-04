@@ -20,9 +20,9 @@
       background-color: #16A19E;
     }
   </style>
-    <h2>Invitación al equipo NES</h2>
-    <p>Enhorabuena!!<br>
-      Has sido invitado a ser parte del equipo <b>NES</b>. Si decides aceptar la invitación haz click en el link de abajo y coloca las credenciales adjuntas a este correo</p>
+    <h2>Invitación al equipo NES-BMP</h2>
+    <p>En hora buena!!<br>
+      Has sido invitado a ser parte del equipo <b>NES-BMP</b>. Si decides aceptar la invitación haz click en el link de abajo y coloca las credenciales adjuntas a este correo</p>
     <p>Usuario: {{$email}}</p>
     <p>Contraseña provisional: {{$password}}</p>
     <a class="boton" href="{{$url}}">Verificar</a>

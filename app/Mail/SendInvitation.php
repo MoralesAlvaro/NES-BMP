@@ -26,8 +26,8 @@ class SendInvitation extends Mailable
     public function build()
     {
         $address = env('MAIL_FROM_ADDRESS');
-        $subject = 'Invitación al equipo NES';
-        $name = 'NES';
+        $subject = 'Invitación al equipo NES-BMP';
+        $name = 'NES-BMP';
 
         return $this->view('emails.sendInvitation')
                         ->from($address, $name)

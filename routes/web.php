@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/expense/list', [GeneralExpensesController::class, 'index'])->name('expense.list');
     Route::get('/dailySales', [ReportController::class, 'index'])->name('dailySales');
     Route::get('/saleLog', [ReportController::class, 'saleLog'])->name('saleLog');
+    Route::get('/acercaDe', [DashboardController::class, 'acercaDe'])->name('acercaDe');
 });
 
 
