@@ -24,7 +24,7 @@ class StockController extends Controller
         }
 
         $stocks = new StockCollection( Stock::orderBy('id', 'desc')->paginate(10));
-        $raw_materials = new RawMaterialCollection( RawMaterial::all() );
+        $raw_materials = new RawMaterialCollection( RawMaterial::where('active', 1)->get() );
         $permissions = Auth::user()->getAllPermissions();
 
         return Inertia::render('Stock/Show', [

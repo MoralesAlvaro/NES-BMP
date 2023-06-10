@@ -125,7 +125,7 @@ const submit = () => {
 
             <div class="">
                 <Label for="cost" value="Costo" />
-                <Input id="cost" v-model="form.cost" type="number" step="0.01" min="0.01" pattern="[0-9]+([.,][0-9]+)?" class="mt-1 block w-full" required
+                <Input id="cost" v-model="form.cost" type="number" step="0.01" min="0.01" max="9999.99" pattern="[0-9]+([.,][0-9]+)?" class="mt-1 block w-full" required
                     placeholder="$ 00.00" />
                 <InputError class="mt-2" :message="form.errors.cost" />
             </div>

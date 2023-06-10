@@ -31,9 +31,10 @@ class SaleController extends Controller
         $sales = new SaleCollection( Sale::where('status_sale_id', 1)->orderBy('id', 'desc')->paginate(10));
         $typeDoc = TypeDoc::all();
         $statusSale = StatusSale::all();
-        $stocks = new StockCollection( Stock::orderBy('id', 'desc')->get());
+        $stocks = new StockCollection( Stock::where('active', 1)->orderBy('id', 'desc')->get());
         $typeProduct = TypeProduct::all();
         $permissions = Auth::user()->getAllPermissions();
+        // dd([$sales, $stocks]);
 
         return Inertia::render('Sale/Show', [
             'sales' => $sales,

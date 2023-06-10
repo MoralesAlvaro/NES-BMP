@@ -191,10 +191,10 @@ const submitDelete = () => {
                                 <tr v-for="   item   in   reawMaterials.data  " class="mt-2">
                                     <td class="text-center p-2 lg:text-base text-xs text-gray-400">{{ item.id }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.product_id.name }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.total }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.quantity }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">${{ item.total }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">${{ item.quantity }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.parts }}</td>
-                                    <td class="text-center p-2 lg:text-base text-xs">{{ item.cost }}</td>
+                                    <td class="text-center p-2 lg:text-base text-xs">${{ item.cost }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">{{ item.active }}</td>
                                     <td class="text-center p-2 lg:text-base text-xs">
                                         <div class="flex justify-center">

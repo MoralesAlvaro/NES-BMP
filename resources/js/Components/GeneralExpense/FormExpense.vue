@@ -78,13 +78,14 @@ const submit = () => {
         </h2>
         <div class="mb-5">
             <Label for="name" value="Nombre" />
-            <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus />
+            <Input id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus placeholder="Ingresa el nombre"/>
             <InputError class="mt-2" :message="form.errors.name" />
         </div>
 
         <div class="mb-5">
             <Label for="total" value="Total" />
-            <Input id="total" v-model="form.total" type="text" class="mt-1 block w-full" placeholder="0.00" required autofocus />
+            <Input id="total" v-model="form.total" type="number" step="0.01" min="0.01" max="9999.99" pattern="[0-9]+([.,][0-9]+)?" class="mt-1 block w-full" required
+                    placeholder="$ 00.00" />
             <InputError class="mt-2" :message="form.errors.total" />
         </div>
 

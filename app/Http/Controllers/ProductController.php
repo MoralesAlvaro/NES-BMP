@@ -66,7 +66,7 @@ class ProductController extends Controller
         if (!$request->product_id) {
             return redirect()->back()->withErrors(['error' => 'El recurso que desea editar, no se encuentra disponible!.']);
         }
-        $category = Product::find($request->product_id);
+        $product = Product::find($request->product_id);
         if ($request->active and $request->active == "Activo") {
             $request->merge(['active' => 1]);
         }
@@ -80,7 +80,7 @@ class ProductController extends Controller
         ]);
         // return response()->json($request->all(), 200);
 
-        $category->update($request->all());
+        $product->update($request->all());
 
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
 

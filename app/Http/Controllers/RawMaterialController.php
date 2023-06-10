@@ -23,7 +23,7 @@ class RawMaterialController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
-        $reawMaterials = new RawMaterialCollection( RawMaterial::orderBy('id', 'desc')->paginate(5));
+        $reawMaterials = new RawMaterialCollection( RawMaterial::orderBy('id', 'desc')->paginate(10));
         $products = Product::all();
         $permissions = Auth::user()->getAllPermissions();
 
@@ -68,6 +68,7 @@ class RawMaterialController extends Controller
      */
     public function update(Request $request)
     {
+        // return response()->json($request->all(), 200);
         if ( ! Auth::user()->can('rawMaterial_update')){
             return redirect()->back()->withErrors(['warning' => '¡No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }

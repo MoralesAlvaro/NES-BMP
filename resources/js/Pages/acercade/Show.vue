@@ -23,7 +23,7 @@
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
                 <div
                     class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-                    <img src="@/Assets/img/portada3.png" alt="NDES_logo">
+                    <img src="@/Assets/img/portada3.1.png" alt="NDES_logo">
                 </div>
             </div>
 

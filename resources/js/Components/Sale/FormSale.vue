@@ -68,18 +68,21 @@ const handleSelectedTypeProduct = (selected) => {
 // Calcula el costo de las ordenes a pedir
 const costStock = () => {
     selectedStock.value.mount ? costo.value = selectedStock.value.mount : costo.value = 0;
+    let totalAdd = 0
+    let totalProduct = 0
 
-    if (selectedTypeProduct.value.cost && selectedStock.value.mount) {
+    if (selectedTypeProduct.value.cost != null && selectedStock.value.mount) {
         if (selectedTypeProduct.value.cost > 0.00) {
-            costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount
+            totalAdd = selectedTypeProduct.value.cost * form.orders
+            totalProduct = selectedStock.value.mount * form.orders
         } else {
-            costo.value = selectedStock.value.mount
+            totalProduct = selectedStock.value.mount * form.orders
         }
     }
 
     // selectedTypeProduct.value.cost ? costo.value = selectedTypeProduct.value.cost : costo.value = 0;
     // selectedTypeProduct.value.cost && selectedStock.value.mount ? costo.value = selectedTypeProduct.value.cost + selectedStock.value.mount : 0;
-    costo.value = costo.value * form.orders;
+    costo.value = totalAdd + totalProduct;
     totalSale()
 }
 
@@ -229,7 +232,7 @@ const headerPreview = reactive([
         showInMobile: true
     },
     {
-        name: 'Total ordenes',
+        name: 'Total órdenes',
         showInMobile: true
     },
     {
@@ -257,6 +260,7 @@ const deleteItem = (item) => {
     }
 
     if (form.detail_sale[item].kind === 'new') {
+        exist.value += parseInt(form.detail_sale[item].orders);
         form.detail_sale.splice(item, 1);
         totalSale();
         toaster.warning(`Se ha removido un item de la venta`);

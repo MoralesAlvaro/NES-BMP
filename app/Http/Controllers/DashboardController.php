@@ -25,25 +25,26 @@ class DashboardController extends Controller
         //venta del mes
 
         $SaleMonth = DB::table('detail_sales')
-            ->selectRaw('SUM(total) as totales, MONTHNAME(created_at) AS month')
-            ->where(DB::raw('YEAR(created_at)'), '=', $year)
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->get();
+    ->selectRaw('SUM(total) as totales, MONTH(created_at) AS month')
+    ->where(DB::raw('YEAR(created_at)'), '=', $year)
+    ->groupBy('month')
+    ->orderByRaw('CASE WHEN month < 4 THEN month + 12 ELSE month END')
+    ->get();
+            // dd($SaleMonth);
 
         $monthTranslations = [
-            'Jan' => 'Enero',
-            'Feb' => 'Febrero',
-            'Mar' => 'Marzo',
-            'April' => 'Abril',
-            'May' => 'Mayo',
-            'Jun' => 'Junio',
-            'Jul' => 'Julio',
-            'Ago' => 'Agosto',
-            'Sep' => 'Septiembre',
-            'Oct' => 'Octubre',
-            'Nov' => 'Noviembre',
-            'Dic' => 'Diciembre',
+            '1' => 'Enero',
+            '2' => 'Febrero',
+            '3' => 'Marzo',
+            '4' => 'Abril',
+            '5' => 'Mayo',
+            '6' => 'Junio',
+            '7' => 'Julio',
+            '8' => 'Agosto',
+            '9' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre',
         ];
 
         foreach ($SaleMonth as $item) {
@@ -82,6 +83,13 @@ class DashboardController extends Controller
                 'totales' => $sale->totales,
             ];
         }
+
+        usort($result, function ($a, $b) use ($dayTranslations) {
+            $aIndex = array_search($a->dia, array_values($dayTranslations));
+            $bIndex = array_search($b->dia, array_values($dayTranslations));
+            return $aIndex - $bIndex;
+        });
+
 
         return Inertia::render('Dashboard/Show', [
             'Top3' => $Top3,
