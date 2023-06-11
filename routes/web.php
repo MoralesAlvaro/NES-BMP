@@ -17,6 +17,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DetailSaleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\GeneralExpensesController;
+use App\Http\Controllers\BackupController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
@@ -107,6 +108,10 @@ Route::middleware('auth')->group(function () {
 
     // export data
     Route::get('/indexExport', [ReportController::class, 'indexExport'])->name('indexExport');
+
+    // Backups
+    Route::get('/allBackup', [BackupController::class, 'allBackup'])->name('allBackup');
+    Route::get('/dbBackup', [BackupController::class, 'dbBackup'])->name('dbBackup');
 
 });
 

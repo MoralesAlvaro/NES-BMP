@@ -77,5 +77,17 @@ export const sidebarItems = [
                 icon: 'fa fa-circle fa-xs'
             }
         ]
+    },
+    {
+        name: 'Hacer Respaldo',
+        aria: 'dropdown7',
+        icon: 'fas fa-download',
+        children: [
+            {
+                name: 'Respaldar Todo',
+                item_url: 'allBackup',
+                icon: 'fa fa-circle fa-xs'
+            }
+        ]
     }
 ];
