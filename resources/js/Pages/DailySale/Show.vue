@@ -6,6 +6,8 @@ import Label from '@/Components/InputLabel.vue';
 import Empty from '@/Components/Empty.vue'
 import Input from '@/Components/TextInput.vue';
 import { reactive, ref } from 'vue';
+import Button from '@/Components/PrimaryButton.vue';
+import * as XLSX from 'xlsx'
 
 const props = defineProps({
     sales: Object,
@@ -51,9 +53,45 @@ const form = useForm({
 
 
 const getDate = () => {
-    console.log(form.date);
     form.get(route('dailySales'))
 }
+
+const exportData = () => {
+  // Obtiene la fecha de la URL
+  const url = window.location.href;
+  const urlParams = new URLSearchParams(url);
+  const dateParam = urlParams.get('date');
+
+  // Crea un nuevo libro de trabajo de Excel
+  const workbook = XLSX.utils.book_new();
+
+  // Crea una hoja de trabajo dentro del libro
+  const worksheet = XLSX.utils.json_to_sheet(props.sales);
+
+  // Agrega la hoja de trabajo al libro
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'ventas diarias');
+
+  // Genera un archivo de Excel binario a partir del libro de trabajo
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+  // Crea un objeto Blob a partir del archivo de Excel binario
+  const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+  // Crea un enlace temporal para descargar el archivo de Excel
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', 'ventas diarias.xlsx');
+  document.body.appendChild(link);
+
+  // Simula el clic en el enlace para descargar el archivo
+  link.click();
+
+  // Limpia el enlace y libera los recursos
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+};
+
+
 
 </script>
 
@@ -70,12 +108,15 @@ const getDate = () => {
         <div class="py-6 min-h-screen">
 
             <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-                <div class="bg-white rounded-md pb-4 mb-4 grid grid-cols-2 gap-4 p-4">
-                    <div>
+                <div class="bg-white rounded-md pb-4 mb-4 grid grid-cols-3 gap-4 p-4">
+                    <div class="">
                         <Label for="orders" value="Fecha" />
                         <Input id="orders" v-model="form.date" @change="getDate()" type="date" class="mt-1 block w-full" />
                     </div>
-                    <div >
+                    <div class="pt-5">
+                        <Button @click="exportData()" class=""><i class="fa fa-solid fa-file-excel text-green-500 font-bold text-lg"></i> Exportar</Button>
+                    </div>
+                    <div class="">
                         <h2 v-if="sales.length > 0" class="font-semibold text-2xl leading-tight text-center mb-5 text-brown-800">
                             Total: ${{ sales[0].suma_total.toFixed(2) }}
                         </h2>

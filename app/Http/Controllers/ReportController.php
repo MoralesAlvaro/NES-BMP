@@ -14,48 +14,35 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        if ( ! Auth::user()->can('dailySale_list')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
+        if (!Auth::user()->can('dailySale_list')) {
+            return redirect()
+                ->back()
+                ->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         if ($request->date) {
             $fecha = $request->date;
-        }else{
-            $fecha = date("Y-m-d");
+        } else {
+            $fecha = date('Y-m-d');
         }
 
         $sales = new SaleCollection(Sale::all());
-        $sales = DB::select("
-            SELECT s.name AS 'producto', t.name AS 'tipo', SUM(d.orders) AS 'cantidad', s.cost,
-            (SUM(d.orders) * s.cost) AS 'total',
-            (SELECT SUM(d2.orders * s2.cost)
-            FROM detail_sales d2
-            INNER JOIN stocks s2 ON s2.id = d2.stock_id
-            INNER JOIN sales s ON s.id = d2.sale_id
-            WHERE DATE(d2.created_at) = ?
-			AND s.status_sale_id = 2) AS 'suma_total'
-        FROM detail_sales d
-        INNER JOIN stocks s ON s.id = d.stock_id
-        INNER JOIN raw_materials r ON s.raw_material_id = r.id
-        INNER JOIN type_products t ON d.type_product_id = t.id
-        INNER JOIN sales s4 ON s4.id = d.sale_id
-        WHERE DATE(d.created_at) = ?
-        AND s4.status_sale_id = 2
-        GROUP BY s.name, s.cost, t.name;
-        ", [$fecha, $fecha]);
+        $sales = $this->indexData($fecha);
         $permissions = Auth::user()->getAllPermissions();
 
         return Inertia::render('DailySale/Show', [
             'sales' => $sales,
-            'permissions' => $permissions
+            'permissions' => $permissions,
         ]);
-
     }
 
     public function saleLog(Request $request)
     {
-        if ( ! Auth::user()->can('sale_log')){//cambiar luego el permiso
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
+        if (!Auth::user()->can('sale_log')) {
+            //cambiar luego el permiso
+            return redirect()
+                ->back()
+                ->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager.']);
         }
 
         $sales = DB::select('SELECT SUM(s.total) AS total_suma, DATE(s.created_at) AS fecha
@@ -66,7 +53,45 @@ class ReportController extends Controller
         $permissions = Auth::user()->getAllPermissions();
         return Inertia::render('SaleLog/Show', [
             'permissions' => $permissions,
-            'sales' => $sales
+            'sales' => $sales,
         ]);
+    }
+
+    function indexData($fecha)
+    {
+        $sales = DB::select(
+            "
+            SELECT s.name AS 'producto', t.name AS 'tipo', SUM(d.orders) AS 'cantidad', s.cost,
+            (SUM(d.orders) * s.cost) AS 'total',
+            (SELECT SUM(d2.orders * s2.cost)
+            FROM detail_sales d2
+            INNER JOIN stocks s2 ON s2.id = d2.stock_id
+            INNER JOIN sales s ON s.id = d2.sale_id
+            WHERE DATE(d2.created_at) = ?
+        AND s.status_sale_id = 2) AS 'suma_total'
+        FROM detail_sales d
+        INNER JOIN stocks s ON s.id = d.stock_id
+        INNER JOIN raw_materials r ON s.raw_material_id = r.id
+        INNER JOIN type_products t ON d.type_product_id = t.id
+        INNER JOIN sales s4 ON s4.id = d.sale_id
+        WHERE DATE(d.created_at) = ?
+        AND s4.status_sale_id = 2
+        GROUP BY s.name, s.cost, t.name;
+        ",
+            [$fecha, $fecha],
+        );
+        return $sales;
+    }
+
+    public function indexExport()
+    {
+        $datos = [
+            ['Nombre', 'Email'],
+            ['John Doe', 'john@example.com'],
+            ['Jane Smith', 'jane@example.com'],
+            ['Michael Johnson', 'michael@example.com'],
+        ];
+
+        dd($datos);
     }
 }

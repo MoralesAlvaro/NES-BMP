@@ -59,7 +59,7 @@ const header = reactive([{
                 </div>
 
             </div>
-            <div class="md:ml-7 md:mr-5 flex flex-col sm:justify-start items-center pt-6 sm:pt-0">
+            <div class="md:ml-7 md:mr-5 flex flex-col sm:justify-start items-center pt-6 sm:pt-0 pb-10">
                 <div class="w-full bg-white shadow-lg overflow-hidden sm:rounded-lg">
                     <div class="flex justify-center">
                         <span class="text-gray-500 font-bold text-center mt-2">Top productos más vendidos</span>

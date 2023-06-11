@@ -14,12 +14,12 @@ class DashboardController extends Controller
         // Productos más vendidos.
         $Top3 = DB::select('SELECT stocks.name, SUM(detail_sales.orders) as totales FROM `detail_sales`
         INNER JOIN `stocks`  ON detail_sales.stock_id = stocks.id
-        WHERE detail_sales.stock_id = detail_sales.stock_id GROUP BY stocks.name ORDER BY totales DESC LIMIT 3;');
+        WHERE detail_sales.stock_id = detail_sales.stock_id GROUP BY stocks.name ORDER BY totales DESC LIMIT 7;');
 
         // Venta del mes.
         $Top3 = DB::select('SELECT stocks.name, SUM(detail_sales.orders) as totales FROM `detail_sales`
        INNER JOIN `stocks`  ON detail_sales.stock_id = stocks.id
-       WHERE detail_sales.stock_id = detail_sales.stock_id GROUP BY stocks.name ORDER BY totales DESC LIMIT 3;');
+       WHERE detail_sales.stock_id = detail_sales.stock_id GROUP BY stocks.name ORDER BY totales DESC LIMIT 7;');
 
         $year = date("Y");
         //venta del mes

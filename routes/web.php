@@ -100,12 +100,13 @@ Route::middleware('auth')->group(function () {
 
     // Detail sale
 
-    // dailySales
-
     // General expenses
     Route::post('/expense/store', [GeneralExpensesController::class, 'store'])->name('expense.store');
     Route::post('/expense/update', [GeneralExpensesController::class, 'update'])->name('expense.update');
     Route::get('/expense/destroy', [GeneralExpensesController::class, 'destroy'])->name('expense.destroy');
+
+    // export data
+    Route::get('/indexExport', [ReportController::class, 'indexExport'])->name('indexExport');
 
 });
 
