@@ -9,7 +9,11 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { reactive, ref, getCurrentInstance } from 'vue';
 import InputError from '@/Components/InputError.vue';
 import { createToaster } from "@meforma/vue-toaster";
-import { fromJSON } from 'postcss';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+  // Cargar las fuentes necesarias para el PDF
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -268,6 +272,70 @@ const deleteItem = (item) => {
     totalSale();
 }
 
+const showTicket = () => {
+  if (form.status_sale_id) {
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    const ticketWidthPx = 300;
+    const ticketHeightPt = 'auto';
+
+    const { sale_id, status_sale_id, sup_total, discount, total, detail_sale } = form;
+
+    const groupedItems = detail_sale.reduce((groups, item) => {
+        const { stock_name } = item;
+        const itemId = stock_name.id;
+
+        groups[itemId] = groups[itemId] || { stock_name, quantity: 0, total: 0 };
+        groups[itemId].quantity += parseInt(item.orders);
+        groups[itemId].total += parseInt(item.total.toFixed(2));
+
+        return groups;
+    }, {});
+
+    const groupedItemsArray = Object.values(groupedItems);
+
+    const documentDefinition = {
+        pageSize: { width: ticketWidthPx, height: ticketHeightPt },
+        content: [
+        { text: 'RESTAORANTE NOCHES DE EL SALVADOR', style: 'header' },
+        { text: '----------------------------', alignment: 'center' },
+        { text: 'Ticket de Venta', style: 'subheader' },
+        { text: `Subtotal: $${sup_total.toFixed(2)}` },
+        { text: `Descuento: $${discount.toFixed(2)}` },
+        { text: `Total: $${total.toFixed(2)}`, style: 'total' },
+        { text: 'Detalle de Venta:', style: 'subheader' },
+        {
+            table: {
+                headerRows: 1,
+                widths: ['*', 'auto', 'auto'],
+                body: [
+                    ['Nombre', 'Cantidad', 'Total'],
+                    ...detail_sale.map(item => [item.stock_name.name, item.orders, `$${item.total.toFixed(2)}`])
+                ],
+                footer: [{ text: `Total: $${total.toFixed(2)}`, style: 'total', colSpan: 2, alignment: 'right' }, {}, {}],
+                autoSize: true
+            },
+            layout: {
+                fillColor: (rowIndex, node, columnIndex) => rowIndex === 0 ? '#CCCCCC' : null,
+                hLineWidth: (i, node) => i === 0 || i === node.table.body.length ? 0 : 0.5,
+                vLineWidth: () => 0,
+            },
+            style: 'tableStyle'
+        }
+        ],
+        styles: {
+        header: { fontSize: 12, bold: true, margin: [0, 0, 0, 10], alignment: 'center' },
+        subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5] },
+        total: { fontSize: 14, bold: true, margin: [0, 10, 0, 0] },
+        tableStyle: { margin: [0, 10, 0, 10] }
+        }
+    };
+
+    pdfMake.createPdf(documentDefinition).open();
+  }
+};
+
+
+
 </script>
 
 <template>
@@ -365,7 +433,7 @@ const deleteItem = (item) => {
             </div>
 
             <div class="md:w-auto w-full mb-2 md:mb-0 md:col-span-3 pt-6 ">
-                <ButtonSecundary @click="" type="submit">
+                <ButtonSecundary @click="showTicket()" type="submit">
                     {{ isEdit ? 'Editar' : 'Ordenar' }}
                 </ButtonSecundary>
             </div>
