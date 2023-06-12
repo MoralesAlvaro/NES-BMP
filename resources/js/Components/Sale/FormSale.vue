@@ -296,7 +296,7 @@ const showTicket = () => {
     const documentDefinition = {
         pageSize: { width: ticketWidthPx, height: ticketHeightPt },
         content: [
-        { text: 'RESTAORANTE NOCHES DE EL SALVADOR', style: 'header' },
+        { text: 'RESTAURANTE NOCHES DE EL SALVADOR', style: 'header' },
         { text: '----------------------------', alignment: 'center' },
         { text: 'Ticket de Venta', style: 'subheader' },
         { text: `Subtotal: $${sup_total.toFixed(2)}` },
