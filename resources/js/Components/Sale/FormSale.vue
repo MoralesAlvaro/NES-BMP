@@ -270,7 +270,7 @@ const deleteItem = (item) => {
 }
 
 const showTicket = () => {
-  if (form.status_sale_id != 1) {
+  if (form.status_sale_id ) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     const ticketWidthPx = 300;
     const ticketHeightPt = 'auto';
