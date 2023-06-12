@@ -9,11 +9,8 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { reactive, ref, getCurrentInstance } from 'vue';
 import InputError from '@/Components/InputError.vue';
 import { createToaster } from "@meforma/vue-toaster";
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-
-  // Cargar las fuentes necesarias para el PDF
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -273,7 +270,7 @@ const deleteItem = (item) => {
 }
 
 const showTicket = () => {
-  if (form.status_sale_id) {
+  if (form.status_sale_id != 1) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     const ticketWidthPx = 300;
     const ticketHeightPt = 'auto';
